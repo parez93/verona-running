@@ -1,0 +1,507 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap');*/
+/*@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');*/
+
+/*@import "tailwindcss";*/
+/*@import "tw-animate-css";*/
+/*@custom-variant dark (&:is(.dark *));*/
+
+/*@theme {*/
+/*    --color-background: #ffffff;*/
+/*    --color-foreground: #0a0a0a;*/
+
+/*    --color-card: #ffffff;*/
+/*    --color-card-foreground: #0a0a0a;*/
+
+/*    --color-popover: #ffffff;*/
+/*    --color-popover-foreground: #0a0a0a;*/
+
+/*    --color-primary: #6c5ce7; !* Adjusted to match CTA button and link color on dark background *!*/
+/*    --color-primary-foreground: #ffffff; !* Text color for primary buttons *!*/
+
+/*    --color-secondary: #f0f0f8; !* Light background for 'Back to Login' button *!*/
+/*    --color-secondary-foreground: #5c53a6; !* Text color for secondary buttons *!*/
+
+/*    --color-muted: #f5f5f5;*/
+/*    --color-muted-foreground: #737373;*/
+
+/*    --color-accent: #6c5ce7; !* Accent for links and interactive elements *!*/
+/*    --color-accent-foreground: #ffffff;*/
+
+/*    --color-destructive: #ef4444;*/
+/*    --color-destructive-foreground: #fafafa;*/
+
+/*    --color-border: #e5e5e5;*/
+/*    --color-input: #e5e5e5;*/
+/*    --color-ring: #0a0a0a;*/
+
+/*    --color-chart-1: #e67e22;*/
+/*    --color-chart-2: #2d8659;*/
+/*    --color-chart-3: #1e3a5f;*/
+/*    --color-chart-4: #f1c40f;*/
+/*    --color-chart-5: #e74c3c;*/
+
+/*    --color-sidebar: #f7f7f7;*/
+/*    --color-sidebar-foreground: #404040;*/
+/*    --color-sidebar-primary: #1a1a1a;*/
+/*    --color-sidebar-primary-foreground: #fafafa;*/
+/*    --color-sidebar-accent: #f0f0f0;*/
+/*    --color-sidebar-accent-foreground: #1a1a1a;*/
+/*    --color-sidebar-border: #d4d4d8;*/
+/*    --color-sidebar-ring: #3b82f6;*/
+
+/*    --radius-lg: 0.5rem;*/
+/*    --radius-md: calc(0.5rem - 2px);*/
+/*    --radius-sm: calc(0.5rem - 4px);*/
+
+/*    --animate-accordion-down: accordion-down 0.2s ease-out;*/
+/*    --animate-accordion-up: accordion-up 0.2s ease-out;*/
+
+/*    !* Custom colors derived from the reference images *!*/
+/*    --color-dark-background: #12243E; !* Main dark blue background on the right *!*/
+/*    --color-dark-foreground: #ffffff; !* White text on dark background *!*/
+/*    --color-dark-accent: #6c5ce7; !* Purple accent color on dark background *!*/
+/*    --color-dark-accent-hover: #4e40bb; !* Slightly darker purple for hover states *!*/
+/*    --color-text-light: #8e8e8e; !* Lighter text color for descriptions *!*/
+/*    --color-text-lighter: #b0b0b0; !* Even lighter text color for subtle hints *!*/
+
+/*    --font-heading: 'Jost', sans-serif;*/
+/*    --font-body: 'Inter', sans-serif;*/
+
+/*    @keyframes accordion-down {*/
+/*        from {*/
+/*            height: 0;*/
+/*        }*/
+/*        to {*/
+/*            height: var(--radix-accordion-content-height);*/
+/*        }*/
+/*    }*/
+/*    @keyframes accordion-up {*/
+/*        from {*/
+/*            height: var(--radix-accordion-content-height);*/
+/*        }*/
+/*        to {*/
+/*            height: 0;*/
+/*        }*/
+/*    }*/
+/*}*/
+
+/*!**/
+/*  The default border color has changed to `currentColor` in Tailwind CSS v4,*/
+/*  so we've added these compatibility styles to make sure everything still*/
+/*  looks the same as it did with Tailwind CSS v3.*/
+
+/*  If we ever want to remove these styles, we need to add an explicit border*/
+/*  color utility to any element that depends on these defaults.*/
+/**!*/
+/*@layer base {*/
+/*    *,*/
+/*    ::after,*/
+/*    ::before,*/
+/*    ::backdrop,*/
+/*    ::file-selector-button {*/
+/*        border-color: #e5e5e5;*/
+/*    }*/
+/*}*/
+
+/*@layer utilities {*/
+/*    body {*/
+/*        font-family: var(--font-body);*/
+/*    }*/
+
+/*    h1, h2, h3, h4, h5, h6 {*/
+/*        font-family: var(--font-heading);*/
+/*    }*/
+/*}*/
+
+/*@layer base {*/
+/*    :root {*/
+/*        --background: var(--color-background);*/
+/*        --foreground: var(--color-foreground);*/
+/*        --card: var(--color-card);*/
+/*        --card-foreground: var(--color-card-foreground);*/
+/*        --popover: var(--color-popover);*/
+/*        --popover-foreground: var(--color-popover-foreground);*/
+/*        --primary: var(--color-primary);*/
+/*        --primary-foreground: var(--color-primary-foreground);*/
+/*        --secondary: var(--color-secondary);*/
+/*        --secondary-foreground: var(--color-secondary-foreground);*/
+/*        --muted: var(--color-muted);*/
+/*        --muted-foreground: var(--color-text-light);*/
+/*        --accent: var(--color-accent);*/
+/*        --accent-foreground: var(--color-accent-foreground);*/
+/*        --destructive: var(--color-destructive);*/
+/*        --destructive-foreground: var(--color-destructive-foreground);*/
+/*        --border: var(--color-border);*/
+/*        --input: var(--color-border); !* Matches input border color from image *!*/
+/*        --ring: var(--color-primary); !* Focus ring color *!*/
+/*        --chart-1: var(--color-chart-1);*/
+/*        --chart-2: var(--color-chart-2);*/
+/*        --chart-3: var(--color-chart-3);*/
+/*        --chart-4: var(--color-chart-4);*/
+/*        --chart-5: var(--color-chart-5);*/
+/*        --radius: var(--radius-lg);*/
+/*        --sidebar-background: var(--color-sidebar);*/
+/*        --sidebar-foreground: var(--color-sidebar-foreground);*/
+/*        --sidebar-primary: var(--color-sidebar-primary);*/
+/*        --sidebar-primary-foreground: var(--color-sidebar-primary-foreground);*/
+/*        --sidebar-accent: var(--color-sidebar-accent);*/
+/*        --sidebar-accent-foreground: var(--color-sidebar-accent-foreground);*/
+/*        --sidebar-border: var(--color-sidebar-border);*/
+/*        --sidebar-ring: var(--color-sidebar-ring);*/
+
+/*        --primary-text: #0a0a0a; !* Dark text for headings/main content on light background *!*/
+/*        --secondary-text: #4a4a58; !* Sub-heading/descriptive text on light background *!*/
+/*        --link-text: #6c5ce7; !* Link text color *!*/
+/*    }*/
+
+/*    !* No explicit dark mode provided in current reference images, so omitting dark theme tokens for now.*/
+/*       If a dark mode is introduced, these would be populated based on dark mode reference images.*/
+/*    .dark {*/
+/*      --background: ;*/
+/*      --foreground: ;*/
+/*      ...*/
+/*    }*/
+/*    *!*/
+
+/*    * {*/
+/*        @apply border-border;*/
+/*    }*/
+
+/*    body {*/
+/*        @apply bg-background text-foreground;*/
+/*    }*/
+
+/*    !* IMPORTANT & CRITICAL: Always define the container class in this way *!*/
+/*    .container {*/
+/*        margin-inline: auto;*/
+/*        padding-inline: 2rem;*/
+/*    }*/
+
+/*    !* Specific styles derived from analysis of the reference image *!*/
+/*    h1 {*/
+/*        font-family: var(--font-heading);*/
+/*        font-weight: 700; !* Bold for main headings *!*/
+/*        color: var(--primary-text);*/
+/*    }*/
+
+/*    h2 {*/
+/*        font-family: var(--font-heading);*/
+/*        font-weight: 600;*/
+/*        color: var(--primary-text);*/
+/*    }*/
+
+/*    h3 {*/
+/*        font-family: var(--font-heading);*/
+/*        font-weight: 500;*/
+/*        color: var(--primary-text);*/
+/*    }*/
+
+/*    p {*/
+/*        font-family: var(--font-body);*/
+/*        font-weight: 400;*/
+/*        color: var(--secondary-text);*/
+/*    }*/
+
+/*    a {*/
+/*        color: var(--link-text);*/
+/*        text-decoration: none;*/
+/*    }*/
+
+/*    a:hover {*/
+/*        text-decoration: underline;*/
+/*    }*/
+/*}*/
+
+/*!* Hide Next.js error overlay portal *!*/
+/*nextjs-portal {*/
+/*    display: none !important;*/
+/*}*/
+
+
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+    --color-background: #F7F7FD;
+    --color-foreground: #404040;
+
+    --color-card: #FFFFFF;
+    --color-card-foreground: #404040;
+
+    --color-popover: #FFFFFF;
+    --color-popover-foreground: #404040;
+
+    --color-primary: #8516F4;
+    --color-primary-foreground: #FAFAFA;
+
+    --color-secondary: #F0EDFD;
+    --color-secondary-foreground: #404040;
+
+    --color-muted: #F5F5F5;
+    --color-muted-foreground: #737373;
+
+    --color-accent: #F0EDFD;
+    --color-accent-foreground: #8516F4;
+
+    --color-destructive: #FF3B3B;
+    --color-destructive-foreground: #FAFAFA;
+
+    --color-border: #D8DDE1;
+    --color-input: #D8DDE1;
+    --color-ring: #8516F4;
+
+    --color-chart-1: #e67e22;
+    --color-chart-2: #2d8659;
+    --color-chart-3: #1e3a5f;
+    --color-chart-4: #f1c40f;
+    --color-chart-5: #e74c3c;
+
+    --color-sidebar: #FFFFFF;
+    --color-sidebar-foreground: #404040;
+    --color-sidebar-primary: #8516F4;
+    --color-sidebar-primary-foreground: #FAFAFA;
+    --color-sidebar-accent: #F0EDFD;
+    --color-sidebar-accent-foreground: #8516F4;
+    --color-sidebar-border: #D8DDE1;
+    --color-sidebar-ring: #8516F4;
+
+    --radius-lg: 0.5rem;
+    --radius-md: calc(0.5rem - 2px);
+    --radius-sm: calc(0.5rem - 4px);
+
+    --animate-accordion-down: accordion-down 0.2s ease-out;
+    --animate-accordion-up: accordion-up 0.2s ease-out;
+
+    @keyframes accordion-down {
+        from {
+            height: 0;
+        }
+        to {
+            height: var(--radix-accordion-content-height);
+        }
+    }
+    @keyframes accordion-up {
+        from {
+            height: var(--radix-accordion-content-height);
+        }
+        to {
+            height: 0;
+        }
+    }
+
+    --font-sans: 'Public Sans', sans-serif;
+
+    --color-text-light: #7E7E7E;
+    --color-text-dark: #2B2E33;
+    --color-text-header: #818D9B;
+    --color-text-placeholder: #AEB3BB;
+
+    --color-link-primary: #752DD8;
+
+    --color-tab-inactive: #A0AEC0;
+    --color-tab-active-text: #851BFF;
+    --color-tab-active-bg: #F0EDFD;
+
+    --color-button-secondary-bg: #FFEBEE;
+    --color-button-secondary-text: #FF3B3B;
+
+    --color-icon-primary: #8516F4;
+    --color-icon-secondary: #BFC8D2;
+
+    --color-sidebar-item-active-fill: #F0EFFD;
+    --color-sidebar-item-active-border: #8516F4;
+
+    --color-border-subtle: #ECECEC;
+    --color-input-border: #D8DDE1;
+
+    --color-background-offset: #F6F8FC;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-border);
+    }
+}
+
+@layer utilities {
+    body {
+        font-family: var(--font-sans);
+    }
+}
+
+@layer base {
+    :root {
+        --background: var(--color-background);
+        --foreground: var(--color-foreground);
+        --card: var(--color-card);
+        --card-foreground: var(--color-card-foreground);
+        --popover: var(--color-popover);
+        --popover-foreground: var(--color-popover-foreground);
+        --primary: var(--color-primary);
+        --primary-foreground: var(--color-primary-foreground);
+        --secondary: var(--color-secondary);
+        --secondary-foreground: var(--color-secondary-foreground);
+        --muted: var(--color-muted);
+        --muted-foreground: var(--color-muted-foreground);
+        --accent: var(--color-accent);
+        --accent-foreground: var(--color-accent-foreground);
+        --destructive: var(--color-destructive);
+        --destructive-foreground: var(--color-destructive-foreground);
+        --border: var(--color-border);
+        --input: var(--color-input);
+        --ring: var(--color-ring);
+        --chart-1: var(--color-chart-1);
+        --chart-2: var(--color-chart-2);
+        --chart-3: var(--color-chart-3);
+        --chart-4: var(--color-chart-4);
+        --chart-5: var(--color-chart-5);
+        --radius: var(--radius-lg);
+        --sidebar-background: var(--color-sidebar);
+        --sidebar-foreground: var(--color-sidebar-foreground);
+        --sidebar-primary: var(--color-sidebar-primary);
+        --sidebar-primary-foreground: var(--color-sidebar-primary-foreground);
+        --sidebar-accent: var(--color-sidebar-accent);
+        --sidebar-accent-foreground: var(--color-sidebar-accent-foreground);
+        --sidebar-border: var(--color-sidebar-border);
+        --sidebar-ring: var(--color-sidebar-ring);
+    }
+
+    .dark {
+        --background: #0A0A0A;
+        --foreground: #FAFAFA;
+        --card: #0A0A0A;
+        --card-foreground: #FAFAFA;
+        --popover: #0A0A0A;
+        --popover-foreground: #FAFAFA;
+        --primary: #FAFAFA;
+        --primary-foreground: #171717;
+        --secondary: #262626;
+        --secondary-foreground: #FAFAFA;
+        --muted: #262626;
+        --muted-foreground: #A3A3A3;
+        --accent: #262626;
+        --accent-foreground: #FAFAFA;
+        --destructive: #7F1D1D;
+        --destructive-foreground: #FAFAFA;
+        --border: #262626;
+        --input: #262626;
+        --ring: #D4D4D8;
+        --chart-1: #3B82F6;
+        --chart-2: #10B981;
+        --chart-3: #F59E0B;
+        --chart-4: #8B5CF6;
+        --chart-5: #EF4444;
+        --sidebar-background: #1A1A1A;
+        --sidebar-foreground: #F0F0F0;
+        --sidebar-primary: #3B82F6;
+        --sidebar-primary-foreground: #FFFFFF;
+        --sidebar-accent: #292929;
+        --sidebar-accent-foreground: #F0F0F0;
+        --sidebar-border: #292929;
+        --sidebar-ring: #3B82F6;
+    }
+}
+
+@layer base {
+    * {
+        border-color: var(--border);
+    }
+
+    body {
+        background-color: var(--background);
+        color: var(--foreground);
+        font-family: var(--font-sans);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--color-text-dark);
+    }
+
+    a {
+        color: var(--color-link-primary);
+        text-decoration: none;
+    }
+
+    input, select, textarea {
+        border: 1px solid var(--color-input-border);
+        background-color: var(--card);
+        color: var(--foreground);
+        padding: 0.5rem 0.75rem;
+        border-radius: var(--radius-md);
+    }
+
+    input::placeholder, textarea::placeholder {
+        color: var(--color-text-placeholder);
+        opacity: 1;
+    }
+
+    .container {
+        margin-inline: auto;
+        padding-inline: 2rem;
+    }
+
+    .text-xs {
+        font-size: 0.75rem;
+        line-height: 1rem;
+    }
+
+    .text-sm {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+    }
+
+    .text-base {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    .text-lg {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+    }
+
+    .text-xl {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+    }
+
+    .font-light {
+        font-weight: 300;
+    }
+
+    .font-normal {
+        font-weight: 400;
+    }
+
+    .font-medium {
+        font-weight: 500;
+    }
+
+    .font-semibold {
+        font-weight: 600;
+    }
+
+    .font-bold {
+        font-weight: 700;
+    }
+}
+
+/* Hide Next.js error overlay portal */
+nextjs-portal {
+    display: none !important;
+}
