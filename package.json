@@ -57,6 +57,7 @@
     "react-day-picker": "^9.8.0",
     "react-dom": "19.1.0",
     "react-grid-layout": "^1.5.2",
+    "react-hook-form": "^7.63.0",
     "react-markdown": "^10.1.0",
     "recharts": "^3.2.1",
     "rehype-raw": "^7.0.0",
