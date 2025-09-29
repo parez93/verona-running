@@ -63,7 +63,9 @@ export async function createEventRegistration(client: SupabaseClient, input: Eve
     console.log("Creating event registration...");
 
     const account = await getUserFromCookie()
-
+    if (!account) {
+        throw new Error("User not logged in");
+    }
     const payload = {
         ...input,
         id_user: account.id,
