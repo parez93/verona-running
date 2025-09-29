@@ -3,6 +3,7 @@
 "use server";
 
 import { createClient } from '@/utils/supabase/server'
+import {createAccount} from "@/api/account/accountService";
 
 export async function signUpAction(email: string, password: string) {
     const supabase = await createClient();
@@ -22,6 +23,8 @@ export async function signUpAction(email: string, password: string) {
             code: error.code,
         };
     }
+
+    const account = await createAccount(supabase, data.user.id);
 
     return {
         success: true,

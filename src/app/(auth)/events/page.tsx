@@ -1,34 +1,50 @@
+/*
 "use client";
+*/
 
+/*
 import {useEffect, useState} from "react";
+*/
 import {Card, CardHeader} from "@/components/ui/card";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {fetchEventsAction} from "@/app/(auth)/events/actions";
 import {Event} from "@/api/event/event";
 import EventCard from "@/components/event/EventCard";
 import EventPast from "@/components/event/EventPast";
+import {CACHE_KEY, getCached, setCache} from "@/lib/cache";
 
 
-export default function EventsPage() {
+export default async function EventsPage() {
 
-    const [events, setEvents] = useState<Event[] | []>([]);
-    const [loading, setLoading] = useState(true);
+    /*    const [events, setEvents] = useState<Event[] | []>([]);
+        const [loading, setLoading] = useState(true);*/
 
-    useEffect(() => {
-        const fetchEvents = async () => {
-            try {
-                const data = await fetchEventsAction()
-                console.log(data)
-                setEvents(data.items);
-            } catch (err) {
-                console.error("Error fetching account", err);
-            } finally {
-                setLoading(false);
-            }
-        };
+/*    let events: Event[] = getCached(CACHE_KEY.events());
+    if (!events) {
+        const data = await fetchEventsAction();
+        events = data.items;
+        setCache(CACHE_KEY.events(), events);
+    }*/
 
-        fetchEvents();
-    }, []);
+    const data = await fetchEventsAction();
+    let events: Event[] = data.items;
+
+
+    /*    useEffect(() => {
+            const fetchEvents = async () => {
+                try {
+                    const data = await fetchEventsAction()
+                    console.log(data)
+                    setEvents(data.items);
+                } catch (err) {
+                    console.error("Error fetching account", err);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchEvents();
+        }, []);*/
 
 
     const today = new Date();
@@ -46,14 +62,14 @@ export default function EventsPage() {
         .filter((e) => new Date(e.datetime).getTime() < today.getTime())
         .sort(byDateDesc);
 
-        return (
-            <div className="space-y-6">
-                <Card className="p-0">
-                    <Tabs defaultValue="upcoming" className="space-y-6">
-                        <CardHeader className="p-0">
+    return (
+        <div className="space-y-6">
+            <Card className="p-0">
+                <Tabs defaultValue="upcoming" className="space-y-6">
+                    <CardHeader className="p-0">
 
-                            <TabsList className="grid w-full grid-cols-4 h-12 bg-white">
-                                <TabsTrigger value="upcoming" className="
+                        <TabsList className="grid w-full grid-cols-4 h-12 bg-white">
+                            <TabsTrigger value="upcoming" className="
           flex items-center justify-center space-x-2
           rounded-none
           border-b-2 border-transparent
@@ -64,7 +80,7 @@ export default function EventsPage() {
           data-[state=active]:shadow-white
           data-[state=active]:bg-white
         ">Prossimi eventi</TabsTrigger>
-                                <TabsTrigger value="past" className="
+                            <TabsTrigger value="past" className="
           flex items-center justify-center space-x-2
           rounded-none
           border-b-2 border-transparent
@@ -75,31 +91,31 @@ export default function EventsPage() {
           data-[state=active]:shadow-white
           data-[state=active]:bg-white
         ">Eventi passati</TabsTrigger>
-                            </TabsList>
-                        </CardHeader>
-                        <TabsContent value="upcoming" className="pl-7 pr-7">
-                            {upcoming.length === 0 ? (
-                                <p className="text-sm text-muted-foreground">Nessun evento in programma.</p>
-                            ) : (
-                                <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-6">
-                                    {upcoming.map((ev) => (
-                                        <EventCard key={ev.id} event={ev}/>
-                                    ))}
-                                </div>
-                            )}
-                        </TabsContent>
+                        </TabsList>
+                    </CardHeader>
+                    <TabsContent value="upcoming" className="pl-7 pr-7">
+                        {upcoming.length === 0 ? (
+                            <p className="text-sm text-muted-foreground">Nessun evento in programma.</p>
+                        ) : (
+                            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-6">
+                                {upcoming.map((ev) => (
+                                    <EventCard key={ev.id} event={ev}/>
+                                ))}
+                            </div>
+                        )}
+                    </TabsContent>
 
-                        <TabsContent value="past" className="pl-7 pr-7 pb-7">
-                            {past.length === 0 ? (
-                                <p className="text-sm text-muted-foreground">Nessun evento passato.</p>
-                            ) : (
-                                <EventPast events={past}/>
-                            )}
-                        </TabsContent>
-                    </Tabs>
-                </Card>
-            </div>
-        );
+                    <TabsContent value="past" className="pl-7 pr-7 pb-7">
+                        {past.length === 0 ? (
+                            <p className="text-sm text-muted-foreground">Nessun evento passato.</p>
+                        ) : (
+                            <EventPast events={past}/>
+                        )}
+                    </TabsContent>
+                </Tabs>
+            </Card>
+        </div>
+    );
 
     /*
         return (
@@ -128,26 +144,26 @@ export default function EventsPage() {
     */
 
 
-/*    return (
-        <div>
-            {/!*Page header *!/}
-            <div className="container mx-auto px-4 py-6">
-                <div className="flex flex-col gap-1">
-                    <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Prossimi eventi</h1>
-                    <p className="text-sm text-muted-foreground">Panoramica rapida degli eventi.</p>
+    /*    return (
+            <div>
+                {/!*Page header *!/}
+                <div className="container mx-auto px-4 py-6">
+                    <div className="flex flex-col gap-1">
+                        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Prossimi eventi</h1>
+                        <p className="text-sm text-muted-foreground">Panoramica rapida degli eventi.</p>
+                    </div>
                 </div>
+
+                {upcoming.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">Nessun evento in programma.</p>
+                ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-6">
+                        {upcoming.map((ev) => (
+                            <EventCard key={ev.id} event={ev}/>
+                        ))}
+                    </div>
+                )}
+
             </div>
-
-            {upcoming.length === 0 ? (
-                <p className="text-sm text-muted-foreground">Nessun evento in programma.</p>
-            ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-6">
-                    {upcoming.map((ev) => (
-                        <EventCard key={ev.id} event={ev}/>
-                    ))}
-                </div>
-            )}
-
-        </div>
-    );*/
+        );*/
 }

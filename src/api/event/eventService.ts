@@ -2,35 +2,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import {EventInsert, EventRegistration, EventUpdate, FetchEventsParams, FetchEventsResult} from "@/api/event/event";
 import {fetchAccount} from "@/api/account/accountService";
-
-// Fetch events for the authenticated user. Respects RLS on the table.
-/*export async function fetchEvents(
-    client: SupabaseClient,
-    params: FetchEventsParams = {}
-): Promise<FetchEventsResult> {
-    const { search = "", page = 1, pageSize = 10, order = { column: "datetime", ascending: false } } = params
-
-    const from = (page - 1) * pageSize
-    const to = from + pageSize - 1
-
-    let query = client
-        .from("evt_data")
-        .select("*", { count: "exact" })
-        .order(order.column as string, { ascending: !!order.ascending })
-
-    if (search.trim().length > 0) {
-        // Search on title OR description via ilike
-        query = query.or(`id.eq.${search}`)
-    }
-
-    const { data, error, count } = await query.range(from, to)
-    if (error) throw new Error(error.message)
-
-    return {
-        items: (data || []) as Event[],
-        count: count ?? 0,
-    }
-}*/
+import {getUserFromCookie} from "@/utils/supabase/getUserFromCookie";
 
 export async function fetchEvents(
     client: SupabaseClient,
@@ -43,7 +15,9 @@ export async function fetchEvents(
         order = { column: "datetime", ascending: false },
         userId,
     } = params
-    const account = await fetchAccount(client);
+    console.log("Fetching events...");
+
+    const account = await getUserFromCookie()
 
 
     const from = (page - 1) * pageSize
@@ -64,7 +38,7 @@ export async function fetchEvents(
         query = query.or(`id.eq.${search}`)
     }
 
-    query = query.eq("evt_registration.id_user", account.id)
+    query = query.eq("evt_registration.id_user", account?.id)
 
     const { data, error, count } = await query.range(from, to)
     if (error) throw new Error(error.message)
@@ -79,7 +53,9 @@ export async function fetchEvents(
 }
 
 export async function createEventRegistration(client: SupabaseClient, input: EventRegistration): Promise<EventRegistration> {
-    const account = await fetchAccount(client);
+    console.log("Creating event registration...");
+
+    const account = await getUserFromCookie()
 
     const payload = {
         ...input,
@@ -92,7 +68,9 @@ export async function createEventRegistration(client: SupabaseClient, input: Eve
 }
 
 export async function deleteEventRegistration(client: SupabaseClient, idEvent: number): Promise<void> {
-    const account = await fetchAccount(client);
+    console.log("Delete event registration...");
+
+    const account = await getUserFromCookie()
 
     const { error } = await client.from("evt_registration").delete().eq("id_event", idEvent).eq("id_user", account.id)
     if (error) throw new Error(error.message)

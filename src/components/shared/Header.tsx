@@ -1,43 +1,64 @@
 "use client";
 
-import {startTransition, useState} from "react";
+import {startTransition, useEffect, useState} from "react";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Search, Globe, Sun, Moon, Bell, User, Settings, LogOut, Menu } from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {LogOut, Menu, User} from "lucide-react";
 import {useRouter} from "next/navigation";
 import {ROUTES} from "@/constants/routes";
 import {logout} from "@/app/(auth)/header/actions";
+import {fetchUserCookieAction} from "@/app/(auth)/actions";
+import {Account} from "@/api/account/account";
+import {UserFromCookie} from "@/utils/supabase/getUserFromCookie";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {fetchAccountAction} from "@/app/(auth)/account/actions";
 
 interface HeaderProps {
-    title?: string;
-    breadcrumbs?: { label: string; href?: string }[];
-    className?: string;
-    onMenuClick?: () => void;
-    showMenuButton?: boolean;
+    title?: string,
+    breadcrumbs?: { label: string; href?: string }[],
+    className?: string,
+    onMenuClick?: () => void,
+    showMenuButton?: boolean
 }
 
 export default function Header({
                                    title = "Account Settings",
                                    breadcrumbs = [
-                                       { label: "Dashboard", href: "/" },
-                                       { label: "Account Settings" }
+                                       {label: "Dashboard", href: "/"},
+                                       {label: "Account Settings"}
                                    ],
                                    className = "",
                                    onMenuClick,
-                                   showMenuButton = false
+                                   showMenuButton = false,
                                }: HeaderProps) {
     const [isDarkMode, setIsDarkMode] = useState(false);
+    const [user, setUser] = useState<Account | null>(null);
+    const [userCookie, setUserCookie] = useState<UserFromCookie | null>(null);
     const [notificationCount] = useState(3);
     const router = useRouter();
 
+    useEffect(() => {
+        const fetchAccount = async () => {
+            try {
+                const data = await fetchAccountAction()
+                const userCookie = await fetchUserCookieAction()
+                setUserCookie(userCookie);
+                setUser(data)
+            } catch (err) {
+                console.error("Error fetching account", err);
+            } finally {
+            }
+        };
+
+        fetchAccount();
+
+    }, []);
 
     const toggleTheme = () => {
         setIsDarkMode(!isDarkMode);
@@ -70,7 +91,7 @@ export default function Header({
                             className="h-9 w-9 p-0 md:hidden"
                             onClick={onMenuClick}
                         >
-                            <Menu className="h-5 w-5" />
+                            <Menu className="h-5 w-5"/>
                         </Button>
                     )}
 
@@ -81,7 +102,7 @@ export default function Header({
                         </h1>
 
                         {/* Breadcrumbs */}
-{/*                        <nav className="hidden sm:flex items-center space-x-1 text-sm text-muted-foreground">
+                        {/*                        <nav className="hidden sm:flex items-center space-x-1 text-sm text-muted-foreground">
                             {breadcrumbs.map((crumb, index) => (
                                 <div key={index} className="flex items-center">
                                     {index > 0 && (
@@ -106,7 +127,7 @@ export default function Header({
                 {/* Right Section - Controls */}
                 <div className="flex items-center gap-1 md:gap-3">
                     {/* Search Button - Hidden on mobile */}
-{/*                    <Button
+                    {/*                    <Button
                         variant="ghost"
                         size="sm"
                         className="hidden sm:flex h-9 w-9 p-0 hover:bg-muted transition-colors duration-200"
@@ -115,7 +136,7 @@ export default function Header({
                     </Button>*/}
 
                     {/* Language Selector - Hidden on mobile */}
-{/*
+                    {/*
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button
@@ -138,7 +159,7 @@ export default function Header({
 */}
 
                     {/* Theme Toggle - Hidden on mobile */}
-{/*                    <Button
+                    {/*                    <Button
                         variant="ghost"
                         size="sm"
                         onClick={toggleTheme}
@@ -152,7 +173,7 @@ export default function Header({
                     </Button>*/}
 
                     {/* Notifications */}
-{/*                    <DropdownMenu>
+                    {/*                    <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button
                                 variant="ghost"
@@ -191,34 +212,39 @@ export default function Header({
                     {/* User Avatar Dropdown */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                className="relative h-9 w-9 p-0 rounded-full hover:bg-muted transition-colors duration-200"
-                            >
-                                <div className="h-7 w-7 md:h-8 md:w-8 rounded-full bg-primary flex items-center justify-center">
-                                    <User className="h-3 w-3 md:h-4 md:w-4 text-primary-foreground" />
-                                </div>
-                            </Button>
+                            <div className="w-9 h-9 rounded-full overflow-hidden bg-primary">
+                                <Avatar
+                                    className="AvatarRoot w-9 h-9 rounded-full overflow-hidden bg-primary">
+                                    <AvatarImage
+                                        className="AvatarImage"
+                                        src={user?.img_base64}
+                                        alt="Colm Tuite"
+                                    />
+                                    <AvatarFallback className="AvatarFallback bg-primary text-background text-sm" delayMs={600}>
+                                        {(user?.name?.charAt(0).toUpperCase() || "A")}
+                                        {(user?.surname?.charAt(0).toUpperCase() || "Z")}
+                                    </AvatarFallback>
+                                </Avatar>
+                            </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-56">
                             <div className="px-2 py-1.5">
-                                <div className="font-medium">John Doe</div>
-                                <div className="text-sm text-muted-foreground">john@example.com</div>
+                                <div className="font-medium">{user?.name || 'Nome'} {user?.surname || 'Cognome'}</div>
+                                <div className="text-sm text-muted-foreground">{userCookie?.email}</div>
                             </div>
-                            <DropdownMenuSeparator />
+                            <DropdownMenuSeparator/>
                             <DropdownMenuItem onClick={goAccountPage}>
-                                <User className="mr-2 h-4 w-4" />
+                                <User className="mr-2 h-4 w-4"/>
                                 Profile
                             </DropdownMenuItem>
-{/*                            <DropdownMenuItem>
+                            {/*                            <DropdownMenuItem>
                                 <Settings className="mr-2 h-4 w-4" />
                                 Settings
                             </DropdownMenuItem>*/}
-                            <DropdownMenuSeparator />
+                            <DropdownMenuSeparator/>
                             <DropdownMenuItem className="text-destructive focus:text-destructive"
                                               onClick={handleLogout}>
-                                <LogOut className="mr-2 h-4 w-4" />
+                                <LogOut className="mr-2 h-4 w-4"/>
                                 Log out
                             </DropdownMenuItem>
                         </DropdownMenuContent>
