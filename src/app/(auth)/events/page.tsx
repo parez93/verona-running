@@ -27,7 +27,7 @@ export default async function EventsPage() {
     }*/
 
     const data = await fetchEventsAction();
-    let events: Event[] = data.items;
+    const events: Event[] = data.items;
 
 
     /*    useEffect(() => {
