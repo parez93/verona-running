@@ -24,6 +24,10 @@ export async function signUpAction(email: string, password: string) {
         };
     }
 
+    if (!data.user) {
+        throw new Error("User not logged in");
+    }
+
     const account = await createAccount(supabase, data.user.id);
 
     return {
