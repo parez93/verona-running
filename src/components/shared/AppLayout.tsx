@@ -3,6 +3,7 @@
 import {useState, useEffect, ReactNode} from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import {UserFromCookie} from "@/utils/supabase/getUserFromCookie";
 
 interface AppLayoutProps {
     children: ReactNode,
@@ -11,7 +12,7 @@ interface AppLayoutProps {
 }
 
 
-export default function AppLayout({ children, headerTitle, activeItemId }: AppLayoutProps) {
+export default function AppLayout({children, headerTitle, activeItemId}: AppLayoutProps) {
     const [currentPage, setCurrentPage] = useState<"account" | "404">("account");
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
@@ -57,7 +58,7 @@ export default function AppLayout({ children, headerTitle, activeItemId }: AppLa
                     : 'fixed left-0 top-0 h-full z-20'
                 }
         `}
-                activeItemId = {activeItemId}
+                activeItemId={activeItemId}
             />
 
             {/* Main Content Area */}
@@ -66,8 +67,8 @@ export default function AppLayout({ children, headerTitle, activeItemId }: AppLa
                 <Header
                     title={headerTitle}
                     breadcrumbs={[
-                        { label: "Dashboard", href: "/" },
-                        { label: "Account Setting" }
+                        {label: "Dashboard", href: "/"},
+                        {label: "Account Setting"}
                     ]}
                     className="sticky top-0 z-10"
                     onMenuClick={() => setSidebarOpen(!sidebarOpen)}
@@ -84,7 +85,7 @@ export default function AppLayout({ children, headerTitle, activeItemId }: AppLa
             </div>
 
             {/* Demo Navigation (for testing 404 page) */}
-{/*            <div className="fixed bottom-4 right-4 z-30">
+            {/*            <div className="fixed bottom-4 right-4 z-30">
                 <div className="flex flex-col gap-2 md:flex-row">
                     <button
                         onClick={() => setCurrentPage("account")}

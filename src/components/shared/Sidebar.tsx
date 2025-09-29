@@ -11,7 +11,7 @@ import {
     PanelRight,
     PanelRightClose,
     PanelLeftDashed,
-    PanelRightDashed, CalendarDays
+    PanelRightDashed, CalendarDays, Trophy
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {useRouter} from "next/navigation";
@@ -45,7 +45,14 @@ const menuItems: MenuItem[] = [
         label: 'Eventi',
         icon: CalendarDays,
         href: ROUTES.events()
-    },/*    {
+    },
+/*    {
+        id: 'badge',
+        label: 'Badge',
+        icon: Trophy,
+        href: ROUTES.badge()
+    },*/
+    /*    {
         id: 'settings',
         label: 'Settings',
         icon: Menu,

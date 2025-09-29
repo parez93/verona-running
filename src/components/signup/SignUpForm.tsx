@@ -122,7 +122,7 @@ export default function SignUpForm() {
             }
 
             toast.success(t("success.accountCreated"));
-            router.push(ROUTES.events());
+            router.push(ROUTES.signin());
         } catch (err) {
             toast.error(t("errors.unexpectedError"));
         } finally {

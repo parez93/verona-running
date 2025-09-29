@@ -11,7 +11,7 @@ export async function login(formData: FormData) {
 
     const supabase = await createClient()
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
     });
@@ -21,8 +21,9 @@ export async function login(formData: FormData) {
         throw new Error(error.message);
     }
 
+
     // Login riuscito → redirect a /events
-    redirect(ROUTES.events());
+    redirect(ROUTES.dashboard());
 }
 
 

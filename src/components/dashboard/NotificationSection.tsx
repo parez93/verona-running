@@ -15,7 +15,10 @@ import {Button} from "@/components/ui/button";
 
 export default function NotificationSection(){
     return (
-        <section className="rounded-[var(--radius)] border bg-card text-card-foreground shadow-sm">
+        <section className="h-full overflow-hidden border-border/60 rounded-[var(--radius)] border bg-card text-card-foreground shadow-sm">
+            <div className="drag-handle absolute right-2 top-2 inline-flex items-center gap-2 rounded-md border px-2 py-1 text-xs text-muted-foreground bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/50 cursor-move">
+                ⠿ Trascina
+            </div>
             <div className="p-5 md:p-6 border-b flex items-center justify-between">
                 <div>
                     <h3 className="text-lg font-semibold">Notifiche e avvisi</h3>

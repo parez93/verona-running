@@ -6,4 +6,5 @@ export const ROUTES = {
     forgotPassword: () => `/forgot-password`,
     dashboard: () => `/dashboard`,
     events: () => `/events`,
+    badge: () => `/badge`,
 };

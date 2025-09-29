@@ -3,6 +3,7 @@
 import AppLayout from "@/components/shared/AppLayout";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { ReactNode } from "react";
+import {fetchUserCookieAction} from "@/app/(auth)/actions";
 
 interface AuthLayoutProps {
     children: ReactNode;

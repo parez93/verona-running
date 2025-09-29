@@ -1,6 +1,5 @@
 export type Account = {
-    id: number
-    uuid: string
+    id: string
     edited_at?: string
     img_base64?: string
     name?: string
