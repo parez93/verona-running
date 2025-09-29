@@ -37,7 +37,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
     const { id } = await params;
 
     // prova a leggere dalla cache globale
-    let event: Event | undefined = getCached(CACHE_KEY.events())?.find((e: { id: number; }) => e.id === id);
+    let event: Event | undefined = getCached(CACHE_KEY.events())?.find((e: { id: number; }) => e.id.toString() === id);
 
     // se non presente nella cache, fetch dal server
     if (!event) {

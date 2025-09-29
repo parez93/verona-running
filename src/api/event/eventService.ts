@@ -80,6 +80,9 @@ export async function deleteEventRegistration(client: SupabaseClient, idEvent: n
     console.log("Delete event registration...");
 
     const account = await getUserFromCookie()
+    if (!account) {
+        throw new Error("User not logged in");
+    }
 
     const { error } = await client.from("evt_registration").delete().eq("id_event", idEvent).eq("id_user", account.id)
     if (error) throw new Error(error.message)
