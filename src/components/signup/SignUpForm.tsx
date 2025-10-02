@@ -343,7 +343,7 @@ export default function SignUpForm() {
                 </div>
 
                 <div className="text-[12px] text-[#595858]">
-                    <p className="mb-4">Cliccando su Iscriviti, accetti i Termini di servizio. Scopri in che modo
+                    <p className="mb-4">Cliccando su Iscriviti, accetti i <Link href={ROUTES.termsconditions()}>Termini di servizio</Link>. Scopri in che modo
                         raccogliamo, usiamo e condividiamo i tuoi dati nella nostra <Link href={ROUTES.privacypolicy()}>Informativa sulla privacy</Link> e in che
                         modo usiamo cookie e tecnologie simili nella nostra <Link href={ROUTES.cookiepolicy()}>Normativa sui cookie.</Link>
                     </p>

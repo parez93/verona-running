@@ -138,7 +138,8 @@ export default function SignInForm() {
 
             <div className=" text-[12px] text-[#595858]">
                 <p className="mb-4">
-                    Facendo clic su Continua accetti i Termini di servizio e l&#39;<Link href={ROUTES.privacypolicy()}>Informativa sulla privacy</Link> di Verona Running.
+                    Facendo clic su Accedi accetti i <Link href={ROUTES.termsconditions()}>Termini di servizio</Link> e l&#39;<Link href={ROUTES.privacypolicy()}>Informativa sulla privacy</Link> e in che
+                    modo usiamo cookie e tecnologie simili nella nostra <Link href={ROUTES.cookiepolicy()}>Normativa sui cookie.</Link>
                 </p>
             </div>
 

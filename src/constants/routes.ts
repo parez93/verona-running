@@ -5,6 +5,7 @@ export const ROUTES = {
     signup: () => `/signup`,
     privacypolicy: () => `/privacy-policy`,
     cookiepolicy: () => `/cookie-policy`,
+    termsconditions: () => `/terms-conditions`,
     forgotPassword: () => `/forgot-password`,
     dashboard: () => `/dashboard`,
     events: () => `/events`,
