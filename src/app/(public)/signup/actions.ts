@@ -6,7 +6,7 @@ import { createClient } from '@/utils/supabase/server'
 import {createAccount} from "@/api/account/accountService";
 import {Account} from "better-auth";
 
-export async function signUpAction(email: string, password: string, surname: string, name:string): Promise<Account> {
+export async function signUpAction(email: string, password: string, surname: string, name:string) {
     const supabase = await createClient();
 
     const { data, error } = await supabase.auth.signUp({
