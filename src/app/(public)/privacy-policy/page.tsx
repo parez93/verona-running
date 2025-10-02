@@ -66,6 +66,7 @@ const PrivacyPolicy = () => {
                                     </h3>
                                     <ul className="list-none">
                                         <li><h3 className="text-[13px] pt-[10px]">Vercel</h3></li>
+                                        <li><h3 className="text-[13px] pt-[10px]">Supabase</h3></li>
                                     </ul>
                                 </li>
 
@@ -82,6 +83,7 @@ const PrivacyPolicy = () => {
                                             <p>Dati Personali: Dati di utilizzo; email; password; Strumenti di
                                                 Tracciamento</p>
                                         </li>
+                                        <li><h3 className="text-[13px] pt-[10px]">Supabase Auth</h3></li>
                                     </ul>
                                 </li>
 
@@ -264,6 +266,13 @@ const PrivacyPolicy = () => {
                                                     href="https://vercel.com/legal/privacy-policy"
                                                     className="text-blue-600 no-underline hover:underline">Note
                                                     legali</a></p>
+                                            <h4 className="font-bold text-[#262626] mb-2 mt-4">Supabase</h4>
+                                            <p className="mb-4">Supabase è un servizio di hosting e backend fornito da Supabase, Inc.
+                                                <br/>Dati Personali trattati: Dati di utilizzo, Strumenti di Tracciamento, varie tipologie di Dati
+                                                secondo quanto specificato dalla privacy policy del servizio.<br/><a
+                                                    href="https://supabase.com/privacy"
+                                                    className="text-blue-600 no-underline hover:underline">Note
+                                                    legali</a></p>
                                         </DetailItem>
                                     </li>
                                     <li>
@@ -283,6 +292,19 @@ const PrivacyPolicy = () => {
                                                 Dati Personali.
                                                 <br/>Dati Personali trattati: Dati di utilizzo, email, password,
                                                 Strumenti di Tracciamento<br/></p>
+                                            <h4 className="font-bold text-[#262626] mb-2 mt-4">Supabase Auth
+                                            </h4>
+                                            <p className="mb-4">Supabase Auth è un servizio di registrazione ed
+                                                autenticazione fornito da Supabase, Inc. Per semplificare il processo di
+                                                registrazione ed autenticazione, Supabase Auth può utilizzare fornitori
+                                                di identità di terze parti e salvare le informazioni sulla propria
+                                                piattaforma.
+                                                <br/>Dati Personali trattati: accesso al conto, Dati di utilizzo,
+                                                Strumenti di Tracciamento<br/>
+                                                <a
+                                                    href="https://supabase.com/privacy"
+                                                    className="text-blue-600 no-underline hover:underline">Note
+                                                    legali</a></p>
                                         </DetailItem>
                                     </li>
 

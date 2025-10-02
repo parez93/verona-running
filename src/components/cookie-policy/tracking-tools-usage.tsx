@@ -6,7 +6,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
-import {ChevronDown, ExternalLink, FileText, Server} from "lucide-react";
+import {ChevronDown, Database, ExternalLink, FileText, Key, Server} from "lucide-react";
 import React from "react";
 
 type DetailItemProps = {
@@ -46,9 +46,28 @@ const TrackingToolsUsage = () => {
                 Strumenti di Tracciamento analoghi per svolgere attività strettamente
                 necessarie a garantire il funzionamento o la fornitura del Servizio.
             </p>
+            <h4 className="font-bold text-[#262626] mb-2 mt-4">
+                Strumenti di Tracciamento gestiti da terze parti
+            </h4>
+            <div className="mt-4"></div>
+            <DetailItem title="Supabase"
+                        icon={Database} initiallyOpen={false}>
+                <p>Supabase è un servizio di hosting e backend fornito da Supabase, Inc.
+                    <br/>Dati Personali trattati: Dati di utilizzo, Strumenti di
+                    Tracciamento, varie tipologie di Dati secondo quanto specificato dalla privacy policy del
+                    servizio<br/>
+                    Durata degli Strumenti di Tracciamento:<br/>
+                    sb-access-token: durata della sessione<br/>
+                    sb-refresh-token: durata della sessione
+                    <br/>
+                    <a href="https://supabase.com/privacy"
+                       className="text-blue-600 no-underline hover:underline">Note
+                        legali</a></p>
+            </DetailItem>
+
 
             {/* Esperienza */}
-            <h3 className="text-[13px] text-[#262626] font-bold mb-2">Esperienza</h3>
+            <h3 className="text-[13px] text-[#262626] font-bold mb-2 mt-4">Esperienza</h3>
             <p className="mb-4 text-muted-foreground text-[13px] leading-relaxed">
                 Questo Sito Web utilizza Strumenti di Tracciamento per migliorare la
                 qualità della user experience e consentire le interazioni con contenuti,
@@ -59,7 +78,7 @@ const TrackingToolsUsage = () => {
             </h4>
             <DetailItem title="Google Fonts"
                         icon={ExternalLink} initiallyOpen={false}>
-                <p >Google Fonts è un servizio di visualizzazione di stili
+                <p>Google Fonts è un servizio di visualizzazione di stili
                     di carattere gestito da Google LLC che permette a questa Applicazione di
                     integrare tali contenuti all’interno delle proprie pagine.
                     <br/>Dati Personali trattati: Dati di utilizzo, Strumenti di
@@ -67,6 +86,34 @@ const TrackingToolsUsage = () => {
                                         className="text-blue-600 no-underline hover:underline">Note
                         legali</a></p>
             </DetailItem>
+
+            {/* Funzionalità */}
+            <h3 className="text-[13px] text-[#262626] font-bold mb-2 mt-4">Funzionalità</h3>
+            <p className="mb-4 text-muted-foreground text-[13px] leading-relaxed">
+                Questa Sito Web utilizza Strumenti di Tracciamento per consentire semplici interazioni e attivare
+                funzionalità che permettono agli Utenti di accedere a determinate risorse del Servizio e semplificano la
+                comunicazione con il Titolare.
+            </p>
+            <h4 className="font-bold text-[#262626] mb-2 mt-4">
+                Strumenti di Tracciamento gestiti da terze parti
+            </h4>
+            <div className="mt-4"></div>
+            <DetailItem title="Supabase Auth"
+                        icon={Key} initiallyOpen={false}>
+                <p>Supabase Auth è un servizio di registrazione ed autenticazione fornito da Supabase, Inc. Per
+                    semplificare il processo di registrazione ed autenticazione, Supabase Auth può utilizzare fornitori
+                    di identità di terze parti e salvare le informazioni sulla propria piattaforma.
+                    <br/>Dati Personali trattati: accesso al conto, Dati di utilizzo, Strumenti di
+                    Tracciamento<br/>
+                    Durata degli Strumenti di Tracciamento:<br/>
+                    sb-access-token: durata della sessione<br/>
+                    sb-refresh-token: durata della sessione
+                    <br/>
+                    <a href="https://supabase.com/privacy"
+                       className="text-blue-600 no-underline hover:underline">Note
+                        legali</a></p>
+            </DetailItem>
+
 
             {/*
 
