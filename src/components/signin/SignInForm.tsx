@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
@@ -134,6 +134,12 @@ export default function SignInForm() {
                 >
                     {t("forgot_password_link")}
                 </Link>
+            </div>
+
+            <div className=" text-[12px] text-[#595858]">
+                <p className="mb-4">
+                    Facendo clic su Continua accetti i Termini di servizio e l&#39;<Link href={ROUTES.privacypolicy()}>Informativa sulla privacy</Link> di Verona Running.
+                </p>
             </div>
 
             {/* Submit */}
