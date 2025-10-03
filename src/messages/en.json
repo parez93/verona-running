@@ -68,7 +68,7 @@
         }
       },
       "buttons": {
-        "createAccount": "Create Account",
+        "createAccount": "Sign Up",
         "creating": "Creating..."
       },
       "loginPrompt": "Already have an account?",

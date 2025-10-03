@@ -24,12 +24,14 @@ export async function fetchAccount(
     return data as Account;
 }
 
-export async function createAccount(client: SupabaseClient, id: string): Promise<Account> {
+export async function createAccount(client: SupabaseClient, id: string, surname: string, name:string): Promise<Account> {
     console.log("Creating account...");
 
 
     const payload = {
         id: id,
+        surname: surname,
+        name: name,
     }
 
     const { data, error } = await client.from("psn_data").insert(payload).select().single()

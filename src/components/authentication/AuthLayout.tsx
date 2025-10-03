@@ -12,6 +12,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
                 <div className="w-full max-w-md space-y-6">
                     {children}
                 </div>
+
             </div>
 
             {/* Right Column - Branding/Promotional Content */}

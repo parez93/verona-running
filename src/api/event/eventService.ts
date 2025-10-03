@@ -1,13 +1,20 @@
 
 import type { SupabaseClient } from "@supabase/supabase-js"
-import {EventInsert, EventRegistration, EventUpdate, FetchEventsParams, FetchEventsResult} from "@/api/event/event";
+import {
+    EventInsert,
+    EventRegistration,
+    EventUpdate,
+    EventWithRegistration,
+    FetchEventsParams,
+    FetchEventsResult
+} from "@/api/event/event";
 import {fetchAccount} from "@/api/account/accountService";
 import {getUserFromCookie} from "@/utils/supabase/getUserFromCookie";
 
 export async function fetchEvents(
     client: SupabaseClient,
     params: FetchEventsParams & { userId?: number } = {}
-): Promise<FetchEventsResult> {
+): Promise<{ items: EventWithRegistration[]; count: number }> {
     const {
         search = "",
         page = 1,
@@ -46,17 +53,19 @@ export async function fetchEvents(
     return {
         items: (data || []).map((row: any) => ({
             ...row,
-            is_registered: row.is_registered?.length > 0, // boolean
-        })) as (Event & { is_registered: boolean })[],
+            is_registered: row.is_registered?.length > 0,
+        })) as EventWithRegistration[],
         count: count ?? 0,
-    }
+    };
 }
 
 export async function createEventRegistration(client: SupabaseClient, input: EventRegistration): Promise<EventRegistration> {
     console.log("Creating event registration...");
 
     const account = await getUserFromCookie()
-
+    if (!account) {
+        throw new Error("User not logged in");
+    }
     const payload = {
         ...input,
         id_user: account.id,
@@ -71,6 +80,9 @@ export async function deleteEventRegistration(client: SupabaseClient, idEvent: n
     console.log("Delete event registration...");
 
     const account = await getUserFromCookie()
+    if (!account) {
+        throw new Error("User not logged in");
+    }
 
     const { error } = await client.from("evt_registration").delete().eq("id_event", idEvent).eq("id_user", account.id)
     if (error) throw new Error(error.message)

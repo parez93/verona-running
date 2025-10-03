@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
@@ -18,6 +18,7 @@ export default function SignUpForm() {
 
     const [formData, setFormData] = useState({
         name: "",
+        surname: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -25,6 +26,7 @@ export default function SignUpForm() {
 
     const [errors, setErrors] = useState({
         name: "",
+        surname: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -37,6 +39,8 @@ export default function SignUpForm() {
     const validateField = (name: string, value: string) => {
         switch (name) {
             case "name":
+                return value.trim() === "" ? t("validation.nameRequired") : "";
+            case "surname":
                 return value.trim() === "" ? t("validation.nameRequired") : "";
             case "email":
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -85,6 +89,7 @@ export default function SignUpForm() {
 
         const newErrors = {
             name: validateField("name", formData.name),
+            surname: validateField("surname", formData.surname),
             email: validateField("email", formData.email),
             password: validateField("password", formData.password),
             confirmPassword: validateField(
@@ -103,7 +108,9 @@ export default function SignUpForm() {
 
             const result = await signUpAction(
                 formData.email.trim(),
-                formData.password
+                formData.password,
+                formData.surname,
+                formData.name
             );
 
             if (!result.success) {
@@ -163,6 +170,40 @@ export default function SignUpForm() {
                             className="mt-2 text-sm text-red-600"
                         >
                             {errors.name}
+                        </p>
+                    )}
+                </div>
+
+                {/* Surname */}
+                <div>
+                    <label
+                        htmlFor="surname"
+                        className="block text-sm font-medium text-[var(--primary-text)] mb-2"
+                    >
+                        {t("fields.surname.label")}
+                    </label>
+                    <input
+                        id="surname"
+                        name="surname"
+                        type="text"
+                        value={formData.surname}
+                        onChange={handleInputChange}
+                        placeholder={t("fields.surname.placeholder")}
+                        aria-invalid={errors.surname ? "true" : "false"}
+                        aria-describedby={errors.surname ? "name-error" : undefined}
+                        className={`w-full px-4 py-3 border rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent ${
+                            errors.surname
+                                ? "border-red-500 bg-red-50"
+                                : "border-[var(--input)] bg-white hover:border-gray-300"
+                        }`}
+                    />
+                    {errors.surname && (
+                        <p
+                            id="surname-error"
+                            role="alert"
+                            className="mt-2 text-sm text-red-600"
+                        >
+                            {errors.surname}
                         </p>
                     )}
                 </div>
@@ -301,6 +342,13 @@ export default function SignUpForm() {
                     )}
                 </div>
 
+                <div className="text-[12px] text-[#595858]">
+                    <p className="mb-4">Cliccando su Iscriviti, accetti i <Link href={ROUTES.termsconditions()}>Termini di servizio</Link>. Scopri in che modo
+                        raccogliamo, usiamo e condividiamo i tuoi dati nella nostra <Link href={ROUTES.privacypolicy()}>Informativa sulla privacy</Link> e in che
+                        modo usiamo cookie e tecnologie simili nella nostra <Link href={ROUTES.cookiepolicy()}>Normativa sui cookie.</Link>
+                    </p>
+                </div>
+
                 {/* Submit */}
                 <button
                     type="submit"
@@ -330,6 +378,7 @@ export default function SignUpForm() {
                     </p>
                 </div>
             </form>
+
         </div>
     );
 }

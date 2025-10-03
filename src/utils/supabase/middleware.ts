@@ -43,7 +43,10 @@ export async function updateSession(request: NextRequest) {
     if (
         !user &&
         !request.nextUrl.pathname.startsWith(ROUTES.signin()) &&
-        !request.nextUrl.pathname.startsWith(ROUTES.signup())
+        !request.nextUrl.pathname.startsWith(ROUTES.signup()) &&
+        !request.nextUrl.pathname.startsWith(ROUTES.privacypolicy()) &&
+        !request.nextUrl.pathname.startsWith(ROUTES.cookiepolicy()) &&
+        !request.nextUrl.pathname.startsWith(ROUTES.termsconditions())
     ) {
         // no user, potentially respond by redirecting the user to the login page
         const url = request.nextUrl.clone()

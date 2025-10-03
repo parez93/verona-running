@@ -21,8 +21,12 @@
       "subtitle": "Inserisci i tuoi dati per creare un nuovo account",
       "fields": {
         "name": {
-          "label": "Nome Completo",
-          "placeholder": "Inserisci il tuo nome completo"
+          "label": "Nome",
+          "placeholder": "Inserisci il tuo nome"
+        },
+        "surname": {
+          "label": "Cognome",
+          "placeholder": "Inserisci il tuo cognome"
         },
         "email": {
           "label": "Email",
@@ -42,7 +46,7 @@
         }
       },
       "buttons": {
-        "createAccount": "Crea Account",
+        "createAccount": "Iscriviti",
         "creating": "Creazione in corso..."
       },
       "loginPrompt": "Hai già un account?",

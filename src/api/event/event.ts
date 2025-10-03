@@ -13,6 +13,10 @@ export type Event = {
     is_registered: boolean
 }
 
+export type EventWithRegistration = Event & {
+    is_registered: boolean;
+};
+
 export type EventRegistration = {
     id?: number
     id_user?: string

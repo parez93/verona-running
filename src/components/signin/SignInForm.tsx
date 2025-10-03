@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
@@ -134,6 +134,13 @@ export default function SignInForm() {
                 >
                     {t("forgot_password_link")}
                 </Link>
+            </div>
+
+            <div className=" text-[12px] text-[#595858]">
+                <p className="mb-4">
+                    Facendo clic su Accedi accetti i <Link href={ROUTES.termsconditions()}>Termini di servizio</Link> e l&#39;<Link href={ROUTES.privacypolicy()}>Informativa sulla privacy</Link> e in che
+                    modo usiamo cookie e tecnologie simili nella nostra <Link href={ROUTES.cookiepolicy()}>Normativa sui cookie.</Link>
+                </p>
             </div>
 
             {/* Submit */}

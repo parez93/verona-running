@@ -4,8 +4,9 @@
 
 import { createClient } from '@/utils/supabase/server'
 import {createAccount} from "@/api/account/accountService";
+import {Account} from "better-auth";
 
-export async function signUpAction(email: string, password: string) {
+export async function signUpAction(email: string, password: string, surname: string, name:string) {
     const supabase = await createClient();
 
     const { data, error } = await supabase.auth.signUp({
@@ -24,7 +25,11 @@ export async function signUpAction(email: string, password: string) {
         };
     }
 
-    const account = await createAccount(supabase, data.user.id);
+    if (!data.user) {
+        throw new Error("User not logged in");
+    }
+
+    const account = await createAccount(supabase, data.user.id, surname, name);
 
     return {
         success: true,

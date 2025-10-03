@@ -1,27 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     ChevronDown,
     ChevronRight,
-    PanelLeftClose,
-    PanelLeftOpen,
-    Menu,
     LayoutPanelLeft,
-    PanelRight,
-    PanelRightClose,
-    PanelLeftDashed,
-    PanelRightDashed, CalendarDays, Trophy
+    CalendarDays,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {useRouter} from "next/navigation";
-import {ROUTES} from "@/constants/routes";
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
-
+import { ROUTES } from "@/constants/routes";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface SidebarProps {
     className?: string;
-    activeItemId?: string;
+    onNavigate?: () => void;
 }
 
 interface MenuItem {
@@ -29,100 +27,90 @@ interface MenuItem {
     label: string;
     icon: React.ComponentType<{ className?: string }>;
     href?: string;
-    children?: Omit<MenuItem, 'children'>[];
+    children?: Omit<MenuItem, "children">[];
 }
 
-// Using available icons as placeholders for dashboard functionality
 const menuItems: MenuItem[] = [
     {
-        id: 'dashboard',
-        label: 'Dashboard',
+        id: "dashboard",
+        label: "Dashboard",
         icon: LayoutPanelLeft,
-        href: '/dashboard'
+        href: "/dashboard",
     },
     {
-        id: 'events',
-        label: 'Eventi',
+        id: "events",
+        label: "Eventi",
         icon: CalendarDays,
-        href: ROUTES.events()
+        href: ROUTES.events(),
     },
-/*    {
-        id: 'badge',
-        label: 'Badge',
-        icon: Trophy,
-        href: ROUTES.badge()
-    },*/
-    /*    {
-        id: 'settings',
-        label: 'Settings',
-        icon: Menu,
-        children: [
-            { id: 'general', label: 'General', icon: Menu, href: '/settings/general' },
-            { id: 'security', label: 'Security', icon: Menu, href: '/settings/security' },
-            { id: 'notifications', label: 'Notifications', icon: Menu, href: '/settings/notifications' }
-        ]
-    },
-    {
-        id: 'analytics',
-        label: 'Analytics',
-        icon: PanelRight,
-        href: '/analytics'
-    },
-    {
-        id: 'billing',
-        label: 'Billing',
-        icon: PanelRightClose,
-        href: '/billing'
-    },
-    {
-        id: 'users',
-        label: 'User Management',
-        icon: PanelLeftDashed,
-        children: [
-            { id: 'all-users', label: 'All Users', icon: Menu, href: '/users' },
-            { id: 'roles', label: 'Roles & Permissions', icon: Menu, href: '/users/roles' }
-        ]
-    },
-    {
-        id: 'integrations',
-        label: 'Integrations',
-        icon: PanelRightDashed,
-        href: '/integrations'
-    }*/
-
 ];
 
-const MenuIcon = ({ className }: { className?: string }) => <Menu className={className} />;
-
-export default function Sidebar({ className = "", activeItemId = 'dashboard'}: SidebarProps) {
-    const [isCollapsed, setIsCollapsed] = useState(false);
+export default function Sidebar({
+                                    className = "",
+                                    onNavigate,
+                                }: SidebarProps) {
     const [expandedItems, setExpandedItems] = useState<string[]>([]);
-    const [activeItem, setActiveItem] = useState(activeItemId);
+    const [activeItem, setActiveItem] = useState<string | null>(null);
     const router = useRouter();
+    const pathname = usePathname();
 
-    const toggleCollapsed = () => {
-        setIsCollapsed(!isCollapsed);
-        if (!isCollapsed) {
-            setExpandedItems([]);
+    // Sincronizza l'elemento attivo con l'URL corrente (considera rotte figlie)
+    useEffect(() => {
+        let foundMatch = false;
+
+        // Cerca tra gli elementi principali
+        for (const item of menuItems) {
+            if (item.href && pathname.startsWith(item.href)) {
+                setActiveItem(item.id);
+                foundMatch = true;
+                break;
+            }
+
+            // Cerca tra i children
+            if (item.children) {
+                for (const child of item.children) {
+                    if (child.href && pathname.startsWith(child.href)) {
+                        setActiveItem(child.id);
+                        // Espandi automaticamente il parent
+                        if (!expandedItems.includes(item.id)) {
+                            setExpandedItems((prev) => [...prev, item.id]);
+                        }
+                        foundMatch = true;
+                        break;
+                    }
+                }
+            }
+
+            if (foundMatch) break;
         }
-    };
+
+        // Se non c'è corrispondenza, nessun elemento è selezionato
+        if (!foundMatch) {
+            setActiveItem(null);
+        }
+    }, [pathname]);
 
     const toggleExpanded = (itemId: string) => {
-        if (isCollapsed) return;
-
-        setExpandedItems(prev =>
+        setExpandedItems((prev) =>
             prev.includes(itemId)
-                ? prev.filter(id => id !== itemId)
+                ? prev.filter((id) => id !== itemId)
                 : [...prev, itemId]
         );
     };
 
-    const handleItemClick = (item: MenuItem, hasChildren: undefined | boolean) => {
+    const handleItemClick = (item: MenuItem, hasChildren?: boolean) => {
         if (hasChildren) {
             toggleExpanded(item.id);
         } else {
             setActiveItem(item.id);
-            router.push(item.href!)
+            if (item.href) {
+                router.push(item.href);
+
+                // Notifica il parent della navigazione (per chiudere sidebar su mobile)
+                if (onNavigate) {
+                    onNavigate();
+                }
+            }
         }
     };
 
@@ -132,51 +120,52 @@ export default function Sidebar({ className = "", activeItemId = 'dashboard'}: S
         const isActive = activeItem === item.id;
         const IconComponent = item.icon;
 
-        return (
-            <div key={item.id} className={isChild ? "ml-2 md:ml-4" : ""}>
-                <button
-                    onClick={() => handleItemClick(item, hasChildren)}
-                    className={`
-            w-full flex items-center gap-2 md:gap-3 px-2 md:px-3 py-2 md:py-2.5 rounded-lg text-sm font-medium
-            transition-all duration-200 group
-            ${isActive
+        const buttonContent = (
+            <button
+                onClick={() => handleItemClick(item, hasChildren)}
+                aria-expanded={hasChildren ? isExpanded : undefined}
+                aria-current={isActive ? "page" : undefined}
+                className={`
+          w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+          transition-all duration-200 group/item
+          ${
+                    isActive
                         ? "bg-[var(--color-sidebar-item-active-fill)] border border-[var(--color-sidebar-item-active-border)] text-[var(--color-sidebar-primary)]"
                         : "text-[var(--color-sidebar-foreground)] hover:bg-[var(--color-sidebar-accent)] hover:text-[var(--color-sidebar-accent-foreground)]"
-                    }
-            ${isChild ? "text-xs" : ""}
+                }
+          ${isChild ? "text-xs py-2" : ""}
+        `}
+            >
+                <IconComponent
+                    className={`
+            w-4 h-4 flex-shrink-0
+            ${isActive ? "text-[var(--color-sidebar-primary)]" : "text-[var(--color-icon-secondary)]"}
+            group-hover/item:text-[var(--color-sidebar-accent-foreground)]
           `}
-                >
-                    <IconComponent
-                        className={`
-              ${isCollapsed ? "w-4 h-4 md:w-5 md:h-5" : "w-4 h-4"} 
-              flex-shrink-0
-              ${isActive ? "text-[var(--color-sidebar-primary)]" : "text-[var(--color-icon-secondary)]"}
-              group-hover:text-[var(--color-sidebar-accent-foreground)]
-            `}
-                    />
+                    aria-hidden="true"
+                />
 
-                    {!isCollapsed && (
-                        <>
-              <span className="flex-1 text-left truncate text-xs md:text-sm">
-                {item.label}
-              </span>
+                <span className="flex-1 text-left truncate">{item.label}</span>
 
-                            {hasChildren && (
-                                <div className="flex-shrink-0">
-                                    {isExpanded ? (
-                                        <ChevronDown className="w-3 h-3 md:w-4 md:h-4 text-[var(--color-icon-secondary)]" />
-                                    ) : (
-                                        <ChevronRight className="w-3 h-3 md:w-4 md:h-4 text-[var(--color-icon-secondary)]" />
-                                    )}
-                                </div>
-                            )}
-                        </>
-                    )}
-                </button>
+                {hasChildren && (
+                    <div className="flex-shrink-0" aria-hidden="true">
+                        {isExpanded ? (
+                            <ChevronDown className="w-4 h-4 text-[var(--color-icon-secondary)]" />
+                        ) : (
+                            <ChevronRight className="w-4 h-4 text-[var(--color-icon-secondary)]" />
+                        )}
+                    </div>
+                )}
+            </button>
+        );
 
-                {hasChildren && isExpanded && !isCollapsed && (
+        return (
+            <div key={item.id} className={isChild ? "ml-4" : ""}>
+                {buttonContent}
+
+                {hasChildren && isExpanded && (
                     <div className="mt-1 space-y-1">
-                        {item.children!.map(child => renderMenuItem(child, true))}
+                        {item.children!.map((child) => renderMenuItem(child, true))}
                     </div>
                 )}
             </div>
@@ -184,73 +173,42 @@ export default function Sidebar({ className = "", activeItemId = 'dashboard'}: S
     };
 
     return (
-        <div
-            className={`
-        bg-[var(--color-sidebar)] border-r border-[var(--color-sidebar-border)]
-        transition-all duration-300 ease-in-out flex flex-col
-        ${isCollapsed ? "w-12 md:w-16" : "w-56 md:w-64"}
-        ${className}
-      `}
-        >
-            {/* Header */}
-            <div className="h-17 flex items-center justify-between p-2 md:p-4 border-b border-[var(--color-sidebar-border)]">
-                {/* Desktop & tablet: logo + testo */}
-                <div className="hidden sm:flex items-center gap-2 flex-1 justify-center">
+        <TooltipProvider delayDuration={0}>
+            <aside
+                className={`
+          bg-[var(--color-sidebar)] border-r border-[var(--color-sidebar-border)]
+          transition-all duration-300 ease-in-out flex flex-col h-screen w-64
+          ${className}
+        `}
+                aria-label="Navigazione principale"
+            >
+                {/* Header */}
+                <header className="h-17 flex items-center justify-center p-4 border-b border-[var(--color-sidebar-border)]">
                     <Image
-                        src="/verona_running_logo.png" // qui metti il tuo file immagine
+                        src="/verona_running_logo.png"
                         alt="Verona Running"
                         width={120}
                         height={32}
                         className="object-contain"
                         priority
                     />
-                </div>
+                </header>
 
-                {/* Mobile: logo solo, occupa tutto lo spazio */}
-                <div className="flex sm:hidden flex-1 justify-center">
-                    <Image
-                        src="/verona_running_logo.png" // qui metti il tuo file immagine
-                        alt="Verona Running"
-                        width={120}
-                        height={32}
-                        className="object-contain"
-                        priority
-                    />
-                </div>
-
-
-
-                {/* Hide collapse button on mobile - controlled by main layout */}
-{/*                <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={toggleCollapsed}
-                    className={`
-            hidden md:flex p-1 md:p-2 hover:bg-[var(--color-sidebar-accent)] text-[var(--color-sidebar-foreground)]
-            ${isCollapsed ? "w-6 h-6 md:w-8 md:h-8" : "w-6 h-6 md:w-8 md:h-8"}
-          `}
+                {/* Navigation Menu */}
+                <nav
+                    className="flex-1 p-2 space-y-2 overflow-y-auto"
+                    aria-label="Menu principale"
                 >
-                    {isCollapsed ? (
-                        <PanelLeftOpen className="w-3 h-3 md:w-4 md:h-4" />
-                    ) : (
-                        <PanelLeftClose className="w-3 h-3 md:w-4 md:h-4" />
-                    )}
-                </Button>*/}
-            </div>
+                    {menuItems.map((item) => renderMenuItem(item))}
+                </nav>
 
-            {/* Navigation Menu */}
-            <nav className="flex-1 p-2 md:p-2 space-y-1 md:space-y-2 overflow-y-auto">
-                {menuItems.map(item => renderMenuItem(item))}
-            </nav>
-
-            {/* Footer */}
-            {!isCollapsed && (
-                <div className="p-2 md:p-4 border-t border-[var(--color-sidebar-border)]">
+                {/* Footer */}
+                <footer className="p-4 border-t border-[var(--color-sidebar-border)]">
                     <div className="text-xs text-[var(--color-text-light)]">
                         Version 0.1.0
                     </div>
-                </div>
-            )}
-        </div>
+                </footer>
+            </aside>
+        </TooltipProvider>
     );
 }
