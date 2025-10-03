@@ -24,7 +24,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     };
 
     return (
-        <AppLayout headerTitle={headerTitle} activeItemId={activeItemId}>
+        <AppLayout headerTitle={headerTitle}>
             {children}
         </AppLayout>
     );
