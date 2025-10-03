@@ -156,38 +156,15 @@ export default function EventRegistration({ event }: { event: Event }) {
                 <div className="mt-8 md:mt-10">
                     <h2 className="text-base font-semibold text-foreground mb-3">About</h2>
                     <div className="prose prose-sm max-w-none text-foreground">
-                        <article className="prose">
+                        <div className="markdown-content text-muted-foreground leading-relaxed">
                             <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
                                 {event?.info}
                             </ReactMarkdown>
-                        </article>
-
-
-                        <p>
-                            <Link href="https://www.misterrunning.com/it/ste-asics-cavana-run-club-trieste/"
-                                  className="text-primary hover:underline break-all">
-                                https://www.misterrunning.com/it/ste-asics-cavana-run-club-trieste/
-                            </Link>
-                        </p>
-
-                        <p className="text-muted-foreground">
-                            ATTENZIONE questo link è per iscrizione allo shoe test per ricevere il kit (fino ad
-                            esaurimento scorte). A kit esauriti si può lo stesso partecipare e ricevere lo sconto
-                            esclusivo.
-                        </p>
-                        <p className="text-foreground">Qui i dettagli</p>
-                        <p className="text-foreground">
-                            Che Evento! Divertimento, community e la possibilità di provare gratuitamente le nuove
-                            ASICS. Ti aspettiamo!
-
-
-                            <br/>
-                            <br/>
-                            <br/>
-                            <br/>
-                            <br/>
-
-                        </p>
+                        </div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
                     </div>
                 </div>
             </div>

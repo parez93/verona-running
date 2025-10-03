@@ -2,17 +2,11 @@
 "use client";
 */
 
-import {Calendar, MapPin} from "lucide-react";
-import Link from "next/link";
 import * as React from "react";
 /*
 import {useEffect, useState} from "react";
 */
-import {
-    createEventRegistrationAction,
-    deleteEventRegistrationAction,
-    fetchEventByIdAction
-} from "@/app/(auth)/events/actions";
+import {fetchEventByIdAction} from "@/app/(auth)/events/actions";
 import {Event} from "@/api/event/event";
 /*import remarkGfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";

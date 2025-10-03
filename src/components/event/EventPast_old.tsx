@@ -1,7 +1,7 @@
 import {Event} from "@/api/event/event";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 
-export default function EventPast({events}: { events: Event[] }) {
+export default function EventPast_old({events}: { events: Event[] }) {
     return (
         <div className="overflow-x-auto rounded-lg border bg-card">
             <Table>
