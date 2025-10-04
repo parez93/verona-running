@@ -21,7 +21,6 @@ export type EventRegistration = {
     id?: number
     id_user?: string
     id_event: number
-    terms_and_condition: boolean
     created_at?: string
     updated_at?: string
 }

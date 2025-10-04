@@ -45,6 +45,8 @@ export async function fetchEvents(
         query = query.or(`id.eq.${search}`)
     }
 
+    query = query.gte("datetime", new Date().toISOString())
+
     query = query.eq("evt_registration.id_user", account?.id)
 
     const { data, error, count } = await query.range(from, to)

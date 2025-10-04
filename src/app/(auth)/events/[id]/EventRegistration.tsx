@@ -23,21 +23,19 @@ import {formatDateLong, formatTimeShort, timeRemaining} from "@/utils/datetime_u
 
 export default function EventRegistration({ event }: { event: Event }) {
 
-    const [accepted, setAccepted] = useState(false);
     const [saving, setSaving] = useState(false); // stato per il salvataggio
     const [message, setMessage] = useState<string | null>(null);
     const router = useRouter();
 
 
     const handleSave = async () => {
-        console.log('handleSave registraytion')
-        if (!accepted) toast.error("Terms and conditions don't accepted!");
+        console.log('handleSave registration')
 
         setSaving(true);
         setMessage(null);
 
         try {
-            const saved = await createEventRegistrationAction(event.id, accepted);
+            const saved = await createEventRegistrationAction(event.id);
             setMessage("✅ Event registration successfully!");
             router.push(ROUTES.events());
         } catch (err: any) {
@@ -50,7 +48,6 @@ export default function EventRegistration({ event }: { event: Event }) {
 
     const handleDelete = async () => {
         console.log('handleDelete registration')
-        if (!accepted) toast.error("Terms and conditions don't accepted!");
 
         setSaving(true);
         setMessage(null);
@@ -174,64 +171,6 @@ export default function EventRegistration({ event }: { event: Event }) {
                 <div className="container mx-auto px-4 pb-6 pt-6">
                     {/*Terms & Subscribe */}
                     <div className="pointer-events-auto mx-auto max-w-sm">
-                        <div>
-                            <div className="flex items-start gap-3 mb-2">
-                                <Checkbox
-                                    id={`terms-${event.id}`}
-                                    checked={accepted}
-                                    onCheckedChange={(v) => setAccepted(Boolean(v))}
-                                />
-                                <label htmlFor={`terms-${event.id}`} className="text-sm select-none">
-                                    Dichiaro di aver letto e accettato i
-                                    <Dialog>
-                                        <DialogTrigger asChild>
-                                            <button
-                                                type="button"
-                                                className="ml-1 underline text-[var(--color-link-primary)]"
-                                            >
-                                                Termini e condizioni
-                                            </button>
-                                        </DialogTrigger>
-                                        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                                            <DialogHeader>
-                                                <DialogTitle>Termini e condizioni</DialogTitle>
-                                            </DialogHeader>
-                                            <div className="space-y-3 text-sm text-muted-foreground">
-                                                <p>
-                                                    Partecipando all'evento:
-                                                    <ul className="list-disc list-inside">
-                                                        <li>dichiaro di essere in buono stato di salute e idoneo/a alla pratica della corsa non competitiva.
-                                                        </li>
-                                                        <li>partecipo sotto la mia piena responsabilità, sollevando l’organizzatore da qualsiasi responsabilità per danni a persone o cose derivanti dalla mia partecipazione.
-                                                        </li>
-                                                        <li>accetto che la corsa di gruppo non è nè una gara nè un evento sportivo, non prevede assistenza medica né assicurazione, e che ciascun partecipante è responsabile della propria sicurezza.
-                                                        </li>
-                                                        <li>Acconsento al trattamento dei miei dati personali per le finalità di seguito indicate.
-                                                        </li>
-
-                                                    </ul>
-                                                </p>
-                                                <p>
-                                                    Ai sensi del Regolamento (UE) 2016/679 (GDPR), ti informo che:
-                                                    <ul className="list-disc list-inside">
-                                                        <li>I dati raccolti (nome, data di nascita, email) sono utilizzati esclusivamente per la gestione della partecipazione all’allenamento di corsa.
-                                                        </li>
-                                                        <li>Il titolare del trattamento è Federico Parezzan, email di contatto: federico.parezzan@gmail.com
-                                                        </li>
-                                                        <li>I dati non saranno comunicati a terzi né utilizzati per fini commerciali.
-                                                        </li>
-
-                                                    </ul>
-                                                </p>
-                                            </div>
-                                        </DialogContent>
-                                    </Dialog>
-                                </label>
-                            </div>
-
-
-                        </div>
-
                         <div className=" block w-full rounded-xl text-white text-center">
 
                             {event.is_registered ? (
@@ -241,7 +180,7 @@ export default function EventRegistration({ event }: { event: Event }) {
                                     Annulla iscrizione all'evento
                                 </Button>
                             ) : (
-                                <Button disabled={!accepted}
+                                <Button
                                         className="rounded-xl text-white text-center py-3 font-semibold shadow-lg hover:opacity-95"
                                         onClick={handleSave}>
                                     Iscriviti all'evento

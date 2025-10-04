@@ -24,13 +24,12 @@ export async function fetchEventByIdAction(id:string) {
     return events;
 }
 
-export async function createEventRegistrationAction(idEvent: number, termsAndCondition: boolean) {
+export async function createEventRegistrationAction(idEvent: number) {
 
     const supabase = await createClient()
 
     const result = await createEventRegistration(supabase, {
-        id_event: idEvent,
-        terms_and_condition: termsAndCondition
+        id_event: idEvent
     });
 
     return result;
