@@ -92,7 +92,7 @@ export default function AppLayout({
 
                 {/* Page Content */}
                 <main className="flex-1 p-4 md:p-6">
-                    <div className="max-w-7xl mx-auto">{children}</div>
+                    <div className="max-w-10xl mx-auto">{children}</div>
                 </main>
             </div>
         </div>

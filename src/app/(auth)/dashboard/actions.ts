@@ -12,6 +12,8 @@ export async function fetchDashboardAction(): Promise<DashboardData> {
     const supabase = await createClient()
 
     const events = await fetchEvents(supabase);
+    const account = await fetchAccount(supabase);
+
     const dashboardData: DashboardData = {
         nextEvent: events.items.length > 0 ? events.items.filter(event => new Date(event.datetime) > new Date()).reduce((closest, current) => {
             const currentDate = new Date(current.datetime);
@@ -22,7 +24,8 @@ export async function fetchDashboardAction(): Promise<DashboardData> {
 
             return currentDiff < closestDiff ? current : closest;
         }) : null,
-        events: events.items
+        events: events.items,
+        user: account
     }
     return dashboardData;
 }

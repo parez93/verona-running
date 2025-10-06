@@ -12,6 +12,7 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import {fetchDashboardAction} from "@/app/(auth)/dashboard/actions";
 import {DashboardData} from "@/api/dashboard/dashboard";
+import WelcomeSection from "@/components/dashboard/WelcomeSection";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -23,21 +24,25 @@ const defaultLayouts: Layouts = {
 /*
         { i: "stats", x: 6, y: 0, w: 6, h: 9 },
 */
-        { i: "next-event", x: 0, y: 0, w: 9, h: 13 },
+        { i: "welcome", x: 0, y: 0, w: 5, h: 4.7, isResizable: false },
+        { i: "next-event", x: 9, y: 0, w: 7, h: 13 },
 /*        { i: "enrolled", x: 0, y: 6, w: 7, h: 9 },
         { i: "notifications", x: 8, y: 6, w: 4, h: 11 },
         { i: "suggestions", x: 0, y: 14, w: 7, h: 9 },*/
     ],
     md: [
 /*        { i: "stats", x: 0, y: 0, w: 5, h: 6 },*/
-        { i: "next-event", x: 0, y: 0, w: 5, h: 14 },
+        { i: "welcome", x: 0, y: 0, w: 5, h: 5.2, isResizable: false },
+        { i: "next-event", x: 6, y: 0, w: 5, h: 14 },
  /*       { i: "enrolled", x: 0, y: 6, w: 6, h: 8 },
         { i: "notifications", x: 6, y: 6, w: 4, h: 8 },
         { i: "suggestions", x: 0, y: 14, w: 10, h: 6 },*/
     ],
     sm: [
 /*        { i: "stats", x: 0, y: 0, w: 8, h: 6 },*/
-        { i: "next-event", x: 0, y: 6, w: 8, h: 13 },
+        { i: "welcome", x: 0, y: 0, w: 9, h: 5.2, isResizable: false },
+
+        { i: "next-event", x: 1, y: 6, w: 8, h: 13 },
 /*        { i: "enrolled", x: 0, y: 12, w: 8, h: 8 },
         { i: "notifications", x: 0, y: 20, w: 8, h: 8 },
         { i: "suggestions", x: 0, y: 28, w: 8, h: 6 },*/
@@ -46,7 +51,9 @@ const defaultLayouts: Layouts = {
 /*
         { i: "stats", x: 0, y: 0, w: 6, h: 6 },
 */
-        { i: "next-event", x: 0, y: 6, w: 6, h: 14 },
+        { i: "welcome", x: 0, y: 0, w: 9, h: 5.2, isResizable: false },
+
+        { i: "next-event", x: 1, y: 6, w: 6, h: 14 },
 /*        { i: "enrolled", x: 0, y: 12, w: 6, h: 8 },
         { i: "notifications", x: 0, y: 20, w: 6, h: 8 },
         { i: "suggestions", x: 0, y: 28, w: 6, h: 6 },*/
@@ -55,6 +62,8 @@ const defaultLayouts: Layouts = {
 /*
         { i: "stats", x: 0, y: 0, w: 4, h: 6 },
 */
+        { i: "welcome", x: 2, y: 0, w: 9, h: 4.5, isResizable: false },
+
         { i: "next-event", x: 0, y: 6, w: 4, h: 16 },
 /*        { i: "enrolled", x: 0, y: 12, w: 4, h: 8 },
         { i: "notifications", x: 0, y: 20, w: 4, h: 8 },
@@ -165,6 +174,9 @@ export default function RunnerDashboardPage() {
                         <NextEventSection nextEvent={dashboardData!.nextEvent} />
                 </div>
                 )}
+                <div key="welcome" className="rgl-card">
+                    <WelcomeSection user={dashboardData!.user}/>
+                </div>
 {/*                <div key="enrolled" className="rgl-card">
                         <EnrolledEventsSection />
                 </div>
