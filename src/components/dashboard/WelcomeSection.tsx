@@ -7,9 +7,11 @@ interface WelcomeSectionProps {
 
 export default function WelcomeSection({ user }: WelcomeSectionProps) {
     return (
-        <section className="h-full overflow-hidden border-border/60 rounded-[var(--radius)] border bg-card text-card-foreground shadow-sm">
+        <section className="h-full overflow-hidden border-border/60 rounded-[var(--radius)] border bg-gradient-to-br from-blue-600 via-blue-500 to-purple-600  text-card-foreground shadow-sm ">
+{/*
             <Card className="relative overflow-hidden rounded-[var(--radius)] bg-gradient-to-br from-blue-600 via-blue-500 to-purple-600 text-white border-0 shadow-2xl">
-                <div className="pl-8 pe-4">
+*/}
+                <div className="pl-8 pe-4 text-white border-0  relative overflow-hidden pt-8">
                     {/* Header */}
                     <div className="flex items-center gap-3 sm:gap-4 mb-6 md:mb-2 sm:mb-8">
                         <div>
@@ -51,7 +53,9 @@ export default function WelcomeSection({ user }: WelcomeSectionProps) {
                         />
                     </div>
                 </div>
+{/*
             </Card>
+*/}
         </section>
     );
 }
