@@ -1,19 +1,22 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Bug, Send, AlertCircle, Image, X } from "lucide-react"
-import { useState } from "react"
-import { toast } from "sonner"
+import {Button} from "@/components/ui/button"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
+import {Input} from "@/components/ui/input"
+import {Label} from "@/components/ui/label"
+import {Textarea} from "@/components/ui/textarea"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
+import {AlertCircle, Image, Send, X} from "lucide-react"
+import {useState} from "react"
+import {toast} from "sonner"
 import {Toaster} from "@/components/ui/sonner";
+import {createBugReportAction} from "@/app/(auth)/bug_report/actions";
+import {updateAccountAction} from "@/app/(auth)/account/actions";
 
 export default function BugReportPage() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [screenshot, setScreenshot] = useState<File | null>(null)
+    const [attachment, setAttachment] = useState<string | null>(null)
     const [previewUrl, setPreviewUrl] = useState<string | null>(null)
     const [formData, setFormData] = useState({
         title: "",
@@ -33,8 +36,8 @@ export default function BugReportPage() {
             return
         }
 
-        // Validazione dimensione (max 5MB)
-        if (file.size > 5 * 1024 * 1024) {
+        // Validazione dimensione (max 800KB)
+        if (file.size > 800 * 1024) {
             toast.error("L'immagine è troppo grande. Massimo 5MB")
             return
         }
@@ -45,6 +48,10 @@ export default function BugReportPage() {
         const reader = new FileReader()
         reader.onloadend = () => {
             setPreviewUrl(reader.result as string)
+            const base64 = reader.result as string;
+
+            // Aggiorna lo stato locale
+            setAttachment(base64)
         }
         reader.readAsDataURL(file)
     }
@@ -52,6 +59,7 @@ export default function BugReportPage() {
     const removeScreenshot = () => {
         setScreenshot(null)
         setPreviewUrl(null)
+        setAttachment(null)
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -67,7 +75,14 @@ export default function BugReportPage() {
 
         try {
             // Simula invio (qui puoi integrare con API/database)
-            await new Promise(resolve => setTimeout(resolve, 1500))
+            await createBugReportAction({
+                title: formData.title,
+                description: formData.description,
+                category: formData.category,
+                priority: formData.priority,
+                attachment: attachment,
+                url: formData.url
+            });
 
             toast.success("Bug segnalato con successo!", {
                 description: "Grazie per il tuo contributo. Esamineremo la segnalazione al più presto."
@@ -192,7 +207,7 @@ export default function BugReportPage() {
                                                 <span className="text-muted-foreground"> o trascina un file</span>
                                             </div>
                                             <p className="text-xs text-muted-foreground">
-                                                PNG, JPG, GIF fino a 5MB
+                                                PNG, JPG fino a 800KB
                                             </p>
                                         </label>
                                     </div>
