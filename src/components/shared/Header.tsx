@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
-import {LogOut, Menu, User} from "lucide-react";
+import {Bug, LogOut, Menu, User} from "lucide-react";
 import {useRouter} from "next/navigation";
 import {ROUTES} from "@/constants/routes";
 import {logout} from "@/app/(auth)/header/actions";

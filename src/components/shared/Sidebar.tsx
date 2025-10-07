@@ -5,7 +5,7 @@ import {
     ChevronDown,
     ChevronRight,
     LayoutPanelLeft,
-    CalendarDays,
+    CalendarDays, BugOffIcon,
 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
@@ -201,6 +201,13 @@ export default function Sidebar({
                 >
                     {menuItems.map((item) => renderMenuItem(item))}
                 </nav>
+
+                {renderMenuItem({
+                    id: "bug_report",
+                    label: "Segnala un Bug",
+                    icon: BugOffIcon,
+                    href: "/bug_report",
+                })}
 
                 {/* Footer */}
                 <footer className="p-4 border-t border-[var(--color-sidebar-border)]">

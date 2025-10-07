@@ -16,6 +16,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         dashboard: { headerTitle: "Dashboard", activeItemId: "dashboard" },
         account: { headerTitle: "Account Settings", activeItemId: "account" },
         events: { headerTitle: "Eventi", activeItemId: "events" },
+        bug_report: { headerTitle: `Segnala un Bug`, activeItemId: "bug_report" },
     };
 
     const { headerTitle, activeItemId } = segmentMap[segment || "dashboard"] || {
