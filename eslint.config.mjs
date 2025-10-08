@@ -21,8 +21,12 @@ const eslintConfig = [
         ],
         rules: {
             "@typescript-eslint/no-explicit-any": "warn",
-            "@typescript-eslint/no-unused-vars": "warn",
+            "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
             "react/no-unescaped-entities": "warn",
+            "no-console": ["warn", { "allow": ["warn", "error"] }],
+            "eqeqeq": "error",
+            "curly": "error",
+            "import/order": ["warn", { "groups": ["builtin", "external", "internal"], "newlines-between": "always" }],
         },
     },
 ];
