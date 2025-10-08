@@ -10,4 +10,7 @@ export const ROUTES = {
     dashboard: () => `/dashboard`,
     events: () => `/events`,
     badge: () => `/badge`,
+    adminEvents: () => `/admin/events`,
+    adminUsers: () => `/admin/users`,
+
 };

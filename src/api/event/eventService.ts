@@ -1,14 +1,5 @@
-
-import type { SupabaseClient } from "@supabase/supabase-js"
-import {
-    EventInsert,
-    EventRegistration,
-    EventUpdate,
-    EventWithRegistration,
-    FetchEventsParams,
-    FetchEventsResult
-} from "@/api/event/event";
-import {fetchAccount} from "@/api/account/accountService";
+import type {SupabaseClient} from "@supabase/supabase-js"
+import {EventInsert, EventRegistration, EventUpdate, EventWithRegistration, FetchEventsParams} from "@/api/event/event";
 import {getUserFromCookie} from "@/utils/supabase/getUserFromCookie";
 
 export async function fetchEvents(
@@ -50,6 +41,29 @@ export async function fetchEvents(
     query = query.eq("evt_registration.id_user", account?.id)
 
     const { data, error, count } = await query.range(from, to)
+    if (error) throw new Error(error.message)
+
+    return {
+        items: (data || []).map((row: any) => ({
+            ...row,
+            is_registered: row.is_registered?.length > 0,
+        })) as EventWithRegistration[],
+        count: count ?? 0,
+    };
+}
+
+export async function fetchAllEvents(
+    client: SupabaseClient,
+): Promise<{ items: Event[]; count: number }> {
+    console.log("Fetching events...");
+
+    const account = await getUserFromCookie()
+
+    let query = client
+        .from("evt_data")
+
+
+    const { data, error, count } = await query.select()
     if (error) throw new Error(error.message)
 
     return {

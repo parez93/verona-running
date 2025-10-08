@@ -52,3 +52,19 @@ export async function updateAccount(client: SupabaseClient, input: AccountUpdate
     if (error) throw new Error(error.message)
     return data as Account
 }
+
+export async function fetchUsers(
+    client: SupabaseClient,
+): Promise<Account[]> {
+
+    console.log("Fetching account...");
+    const account = await getUserFromCookie()
+
+    const { data, error } = await client
+        .from("psn_data")
+        .select("*")
+
+    if (error) throw new Error(error.message);
+
+    return data as Account[];
+}
