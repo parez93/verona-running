@@ -1,14 +1,15 @@
 import createNextIntlPlugin from 'next-intl/plugin';
 import type { NextConfig } from 'next';
 
-const withNextIntl = createNextIntlPlugin();
+const withNextIntl = createNextIntlPlugin()
 
 /** @type {NextConfig} */
 const nextConfig: NextConfig = {
     reactStrictMode: true,
-    swcMinify: true,
     compress: true,
-
+    turbopack: {
+        root: __dirname
+    },
     images: {
         // ✅ Nuovo formato consigliato
         remotePatterns: [

@@ -3,7 +3,7 @@
 import {Button} from "@/components/ui/button";
 import {ServerCrash} from "lucide-react";
 import Link from "next/link";
-import {ROUTES} from "@/constants/routes";
+import {ROUTES} from "@/lib/kRoutes";
 
 export default function NotFound({}) {
     return (
@@ -74,7 +74,7 @@ export default function NotFound({}) {
                         size="lg"
                         className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-base font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                     >
-                        <Link href={ROUTES.events()}>
+                        <Link href={ROUTES.dashboard()}>
                             Go Back to Home
                         </Link>
                     </Button>

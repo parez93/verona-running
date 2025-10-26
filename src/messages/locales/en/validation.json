@@ -1,0 +1,14 @@
+{
+  "required": "This field is required",
+  "invalid_format": "Invalid format",
+  "too_short": "Too short",
+  "too_long": "Too long",
+  "passwords_dont_match": "Passwords do not match",
+  "invalid_email": "Invalid email address",
+  "invalid_phone": "Invalid phone number",
+  "invalid_url": "Invalid URL",
+  "min_characters": "Minimum {{count}} characters",
+  "max_characters": "Maximum {{count}} characters",
+  "numeric_only": "Only numbers allowed",
+  "alphabetic_only": "Only letters allowed"
+}

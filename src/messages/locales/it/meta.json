@@ -1,0 +1,15 @@
+{
+    "login": {
+      "title": "Accedi - Verona Running",
+      "description": "Accedi al tuo account Verona Running per gestire i tuoi progetti e accedere al dashboard."
+    },
+    "signup": {
+      "title": "Registrati - Verona Running",
+      "description": "Crea un nuovo account Verona Running per iniziare a gestire i tuoi progetti e accedere a tutte le funzionalità."
+    },
+    "forgot_password": {
+      "title": "Password Dimenticata - Verona Running",
+      "description": "Reimposta la password del tuo account Verona Running inserendo il tuo indirizzo email."
+    }
+
+}

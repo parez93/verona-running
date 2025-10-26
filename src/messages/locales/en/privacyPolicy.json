@@ -1,0 +1,252 @@
+{
+    "header": {
+      "title": "Privacy Policy di",
+      "company": "Verona Running",
+      "intro": "Questo Sito Web raccoglie alcuni Dati Personali dei propri Utenti.",
+      "protection_levels": "Gli Utenti possono essere soggetti a livelli di protezione diversi. Alcuni Utenti godono pertanto di superiore protezione. L'Utente può contattare il Titolare per ulteriori informazioni sui livelli di protezione.",
+      "printable": "Questo documento può essere stampato utilizzando il comando di stampa presente nelle impostazioni di qualsiasi browser."
+    },
+    "summary": {
+      "title": "Riassunto della policy"
+    },
+    "purposes": {
+      "title": "Dati Personali trattati per le seguenti finalità e utilizzando i seguenti servizi:",
+      "hosting": {
+        "title": "Hosting ed infrastruttura backend",
+        "vercel": "Vercel",
+        "supabase": "Supabase"
+      },
+      "auth": {
+        "title": "Registrazione ed autenticazione fornite direttamente da questa Applicazione",
+        "direct_registration": "Registrazione ed autenticazione fornite direttamente da questa Applicazione",
+        "data_types": "Dati Personali: Dati di utilizzo; email; password; Strumenti di Tracciamento",
+        "supabase_auth": "Supabase Auth"
+      },
+      "external_content": {
+        "title": "Visualizzazione di contenuti da piattaforme esterne",
+        "google_fonts": "Google Fonts"
+      }
+    },
+    "contact": {
+      "title": "Informazioni di contatto",
+      "data_controller": "Titolare del Trattamento dei Dati",
+      "name": "Federico Parezzan",
+      "company": "Verona Running",
+      "address": "Via Lazzaretto 59F",
+      "city": "37133 Verona (VR)",
+      "email_label": "Indirizzo email del Titolare:",
+      "email": "veronarunning@gmail.com"
+    },
+    "full_policy": {
+      "title": "Policy completa",
+      "controller": {
+        "title": "Titolare del Trattamento dei Dati"
+      },
+      "data_types": {
+        "title": "Tipologie di Dati raccolti",
+        "collected": "Fra i Dati Personali raccolti da questo Sito Web, in modo autonomo o tramite terze parti, ci sono: email; password; nome; cognome; data di nascita; Strumento di Tracciamento; Dati di utilizzo.",
+        "details": "Dettagli completi su ciascuna tipologia di Dati Personali raccolti sono forniti nelle sezioni dedicate di questa privacy policy o mediante specifici testi informativi visualizzati prima della raccolta dei Dati stessi.",
+        "responsibility": "L'Utente si assume la responsabilità dei Dati Personali di terzi ottenuti, pubblicati o condivisi mediante questo Sito Web."
+      },
+      "processing": {
+        "title": "Modalità e luogo del trattamento dei Dati raccolti",
+        "methods": {
+          "title": "Modalità di trattamento",
+          "description": "Il Titolare adotta le opportune misure di sicurezza volte ad impedire l’accesso, la divulgazione, la modifica o la distruzione non autorizzate dei Dati Personali. Il trattamento viene effettuato mediante strumenti informatici e/o telematici, con modalità organizzative e con logiche strettamente correlate alle finalità indicate."
+        },
+        "location": {
+          "title": "Luogo",
+          "description": "I Dati sono trattati presso le sedi operative del Titolare ed in ogni altro luogo in cui le parti coinvolte nel trattamento siano localizzate. Per ulteriori informazioni, contatta il Titolare."
+        },
+        "retention": {
+          "title": "Periodo di conservazione",
+          "description": "Se non diversamente indicato in questo documento, i Dati Personali sono trattati e conservati per il tempo richiesto dalla finalità per la quale sono stati raccolti."
+        }
+      },
+      "processing_purposes": {
+        "title": "Finalità del Trattamento dei Dati raccolti",
+        "description": "I Dati dell’Utente sono raccolti per consentire al Titolare di fornire il Servizio, adempiere agli obblighi di legge, rispondere a richieste o azioni esecutive, tutelare i propri diritti ed interessi (o quelli di Utenti o di terze parti), individuare eventuali attività dolose o fraudolente, nonché per le seguenti finalità: Registrazione ed autenticazione fornite direttamente da questa Applicazione, Hosting ed infrastruttura backend, Visualizzazione di contenuti da piattaforme esterne.",
+        "reference": "Per ottenere informazioni dettagliate sulle finalità del trattamento e sui Dati Personali trattati per ciascuna finalità, l’Utente può fare riferimento alla sezione “Dettagli sul trattamento dei Dati Personali”."
+      },
+      "detailed_processing": {
+        "title": "Dettagli sul trattamento dei Dati Personali",
+        "intro": "I Dati Personali sono raccolti per le seguenti finalità ed utilizzando i seguenti servizi.",
+        "hosting": {
+          "description": "Questo tipo di servizio ha lo scopo di ospitare Dati e file che consentono a questa Applicazione di funzionare e di essere distribuito o di fornire un'infrastruttura pronta all'uso per eseguire funzionalità specifiche o parti di questa Applicazione.",
+          "vercel_description": "Vercel è un servizio di hosting e backend fornito da Vercel Inc.",
+          "vercel_data": "Dati Personali trattati: Dati di utilizzo, varie tipologie di Dati secondo quanto specificato dalla privacy policy del servizio.",
+          "supabase_description": "Supabase è un servizio di hosting e backend fornito da Supabase, Inc.",
+          "supabase_data": "Dati Personali trattati: Dati di utilizzo, Strumenti di Tracciamento, varie tipologie di Dati secondo quanto specificato dalla privacy policy del servizio."
+        },
+        "auth": {
+          "description": "Con la registrazione o l’autenticazione l’Utente consente a questa Applicazione di identificarlo e di dargli accesso a servizi dedicati.",
+          "direct_title": "Registrazione diretta",
+          "direct_description": "L’Utente si registra compilando il modulo di registrazione e fornendo direttamente a questa Applicazione i propri Dati Personali.",
+          "direct_data": "Dati Personali trattati: Dati di utilizzo, email, password, Strumenti di Tracciamento.",
+          "supabase_description": "Supabase Auth è un servizio di registrazione ed autenticazione fornito da Supabase, Inc. Supabase Auth può utilizzare fornitori di identità di terze parti e salvare le informazioni sulla propria piattaforma.",
+          "supabase_data": "Dati Personali trattati: accesso al conto, Dati di utilizzo, Strumenti di Tracciamento."
+        },
+        "external": {
+          "description": "Questo tipo di servizi permette di visualizzare contenuti ospitati su piattaforme esterne direttamente dalle pagine di questa Applicazione e di interagire con essi.",
+          "google_fonts_description": "Google Fonts è un servizio di visualizzazione di stili di carattere gestito da Google LLC che permette a questa Applicazione di integrare tali contenuti all’interno delle proprie pagine.",
+          "google_fonts_data": "Dati Personali trattati: Dati di utilizzo, Strumenti di Tracciamento."
+        }
+      },
+      "cookies": {
+        "title": "Cookie Policy",
+        "description": "Questo Sito Web fa utilizzo di Strumenti di Tracciamento.",
+        "link": "Consulta la Cookie Policy"
+      },
+      "eu_users": {
+        "title": "Ulteriori informazioni per gli utenti nell'Unione Europea",
+        "intro": "Questa sezione si applica a tutti gli utenti dell'Unione Europea, in conformità al Regolamento generale sulla protezione dei dati (GDPR).",
+        "legal_basis": {
+          "title": "Base giuridica del trattamento",
+          "intro": "Il Titolare tratta Dati Personali relativi all’Utente in caso sussista una delle seguenti condizioni:",
+          "consent": "l’Utente ha prestato il consenso per una o più finalità specifiche;",
+          "contract": "il trattamento è necessario all'esecuzione di un contratto con l’Utente e/o all'esecuzione di misure precontrattuali;",
+          "legal_obligation": "il trattamento è necessario per adempiere un obbligo legale al quale è soggetto il Titolare;",
+          "public_interest": "il trattamento è necessario per l'esecuzione di un compito di interesse pubblico o per l'esercizio di pubblici poteri di cui è investito il Titolare;",
+          "legitimate_interest": "il trattamento è necessario per il perseguimento del legittimo interesse del Titolare o di terzi.",
+          "clarification": "È comunque sempre possibile richiedere al Titolare di chiarire la concreta base giuridica di ciascun trattamento."
+        }
+      },
+      "retention": {
+        "title": "Ulteriori informazioni sul tempo di conservazione",
+        "intro": "Se non diversamente indicato in questo documento, i Dati Personali sono trattati e conservati per il tempo richiesto dalla finalità per la quale sono stati raccolti.",
+        "therefore": "Pertanto:",
+        "contract_data": "I Dati Personali raccolti per scopi collegati all’esecuzione di un contratto tra il Titolare e l’Utente saranno trattenuti sino a quando sia completata l’esecuzione di tale contratto.",
+        "legitimate_interest": "I Dati Personali raccolti per finalità riconducibili all’interesse legittimo del Titolare saranno trattenuti sino al soddisfacimento di tale interesse.",
+        "consent_based": "Quando il trattamento è basato sul consenso dell’Utente, il Titolare può conservare i Dati Personali più a lungo sino a quando detto consenso non venga revocato."
+      },
+      "user_rights": {
+        "title": "Diritti dell’Utente sulla base del Regolamento Generale sulla Protezione dei Dati (GDPR)",
+        "intro": "Gli Utenti possono esercitare determinati diritti con riferimento ai Dati trattati dal Titolare.",
+        "within_limits": "In particolare, nei limiti previsti dalla legge, l’Utente ha il diritto di:",
+        "revoke_consent": {
+          "title": "Revocare il consenso",
+          "description": "L’Utente può revocare il consenso al trattamento dei propri Dati Personali precedentemente espresso."
+        },
+        "object": {
+          "title": "Opporsi al trattamento",
+          "description": "L’Utente può opporsi al trattamento dei propri Dati quando esso avviene in virtù di una base giuridica diversa dal consenso."
+        },
+        "access": {
+          "title": "Accedere ai propri Dati",
+          "description": "L’Utente ha diritto ad ottenere informazioni sui Dati trattati dal Titolare e riceverne una copia."
+        },
+        "rectification": {
+          "title": "Richiedere la rettifica",
+          "description": "L’Utente può verificare la correttezza dei propri Dati e richiederne l’aggiornamento o la correzione."
+        },
+        "restriction": {
+          "title": "Limitare il trattamento",
+          "description": "L’Utente può richiedere la limitazione del trattamento dei propri Dati. In tal caso il Titolare non tratterà i Dati per alcun altro scopo se non la loro conservazione."
+        },
+        "erasure": {
+          "title": "Cancellare i Dati",
+          "description": "L’Utente può richiedere la cancellazione dei propri Dati Personali da parte del Titolare."
+        },
+        "portability": {
+          "title": "Portabilità dei Dati",
+          "description": "L’Utente ha diritto di ricevere i propri Dati in formato strutturato e trasferirli ad altro titolare."
+        },
+        "complaint": {
+          "title": "Proporre reclamo",
+          "description": "L’Utente può proporre un reclamo all’autorità di controllo della protezione dei dati personali competente o agire in sede giudiziale."
+        },
+        "transfer_info": "Gli Utenti hanno diritto di ottenere informazioni in merito alla base giuridica per il trasferimento di Dati all'estero e alle misure di sicurezza adottate dal Titolare."
+      },
+      "right_to_object": {
+        "title": "Dettagli sul diritto di opposizione",
+        "description": "Quando i Dati Personali sono trattati nell’interesse pubblico o per perseguire un interesse legittimo del Titolare, gli Utenti hanno diritto ad opporsi al trattamento per motivi connessi alla loro situazione particolare. Possono inoltre opporsi al trattamento per finalità di marketing diretto."
+      },
+      "exercise_rights": {
+        "title": "Come esercitare i diritti",
+        "description": "Eventuali richieste di esercizio dei diritti dell'Utente possono essere indirizzate al Titolare attraverso i recapiti forniti in questo documento. La richiesta è gratuita e il Titolare risponderà nel più breve tempo possibile."
+      },
+      "additional_info": {
+        "title": "Ulteriori informazioni sul trattamento",
+        "legal_defense": {
+          "title": "Difesa in giudizio",
+          "description": "I Dati Personali dell’Utente possono essere utilizzati da parte del Titolare in giudizio o nelle fasi preparatorie alla sua eventuale instaurazione."
+        },
+        "specific_info": {
+          "title": "Informative specifiche",
+          "description": "Su richiesta dell’Utente, questa Applicazione può fornire informative aggiuntive riguardanti Servizi specifici."
+        },
+        "system_logs": {
+          "title": "Log di sistema e manutenzione",
+          "description": "Per necessità legate al funzionamento ed alla manutenzione, questa Applicazione e gli eventuali servizi terzi utilizzati potrebbero raccogliere log di sistema."
+        },
+        "not_contained": {
+          "title": "Informazioni non contenute in questa policy",
+          "description": "Ulteriori informazioni possono essere richieste al Titolare in qualsiasi momento."
+        },
+        "policy_changes": {
+          "title": "Modifiche a questa privacy policy",
+          "description": "Il Titolare del Trattamento si riserva il diritto di apportare modifiche alla presente privacy policy in qualunque momento notificandolo agli Utenti su questa pagina.",
+          "consent": "Qualora le modifiche interessino trattamenti basati sul consenso, il Titolare provvederà a raccogliere nuovamente il consenso dell’Utente, se necessario."
+        }
+      }
+
+
+    },
+  "common": {
+    "legal_notes": "Note legali"
+  },
+  "definitions": {
+    "title": "Definizioni e riferimenti legali",
+    "personal_data": {
+      "title": "Dati Personali (o Dati)",
+      "description": "Costituisce dato personale qualunque informazione che renda identificata o identificabile una persona fisica."
+    },
+    "usage_data": {
+      "title": "Dati di Utilizzo",
+      "description": "Sono le informazioni raccolte automaticamente attraverso questa Applicazione, come indirizzi IP, orari delle richieste e altre informazioni tecniche."
+    },
+    "user": {
+      "title": "Utente",
+      "description": "L'individuo che utilizza questa Applicazione che, salvo ove diversamente specificato, coincide con l'Interessato."
+    },
+    "data_subject": {
+      "title": "Interessato",
+      "description": "La persona fisica cui si riferiscono i Dati Personali."
+    },
+    "processor": {
+      "title": "Responsabile del Trattamento (o Responsabile)",
+      "description": "La persona fisica o giuridica che tratta dati personali per conto del Titolare."
+    },
+    "controller": {
+      "title": "Titolare del Trattamento (o Titolare)",
+      "description": "La persona fisica o giuridica che determina le finalità e i mezzi del trattamento dei dati personali."
+    },
+    "application": {
+      "title": "Questa Applicazione",
+      "description": "Lo strumento hardware o software mediante il quale sono raccolti e trattati i Dati Personali degli Utenti."
+    },
+    "service": {
+      "title": "Servizio",
+      "description": "Il Servizio fornito da questa Applicazione come definito nei relativi termini su questo sito o applicazione."
+    },
+    "eu": {
+      "title": "Unione Europea (o UE)",
+      "description": "Ogni riferimento all’Unione Europea si intende esteso a tutti gli attuali stati membri dell’UE e dello Spazio Economico Europeo."
+    },
+    "cookie": {
+      "title": "Cookie",
+      "description": "I Cookie sono Strumenti di Tracciamento che consistono in piccole porzioni di dati conservate all'interno del browser dell'Utente."
+    },
+    "tracking_tool": {
+      "title": "Strumento di Tracciamento",
+      "description": "Qualsiasi tecnologia che consenta di tracciare gli Utenti raccogliendo o salvando informazioni sul dispositivo dell’Utente."
+    },
+    "legal_references": {
+      "title": "Riferimenti legali",
+      "description": "Ove non diversamente specificato, questa informativa privacy riguarda esclusivamente questa Applicazione."
+    }
+  },
+  "footer": {
+    "last_modified": "Ultima modifica: 1 ottobre 2025"
+  }
+}
