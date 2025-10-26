@@ -1,0 +1,33 @@
+{
+  "page": {
+    "skeleton": {
+      "stats": "Statistics",
+      "nextEvent": "Next Event",
+      "enrolled": "Enrolled Events",
+      "notifications": "Notifications",
+      "suggestions": "Suggestions"
+    },
+    "resetLayout": "Reset layout",
+    "tip": "Tip: drag using the handle in the header."
+  },
+
+  "nextEvent": {
+    "drag": "Drag",
+    "title": "Next event",
+    "meetingTime": "Meeting time {time}",
+    "registrationConfirmed": "Registration confirmed",
+    "details": "Details",
+    "editRegistration": "Edit registration",
+    "startArea": "Start area",
+    "integratedRoute": "Integrated route",
+    "openMap": "Open map",
+    "viewDetails": "View details"
+  },
+
+  "welcomeSection": {
+    "welcomeBack": "Welcome back",
+    "eventsRun": "Events run",
+    "kmRun": "Km run",
+    "runningDecorationAlt": "Running decoration"
+  }
+}

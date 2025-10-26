@@ -1,0 +1,14 @@
+{
+  "login": {
+    "title": "Sign In - Verona Running",
+    "description": "Sign in to your Verona Running account to manage your projects and access the dashboard."
+  },
+  "signup": {
+    "title": "Sign Up - Verona Running",
+    "description": "Create a new Verona Running account to start managing your projects and access all features."
+  },
+  "forgot_password": {
+    "title": "Forgot Password - Verona Running",
+    "description": "Reset your Verona Running account password by entering your email address."
+  }
+}

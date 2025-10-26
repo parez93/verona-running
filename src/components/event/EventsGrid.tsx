@@ -1,25 +1,21 @@
-"use client"
+"use client";
 
-import {Event, EventWithRegistration} from "@/api/event/event";
+import {Event, EventWithRegistration} from "@/types/models/event";
 import {EventCard} from "@/components/event/EventCard";
 import {EventDetailDialog} from "@/components/event/EventDetailDialog";
 import {useState} from "react";
-
-
-interface EventsGridProps {
-    events: EventWithRegistration[]
-}
+import {useTranslations} from "next-intl";
 
 export function EventsGrid({ events }: { events: EventWithRegistration[] }) {
+    const t = useTranslations("event.eventsGrid");
 
-    const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
-    const [isDialogOpen, setIsDialogOpen] = useState(false)
-
+    const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const handleEventClick = (event: Event) => {
-        setSelectedEvent(event)
-        setIsDialogOpen(true)
-    }
+        setSelectedEvent(event);
+        setIsDialogOpen(true);
+    };
 
     return (
         <>
@@ -28,14 +24,16 @@ export function EventsGrid({ events }: { events: EventWithRegistration[] }) {
                 {events.length === 0 ? (
                     <div className="text-center py-12">
                         <p className="text-muted-foreground text-lg">
-                            Nessun evento trovato
+                            {t("noEvents")}
                         </p>
                     </div>
                 ) : (
                     <>
                         <div className="mb-6 text-sm text-muted-foreground">
-                            {events.length} {events.length === 1 ? "evento trovato" : "eventi trovati"}
+                            {events.length}{" "}
+                            {events.length === 1 ? t("oneEvent") : t("manyEvents")}
                         </div>
+
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                             {events.map((event) => (
                                 <EventCard
@@ -56,5 +54,5 @@ export function EventsGrid({ events }: { events: EventWithRegistration[] }) {
                 onOpenChange={setIsDialogOpen}
             />
         </>
-    )
+    );
 }

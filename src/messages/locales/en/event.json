@@ -1,0 +1,37 @@
+{
+  "eventsGrid": {
+    "noEvents": "No events found",
+    "oneEvent": "event found",
+    "manyEvents": "events found"
+  },
+
+  "eventDetailDialog": {
+    "registered": "Registered",
+    "eventDetails": "Event details",
+    "description": "Description",
+    "cancelRegistration": "Cancel registration",
+    "registerEvent": "Register for event",
+    "moreInfo": "More info",
+    "openInMaps": "Open in Maps",
+    "registrationSuccess": "✅ Successfully registered for the event!",
+    "undoRegistrationSuccess": "✅ Registration cancelled successfully!",
+    "registrationError": "Error registering for the event",
+    "undoRegistrationError": "Error cancelling registration"
+  },
+
+  "eventCard": {
+    "registered": "Registered",
+    "hours": "Hours",
+    "moreInfo": "Learn more"
+  },
+
+  "eventDetail": {
+    "about": "About",
+    "registerEvent": "Register for event",
+    "cancelRegistration": "Cancel event registration",
+    "registrationSuccess": "✅ Successfully registered for the event!",
+    "undoRegistrationSuccess": "✅ Registration cancelled successfully!",
+    "registrationError": "Error registering for the event",
+    "undoRegistrationError": "Error cancelling registration"
+  }
+}

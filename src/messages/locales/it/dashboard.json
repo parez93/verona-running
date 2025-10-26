@@ -1,0 +1,36 @@
+{
+  "page": {
+    "skeleton": {
+      "stats": "Statistiche",
+      "nextEvent": "Prossimo Evento",
+      "enrolled": "Eventi Iscritti",
+      "notifications": "Notifiche",
+      "suggestions": "Suggerimenti"
+    },
+    "resetLayout": "Reset layout",
+    "tip": "Suggerimento: trascina usando la maniglia nell'intestazione."
+  },
+
+  "nextEvent": {
+    "drag": "Trascina",
+    "title": "Prossimo evento",
+    "meetingTime": "Ritrovo ore {time}",
+    "registrationConfirmed": "Iscrizione confermata",
+    "details": "Dettagli",
+    "editRegistration": "Modifica iscrizione",
+    "startArea": "Area di partenza",
+    "integratedRoute": "Percorso integrato",
+    "openMap": "Apri mappa",
+    "viewDetails": "Visualizza dettagli"
+  },
+
+  "welcomeSection": {
+    "welcomeBack": "Bentornato",
+    "eventsRun": "Eventi corsi",
+    "kmRun": "Km corsi",
+    "runningDecorationAlt": "Decorazione corsa"
+  }
+
+
+
+}

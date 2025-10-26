@@ -1,28 +1,19 @@
 import { getRequestConfig } from 'next-intl/server';
-/*import { locales } from '../messages/i18n';
+import { it } from '@/messages/locales/it';
+import { en } from '@/messages/locales/en';
 
-export default getRequestConfig(async ({ locale }) => {
-    // Validate that the incoming `locale` parameter is valid
-    if (!locales.includes(locale as any)) {
-        return {
-            messages: {},
-            timeZone: 'Europe/Rome'
-        };
-    }
+type Locale = 'it' | 'en';
 
-    return {
-        messages: (await import(`../messages/${locale}.json`)).default,
-        timeZone: 'Europe/Rome'
-    };
-});*/
+const allMessages: Record<Locale, typeof it> = { it, en };
 
+export default getRequestConfig(({ locale }) => {
+    // risolvi il locale e castalo come Locale
+    const resolvedLocale = (locale ?? 'it') as Locale;
 
-export default getRequestConfig(async () => {
-    // Static for now, we'll change this later
-    const locale = 'it';
+    const messages = allMessages[resolvedLocale]; // ✅ TypeScript OK
 
     return {
-        locale,
-        messages: (await import(`../messages/${locale}.json`)).default
+        locale: resolvedLocale,
+        messages,
     };
 });

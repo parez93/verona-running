@@ -1,72 +1,74 @@
-"use client";
-
-import React, { useState } from "react";
-import { useTranslations } from "next-intl";
-import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
-import { toast } from "sonner";
-import { login } from "@/app/(public)/signin/actions";
-import {ROUTES} from "@/constants/routes";
+'use client';
+import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { Eye, EyeOff } from 'lucide-react';
+import { toast } from 'sonner';
+import { ROUTES } from '@/lib/kRoutes';
 
 export default function SignInForm() {
-    const t = useTranslations("auth.login");
-
+    const t = useTranslations('auth');
     const [showPassword, setShowPassword] = useState(false);
-    const [errors, setErrors] = useState<{ email?: string; password?: string }>(
-        {}
-    );
+    const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
     const [isLoading, setIsLoading] = useState(false);
 
     const validateForm = (formData: FormData) => {
         const newErrors: typeof errors = {};
-        const email = formData.get("email") as string;
-        const password = formData.get("password") as string;
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
 
-        if (!email) {
-            newErrors.email = "Email is required";
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            newErrors.email = "Please enter a valid email address";
-        }
-        if (!password) {
-            newErrors.password = "Password is required";
-        }
+        if (!email) newErrors.email = t('validation.invalid_email');
+        if (!password) newErrors.password = t('validation.required');
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    async function handleAction(formData: FormData) {
+    const handleSubmit = async (formData: FormData) => {
         setIsLoading(true);
-
-        if (!validateForm(formData)) {
-            setIsLoading(false);
-            return;
-        }
+        if (!validateForm(formData)) return setIsLoading(false);
 
         try {
-            await login(formData); // delega alla Server Action
+            const res = await fetch('/api/auth/signin', {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: formData.get('email'),
+                    password: formData.get('password'),
+                    rememberMe: formData.get('rememberMe') === 'on',
+                }),
+                headers: { 'Content-Type': 'application/json' },
+            });
+            const result = await res.json();
+
+            if (!res.ok) throw new Error(result.error || t('login_failed'));
+
+            //toast.success(t('login_success'));
+            window.location.href = ROUTES.dashboard();
         } catch (err) {
-            const msg =
-                err instanceof Error
-                    ? err.message
-                    : "Impossibile effettuare il login. Riprova.";
-            toast.error("Accesso non riuscito", { description: msg });
-            setIsLoading(false); // se errore, stop caricamento
+            toast.error(t('login_failed'), { description: err instanceof Error ? err.message : String(err) });
+        } finally {
+            setIsLoading(false);
         }
-    }
+    };
 
     return (
-        <form action={handleAction} className="space-y-6">
+        <form
+            onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit(new FormData(e.currentTarget));
+            }}
+            className="space-y-6"
+        >
             {/* Email */}
             <div className="space-y-2">
                 <label htmlFor="email" className="block text-sm font-semibold">
-                    {t("email_label")}
+                    {t("login.email_label")}
                 </label>
                 <input
                     id="email"
                     name="email"
                     type="email"
-                    placeholder={t("email_placeholder")}
+                    placeholder={t("login.email_placeholder")}
                     className={`w-full px-4 py-3 border rounded-lg text-sm focus:ring-2 focus:ring-primary ${
                         errors.email ? "border-destructive bg-red-50" : "border-input"
                     }`}
@@ -83,14 +85,14 @@ export default function SignInForm() {
             {/* Password */}
             <div className="space-y-2">
                 <label htmlFor="password" className="block text-sm font-semibold">
-                    {t("password_label")}
+                    {t("login.password_label")}
                 </label>
                 <div className="relative">
                     <input
                         id="password"
                         name="password"
                         type={showPassword ? "text" : "password"}
-                        placeholder={t("password_placeholder")}
+                        placeholder={t("login.password_placeholder")}
                         className={`w-full px-4 py-3 pr-12 border rounded-lg text-sm focus:ring-2 focus:ring-primary ${
                             errors.password ? "border-destructive bg-red-50" : "border-input"
                         }`}
@@ -126,20 +128,24 @@ export default function SignInForm() {
                         name="rememberMe"
                         className="w-4 h-4 text-primary border-input rounded"
                     />
-                    <span className="text-sm font-medium">{t("remember_me")}</span>
+                    <span className="text-sm font-medium">{t("login.remember_me")}</span>
                 </label>
                 <Link
                     href="/forgot-password"
                     className="text-sm hover:underline font-semibold"
                 >
-                    {t("forgot_password_link")}
+                    {t("login.forgot_password_link")}
                 </Link>
             </div>
-
-            <div className=" text-[12px] text-[#595858]">
+            {/* Terms agreement */}
+            <div className="text-[12px] text-[#595858]">
                 <p className="mb-4">
-                    Facendo clic su Accedi accetti i <Link href={ROUTES.termsconditions()}>Termini di servizio</Link> e l&#39;<Link href={ROUTES.privacypolicy()}>Informativa sulla privacy</Link> e in che
-                    modo usiamo cookie e tecnologie simili nella nostra <Link href={ROUTES.cookiepolicy()}>Normativa sui cookie.</Link>
+                    {t("login.terms_agreement.part1")}
+                    <Link href={ROUTES.termsconditions()}>{t("login.terms_agreement.terms_of_service")}</Link>
+                    {t("login.terms_agreement.part2")}
+                    <Link href={ROUTES.privacypolicy()}>{t("login.terms_agreement.privacy_policy")}</Link>
+                    {t("login.terms_agreement.part3")}
+                    <Link href={ROUTES.cookiepolicy()}>{t("login.terms_agreement.cookie_policy")}</Link>.
                 </p>
             </div>
 
@@ -152,19 +158,19 @@ export default function SignInForm() {
                 {isLoading ? (
                     <div className="flex items-center justify-center space-x-2">
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        <span>Signing in...</span>
+                        <span>{t("login.signing_in")}</span>
                     </div>
                 ) : (
-                    t("sign_in_button")
+                    t("login.sign_in_button")
                 )}
             </button>
 
             {/* Sign Up */}
             <div className="text-center">
                 <p className="text-sm">
-                    {t("no_account")}{" "}
+                    {t("login.no_account")}{" "}
                     <Link href={ROUTES.signup()} className="hover:underline font-semibold">
-                        {t("sign_up_link")}
+                        {t("login.sign_up_link")}
                     </Link>
                 </p>
             </div>

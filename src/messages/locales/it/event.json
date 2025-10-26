@@ -1,0 +1,38 @@
+{
+  "eventsGrid": {
+    "noEvents": "Nessun evento trovato",
+    "oneEvent": "evento trovato",
+    "manyEvents": "eventi trovati"
+  },
+
+  "eventDetailDialog": {
+    "registered": "Registrato",
+    "eventDetails": "Dettagli dell'evento",
+    "description": "Descrizione",
+    "cancelRegistration": "Annulla registrazione",
+    "registerEvent": "Registrati all'evento",
+    "moreInfo": "Maggiori info",
+    "openInMaps": "Apri in Maps",
+    "registrationSuccess": "✅ Registrazione all'evento avvenuta con successo!",
+    "undoRegistrationSuccess": "✅ Annullamento registrazione avvenuto con successo!",
+    "registrationError": "Errore durante la registrazione all'evento",
+    "undoRegistrationError": "Errore durante l'annullamento registrazione"
+  },
+
+  "eventCard": {
+    "registered": "Registrato",
+    "hours": "Ore",
+    "moreInfo": "Scopri di più"
+  },
+
+  "eventDetail": {
+    "about": "About",
+    "registerEvent": "Iscriviti all'evento",
+    "cancelRegistration": "Annulla iscrizione all'evento",
+    "registrationSuccess": "✅ Registrazione all'evento avvenuta con successo!",
+    "undoRegistrationSuccess": "✅ Annullamento iscrizione avvenuto con successo!",
+    "registrationError": "Errore durante la registrazione all'evento",
+    "undoRegistrationError": "Errore durante l'annullamento iscrizione"
+  }
+
+}

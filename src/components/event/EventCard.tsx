@@ -1,24 +1,23 @@
-"use client"
+"use client";
 
-import {Event} from "@/api/event/event";
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import {CalendarDays, Clock, MapPin} from "lucide-react"
-import { format } from "date-fns"
-import { it } from "date-fns/locale"
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
-import ReactMarkdown from "react-markdown";
+import {EventWithRegistration} from "@/types/models/event";
+import {Card} from "@/components/ui/card";
+import {Badge} from "@/components/ui/badge";
+import {CalendarDays, Clock, MapPin} from "lucide-react";
+import {format} from "date-fns";
+import {it} from "date-fns/locale";
 import * as React from "react";
 import {Button} from "@/components/ui/button";
+import {useTranslations} from "next-intl";
 
 interface EventCardProps {
-    event: Event
-    onClick: () => void
+    event: EventWithRegistration;
+    onClick: () => void;
 }
 
-export function EventCard({ event, onClick }: EventCardProps) {
-    const eventDate = new Date(event.datetime)
+export function EventCard({event, onClick}: EventCardProps) {
+    const t = useTranslations("event.eventCard");
+    const eventDate = new Date(event.datetime);
 
     return (
         <Card
@@ -35,7 +34,7 @@ export function EventCard({ event, onClick }: EventCardProps) {
                 />
                 {event.is_registered && (
                     <Badge className="absolute top-3 right-3 bg-green-600 hover:bg-green-700">
-                        Registrato
+                        {t("registered")}
                     </Badge>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0"/>
@@ -57,7 +56,7 @@ export function EventCard({ event, onClick }: EventCardProps) {
 
                     <div className="flex items-center gap-2 text-muted-foreground">
                         <Clock className="h-4 w-4 flex-shrink-0"/>
-                        <span>Ore {format(eventDate, "HH:mm", {locale: it})}</span>
+                        <span>{t("hours")} {format(eventDate, "HH:mm", {locale: it})}</span>
                     </div>
 
                     <div className="flex items-start gap-2 text-muted-foreground">
@@ -67,9 +66,9 @@ export function EventCard({ event, onClick }: EventCardProps) {
                 </div>
 
                 <Button className="w-full mt-auto" variant="default">
-                    Scopri di più
+                    {t("moreInfo")}
                 </Button>
             </div>
         </Card>
-    )
+    );
 }
