@@ -1,17 +1,4 @@
-import {Event} from "@/api/event/event";
-import {
-    AlertTriangle,
-    ArrowRight,
-    BadgeCheck,
-    Bell,
-    Calendar,
-    Clock, CloudRain,
-    ExternalLink,
-    MapPin,
-    PencilLine, Timer, TrendingUp, Trophy, Users
-} from "lucide-react";
-import Link from "next/link";
-import {Button} from "@/components/ui/button";
+import {Timer, TrendingUp, Trophy, Users} from "lucide-react";
 
 export default function StatsSection(){
     return (

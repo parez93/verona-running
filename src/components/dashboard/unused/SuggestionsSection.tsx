@@ -1,18 +1,6 @@
-import {Event} from "@/api/event/event";
-import {
-    AlertTriangle,
-    ArrowRight,
-    BadgeCheck,
-    Bell,
-    Calendar,
-    Clock, CloudRain,
-    ExternalLink,
-    MapPin,
-    PencilLine, Timer, TrendingUp, Trophy, Users
-} from "lucide-react";
+import {Users} from "lucide-react";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 
 export default function SuggestionsSection(){
     return (

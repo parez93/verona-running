@@ -1,15 +1,4 @@
-import {Event} from "@/api/event/event";
-import {
-    ArrowRight,
-    BadgeCheck,
-    Calendar,
-    CheckCircle2,
-    Clock, Clock8, CreditCard,
-    ExternalLink,
-    MapPin,
-    PencilLine,
-    Trophy
-} from "lucide-react";
+import {CheckCircle2, Clock8, CreditCard, Trophy} from "lucide-react";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 

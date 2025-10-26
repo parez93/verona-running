@@ -1,16 +1,4 @@
-import {Event} from "@/api/event/event";
-import {
-    AlertTriangle,
-    ArrowRight,
-    BadgeCheck,
-    Bell,
-    Calendar,
-    Clock, CloudRain,
-    ExternalLink,
-    MapPin,
-    PencilLine
-} from "lucide-react";
-import Link from "next/link";
+import {AlertTriangle, Bell, CloudRain} from "lucide-react";
 import {Button} from "@/components/ui/button";
 
 export default function NotificationSection(){
