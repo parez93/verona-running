@@ -1,0 +1,15 @@
+{
+    "required": "Questo campo è obbligatorio",
+    "invalid_format": "Formato non valido",
+    "too_short": "Troppo corto",
+    "too_long": "Troppo lungo",
+    "passwords_dont_match": "Le password non corrispondono",
+    "invalid_email": "Indirizzo email non valido",
+    "invalid_phone": "Numero di telefono non valido",
+    "invalid_url": "URL non valido",
+    "min_characters": "Minimo {{count}} caratteri",
+    "max_characters": "Massimo {{count}} caratteri",
+    "numeric_only": "Solo numeri consentiti",
+    "alphabetic_only": "Solo lettere consentite"
+
+}

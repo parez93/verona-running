@@ -1,28 +1,31 @@
 import React from 'react';
+import {getTranslations} from "next-intl/server";
 
-const DataControllerInfo = () => {
+const DataControllerInfo = async () => {
+    const t = await getTranslations("cookiePolicy");
+
     return (
         <section>
             <h3 className="text-[13px] text-[#262626] font-bold mb-2">
-                Titolare del Trattamento dei Dati
+                {t("dataControllerInfo.title")}
             </h3>
             <p className="mb-4 text-sm leading-normal text-foreground">
-                Federico Parezzan
+                {t("dataControllerInfo.paragraphs.p1")}
                 <br />
-                <i>Verona Running</i>
+                <i>{t("dataControllerInfo.paragraphs.p2")}</i>
                 <br />
-                Via Lazzaretto 59F
+                {t("dataControllerInfo.paragraphs.p3")}
                 <br />
-                37133 Verona (VR)
+                {t("dataControllerInfo.paragraphs.p4")}
             </p>
             <p className="mb-4 text-sm leading-normal text-foreground">
-                <strong className="font-bold">Indirizzo email del Titolare:</strong>{' '}
+                <strong className="font-bold">{t("dataControllerInfo.paragraphs.p5")}</strong>{' '}
                 <a href="mailto:veronarunning@gmail.com" className="text-link underline">
-                    veronarunning@gmail.com
+                    {t("dataControllerInfo.paragraphs.p6")}
                 </a>
             </p>
             <p className="mb-4 text-sm leading-normal text-foreground">
-                Data l'oggettiva complessità di identificazione delle tecnologie di tracciamento, gli Utenti sono invitati a contattare il Titolare qualora volessero ricevere ulteriori informazioni in merito all'utilizzo di tali tecnologie su questo Sito Web.
+                {t("dataControllerInfo.paragraphs.p7")}
             </p>
         </section>
     );
