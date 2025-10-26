@@ -93,7 +93,7 @@ export default function NextEventSection({nextEvent}: NextEventSectionProps) {
                     </div>
                 </div>
                 <div className="mt-4 sm:hidden flex gap-2">
-                    <Link href={`/events/${nextEvent.id}`} className="flex-1">
+                    <Link href={`${ROUTES.event()}/${nextEvent.id}`} className="flex-1">
                         <Button className="w-full gap-1">
                             <ExternalLink className="h-4 w-4"/> {t("viewDetails")}
                         </Button>
