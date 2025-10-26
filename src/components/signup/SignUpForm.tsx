@@ -42,7 +42,7 @@ export default function SignUpForm() {
     const validateField = (name: string, value: string) => {
         switch (name) {
             case "name": return value.trim() === "" ? t("validation.name_required") : "";
-            case "surname": return value.trim() === "" ? t("validation.name_required") : "";
+            case "surname": return value.trim() === "" ? t("validation.surname_required") : "";
             case "email":
                 if (value.trim() === "") return t("validation.email_required");
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return t("validation.email_invalid");
