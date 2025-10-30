@@ -1,6 +1,8 @@
 import {NextResponse} from 'next/server'
 import {createSupabaseServerClient, getSupabaseUser} from '@/lib/supabase/server'
 import {Event, EventInsert, EventUpdate, EventWithRegistration} from '@/types/models/event'
+import {Registration} from "@/types/models/registration";
+import {User} from "@/types/models/user";
 
 export async function eventList() {
     try {
@@ -142,5 +144,37 @@ export async function eventWithRegistration(
     } catch (error: any) {
         console.error("❌ Error in eventWithRegistration:", error);
         return {error: error.message};
+    }
+}
+
+
+export async function eventListWithRegistrations() {
+    try {
+        const supabase = await createSupabaseServerClient()
+
+        // Select annidata: prende gli eventi, per ogni evento prende evt_registration e per ogni registrazione prende psn_data
+        // PostgREST / Supabase permette select annidate quando le FK/relazioni sono presenti nel DB.
+        const { data, error } = await supabase
+            .from('evt_data')
+            .select(`*, evt_registration(id, id_event, id_user, created_at, updated_at, psn_data(name, surname, email, id, date_of_birth, img_base64, is_admin))`)
+
+        if (error) return { error: error.message }
+
+        // Aggiungo registrations_count per ciascun evento
+        const eventsWithCounts = (data as any[]).map(ev => {
+            const regs = ev.evt_registration ?? []
+            return {
+                ...ev,
+                registrations: regs,
+                registrations_count: Array.isArray(regs) ? regs.length : 0,
+            }
+        })
+
+        return eventsWithCounts as (Event & {
+            registrations?: (Registration & { psn_data?: User })[]
+            registrations_count?: number
+        })[]
+    } catch (error: any) {
+        return {error: error.message}
     }
 }

@@ -59,3 +59,19 @@ export async function deleteRegistration(id_event: number): Promise<{ success: b
         return { error: error.message }
     }
 }
+
+export async function deleteRegistrationById(registrationId: number) {
+    try {
+        const supabase = await createSupabaseServerClient()
+
+        const { error } = await supabase
+            .from('evt_registration')
+            .delete()
+            .eq('id', registrationId)
+
+        if (error) return { error: error.message }
+        return { success: true }
+    } catch (error: any) {
+        return { error: error.message }
+    }
+}
