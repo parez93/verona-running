@@ -157,6 +157,7 @@ export async function eventListWithRegistrations() {
         const { data, error } = await supabase
             .from('evt_data')
             .select(`*, evt_registration(id, id_event, id_user, created_at, updated_at, psn_data(name, surname, email, id, date_of_birth, img_base64, is_admin))`)
+            .order("datetime", {ascending: false})
 
         if (error) return { error: error.message }
 
