@@ -9,6 +9,7 @@ export const ROUTES = {
     forgotPassword: () => `/forgot-password`,
     dashboard: () => `/dashboard`,
     event: () => `/event`,
+    stats: () => `/statistics`,
     badge: () => `/badge`,
     adminEvent: () => `/admin/event`,
     adminUser: () => `/admin/user`,

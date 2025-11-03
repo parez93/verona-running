@@ -1,7 +1,7 @@
 "use client";
 
 import {useEffect, useState} from "react";
-import {BugOffIcon, CalendarDays, ChevronDown, ChevronRight, LayoutPanelLeft, UsersIcon,} from "lucide-react";
+import {BugOffIcon, CalendarDays, ChartBar, ChevronDown, ChevronRight, LayoutPanelLeft, UsersIcon,} from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
 import Image from "next/image";
 import {ROUTES} from "@/lib/kRoutes";
@@ -72,6 +72,12 @@ export default function Sidebar({
             label: "Eventi",
             icon: CalendarDays,
             href: ROUTES.event(),
+        },
+        {
+            id: "stats",
+            label: "Statistiche",
+            icon: ChartBar,
+            href: ROUTES.stats(),
         },
     ];
 
