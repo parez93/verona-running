@@ -47,8 +47,8 @@ export default function BadgeCelebration({ achievement, onClose }: BadgeCelebrat
                             initial={{ scale: 0, x: 0, y: 0 }}
                             animate={{
                                 scale: [0, 1, 1, 0],
-                                x: Math.cos((i / 20) * Math.PI * 2) * 200,
-                                y: Math.sin((i / 20) * Math.PI * 2) * 200,
+                                x: Math.cos((i / 20) * Math.PI * 2) * 250,
+                                y: Math.sin((i / 20) * Math.PI * 2) * 250,
                             }}
                             transition={{ duration: 1.5, delay: 0.2 }}
                             className="absolute top-1/2 left-1/2 w-3 h-3 rounded-full"

@@ -130,7 +130,7 @@ export default function AchievementsPage() {
                     >
                         <h1 className="text-4xl font-bold mb-2 flex items-center justify-center gap-3">
                             <Trophy className="h-10 w-10 text-yellow-500" />
-                            Achievements
+                            Badge
                         </h1>
                         <p className="text-muted-foreground">
                             {unlockedAchievements.length} di {achievements.length} sbloccati
@@ -163,7 +163,7 @@ export default function AchievementsPage() {
                                                 alt={user?.email || 'User'}
                                             />
                                             <AvatarFallback
-                                                className={`AvatarFallback w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br ${currentLevel.color}`}
+                                                className={`AvatarFallback w-28 h-28 rounded-full overflow-hidden bg-gradient-to-br ${currentLevel.color}`}
                                                 delayMs={600}
                                             >
                                                 {user?.name?.charAt(0).toUpperCase()}{user?.surname?.charAt(0).toUpperCase()}
@@ -304,7 +304,7 @@ export default function AchievementsPage() {
 
                                 <h3 className="font-bold text-center mb-2">{achievement.name}</h3>
                                 <p className="text-sm text-muted-foreground text-center mb-3">
-                                    {achievement.description}
+                                    {achievement.points} pt • {achievement.description}
                                 </p>
 
                                 <div className="flex items-center justify-center mb-3">
@@ -318,7 +318,7 @@ export default function AchievementsPage() {
                                     </Badge>
                                 </div>
 
-                                {!achievement.unlocked && (
+                                {!achievement.unlocked && achievement.progress != 0 && (
                                     <div>
                                         <div className="flex items-center justify-between text-xs mb-1">
                                             <span className="text-muted-foreground">Progresso</span>
