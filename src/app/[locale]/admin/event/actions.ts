@@ -23,7 +23,7 @@ export async function makeEventAct(input: EventInsert): Promise<Event> {
 }
 
 export async function updateEventAct(input: EventUpdate): Promise<Event> {
-    console.log(input)
+    //console.log(input)
     const result = await updateEvent(input);
     if ("error" in result) {
         throw new Error(result.error)

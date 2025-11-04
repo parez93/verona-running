@@ -58,7 +58,7 @@ export default function AdminEventPage() {
         const fetchEvents = async () => {
             try {
                 const data = await eventListAct()
-                console.log(data)
+                //console.log(data)
                 setEvents(data);
             } catch (err) {
                 console.error("Error fetching account", err);

@@ -2,29 +2,29 @@ my-app/
 ├── app/
 │   ├── (public)/                      # Pagine pubbliche
 │   │   ├── layout.tsx                 # Layout pubblico (Navbar + Footer)
-│   │   ├── page.tsx                   # Homepage
-│   │   ├── about/page.tsx
-│   │   └── login/page.tsx
+│   │   ├── page_2.tsx                   # Homepage
+│   │   ├── about/page_2.tsx
+│   │   └── login/page_2.tsx
 │   │
 │   ├── (private)/                     # Pagine utenti autenticati
 │   │   ├── layout.tsx                 # Layout con auth guard
-│   │   ├── dashboard/page.tsx
-│   │   ├── profile/page.tsx
-│   │   └── settings/page.tsx
+│   │   ├── dashboard/page_2.tsx
+│   │   ├── profile/page_2.tsx
+│   │   └── settings/page_2.tsx
 │   │
 │   ├── (admin)/                       # Pagine admin (ruolo admin richiesto)
 │   │   ├── layout.tsx                 # Layout admin (sidebar + guard)
-│   │   ├── users/page.tsx
-│   │   ├── stats/page.tsx
-│   │   └── config/page.tsx
+│   │   ├── users/page_2.tsx
+│   │   ├── stats/page_2.tsx
+│   │   └── config/page_2.tsx
 │   │
 │   ├── api/                           # Route handlers server-side
 │   │   ├── posts/route.ts
 │   │   └── admin/route.ts
 │   │
 │   ├── [locale]/                      # next-intl routing localizzato
-│   │   ├── (public)/page.tsx
-│   │   └── (private)/dashboard/page.tsx
+│   │   ├── (public)/page_2.tsx
+│   │   └── (private)/dashboard/page_2.tsx
 │   │
 │   ├── layout.tsx                     # Root layout globale (providers)
 │   ├── globals.css                    # Tailwind + stili globali

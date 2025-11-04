@@ -128,6 +128,21 @@ export type Database = {
         }
         Relationships: []
       }
+      psn_roles: {
+        Row: {
+          is_admin: boolean
+          user_id: string
+        }
+        Insert: {
+          is_admin?: boolean
+          user_id: string
+        }
+        Update: {
+          is_admin?: boolean
+          user_id?: string
+        }
+        Relationships: []
+      }
       sys_bugreport: {
         Row: {
           attachment: string | null

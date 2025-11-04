@@ -25,27 +25,29 @@ export async function GET(
         }
 
         // --- Fetch all user event data (checked-in + with completion_time) ---
-        const { data: registrations, error: regError } = await supabase
+/*        const { data: registrations, error: regError } = await supabase
             .from('evt_registration')
             .select(`
-/*
         completion_time,
-*/
-/*
         checked_in,
-*/
         evt_data (
           distance,
           datetime
         )
       `)
             .eq('id_user', user?.id)
-/*
             .eq('checked_in', true)
-*/
-/*
-            .not('completion_time', 'is', null);
-*/
+            .not('completion_time', 'is', null);*/
+
+        const { data: registrations, error: regError } = await supabase
+            .from('evt_registration')
+            .select(`
+        evt_data (
+          distance,
+          datetime
+        )
+      `)
+        .eq('id_user', user?.id)
 
         if (regError) throw regError;
 
@@ -124,6 +126,7 @@ export async function GET(
                     Math.round(distances.reduce((a, b) => a + b, 0) * 100) / 100,
             }))
             .sort((a, b) => a.month.localeCompare(b.month));
+
 
         // --- 4. Personal bests (min completion time by distance) ---
         const personalBests: Record<string, number> = {};

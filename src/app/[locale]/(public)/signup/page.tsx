@@ -1,4 +1,4 @@
-// app/(public)/signup/page.tsx
+// app/(public)/signup/page_2.tsx
 import { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import SignUpForm from "@/components/signup/SignUpForm";
