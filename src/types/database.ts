@@ -93,6 +93,91 @@ export type Database = {
             referencedRelation: "psn_data"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "evt_registration_id_user_fkey"
+            columns: ["id_user"]
+            isOneToOne: false
+            referencedRelation: "vw_user_gamification"
+            referencedColumns: ["id_user"]
+          },
+        ]
+      }
+      gam_badge: {
+        Row: {
+          category: string
+          condition_sql: string
+          created_at: string | null
+          description: string | null
+          icon: string
+          id: number
+          name: string
+          points: number
+          tier: string | null
+        }
+        Insert: {
+          category: string
+          condition_sql: string
+          created_at?: string | null
+          description?: string | null
+          icon: string
+          id?: number
+          name: string
+          points?: number
+          tier?: string | null
+        }
+        Update: {
+          category?: string
+          condition_sql?: string
+          created_at?: string | null
+          description?: string | null
+          icon?: string
+          id?: number
+          name?: string
+          points?: number
+          tier?: string | null
+        }
+        Relationships: []
+      }
+      gam_user_badge: {
+        Row: {
+          id: number
+          id_badge: number | null
+          id_user: string | null
+          progress: number | null
+          unlocked: boolean | null
+          unlocked_at: string | null
+        }
+        Insert: {
+          id?: number
+          id_badge?: number | null
+          id_user?: string | null
+          progress?: number | null
+          unlocked?: boolean | null
+          unlocked_at?: string | null
+        }
+        Update: {
+          id?: number
+          id_badge?: number | null
+          id_user?: string | null
+          progress?: number | null
+          unlocked?: boolean | null
+          unlocked_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gam_user_badge_id_user_fkey"
+            columns: ["id_user"]
+            isOneToOne: false
+            referencedRelation: "psn_data"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gam_user_badge_id_user_fkey"
+            columns: ["id_user"]
+            isOneToOne: false
+            referencedRelation: "vw_user_gamification"
+            referencedColumns: ["id_user"]
+          },
         ]
       }
       psn_data: {
@@ -181,10 +266,54 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      vw_user_badges: {
+        Row: {
+          description: string | null
+          icon: string | null
+          id: number | null
+          id_user: string | null
+          name: string | null
+          points: number | null
+          progress: number | null
+          tier: string | null
+          unlocked: boolean | null
+          unlocked_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gam_user_badge_id_user_fkey"
+            columns: ["id_user"]
+            isOneToOne: false
+            referencedRelation: "psn_data"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gam_user_badge_id_user_fkey"
+            columns: ["id_user"]
+            isOneToOne: false
+            referencedRelation: "vw_user_gamification"
+            referencedColumns: ["id_user"]
+          },
+        ]
+      }
+      vw_user_gamification: {
+        Row: {
+          id_user: string | null
+          img_base64: string | null
+          level: number | null
+          level_color: string | null
+          level_icon: string | null
+          name: string | null
+          surname: string | null
+          total_xp: number | null
+          unlocked_badges: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      update_user_badge: { Args: never; Returns: undefined }
+      update_user_badges: { Args: never; Returns: undefined }
     }
     Enums: {
       [_ in never]: never

@@ -11,23 +11,11 @@ import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
 import BadgeCelebration from '@/components/badge/BadgeCelebration';
 import {userByIdAct} from "@/app/[locale]/(private)/account/actions";
 import {User} from "@/types/models/user";
-
-export type Achievement = {
-    id: number;
-    name: string;
-    description: string;
-    icon: string;
-    tier: 'bronze' | 'silver' | 'gold' | 'platinum';
-    points: number;
-    unlocked: boolean;
-    progress: number;
-    unlockedAt?: string | null;
-    id_user?: string;
-};
+import {UserBadges} from "@/types/models/badge";
 
 export default function AchievementsPage() {
-    const [achievements, setAchievements] = useState<Achievement[]>([]);
-    const [selectedAchievement, setSelectedAchievement] = useState<Achievement | null>(null);
+    const [achievements, setAchievements] = useState<UserBadges[]>([]);
+    const [selectedAchievement, setSelectedAchievement] = useState<UserBadges | null>(null);
     const [filter, setFilter] = useState<'all' | 'unlocked' | 'locked'>('all');
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
@@ -52,7 +40,7 @@ export default function AchievementsPage() {
             ]);
 
             console.log('data', data[0]);
-            if (data) setAchievements(data[0] as Achievement[]);
+            if (data) setAchievements(data[0] as UserBadges[]);
             setLoading(false);
         };
 
@@ -103,7 +91,7 @@ export default function AchievementsPage() {
         ? ((userPoints - currentLevel.minPoints) / (nextLevel.minPoints - currentLevel.minPoints)) * 100
         : 100;
 
-    const getTierColor = (tier: string) => {
+    const getTierColor = (tier: string | null) => {
         switch (tier) {
             case 'bronze':
                 return 'from-amber-600 to-amber-800';
@@ -328,9 +316,9 @@ export default function AchievementsPage() {
                                     </div>
                                 )}
 
-                                {achievement.unlocked && achievement.unlockedAt && (
+                                {achievement.unlocked && achievement.unlocked_at && (
                                     <p className="text-xs text-muted-foreground text-center mt-2">
-                                        Sbloccato il {new Date(achievement.unlockedAt).toLocaleDateString('it-IT')}
+                                        Sbloccato il {new Date(achievement.unlocked_at).toLocaleDateString('it-IT')}
                                     </p>
                                 )}
                             </Card>

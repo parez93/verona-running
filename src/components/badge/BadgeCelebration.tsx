@@ -4,16 +4,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Achievement } from './gamification-data';
 import { X } from 'lucide-react';
 import { Button } from '../ui/button';
+import {UserBadges} from "@/types/models/badge";
 
 interface BadgeCelebrationProps {
-    achievement: Achievement | null;
+    achievement: UserBadges | null;
     onClose: () => void;
 }
 
 export default function BadgeCelebration({ achievement, onClose }: BadgeCelebrationProps) {
     if (!achievement) return null;
 
-    const getTierColor = (tier: string) => {
+    const getTierColor = (tier: string | null) => {
         switch (tier) {
             case 'bronze': return 'from-amber-600 to-amber-800';
             case 'silver': return 'from-gray-400 to-gray-600';
