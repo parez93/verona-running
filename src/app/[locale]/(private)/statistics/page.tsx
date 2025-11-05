@@ -1,92 +1,63 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { currentUser } from './gamification-data';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Activity, TrendingUp, Clock, Flame, Target, Zap } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import {getISOWeek} from "date-fns";
+import {useEffect, useState} from 'react';
+import {motion} from 'framer-motion';
+import {Activity, Flame, TrendingUp} from 'lucide-react';
+import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
 
 export default function StatisticsPage() {
-    // Dati km per mese (ultimi 6 mesi) - LINE CHART
-    const monthlyKm = [
-        { month: 'Ott', year: 2024, km: 45 },
-        { month: 'Nov', year: 2024, km: 60 },
-        { month: 'Dic', year: 2024, km: 55 },
-        { month: 'Gen', year: 2025, km: 70 },
-        { month: 'Feb', year: 2025, km: 65 },
-        { month: 'Mar', year: 2025, km: 5 },
-    ];
+    const [data, setData] = useState<any>(null);
 
-    // Dati punti per mese (ultimi 6 mesi) - BAR CHART
-    const monthlyPoints = [
-        { month: 'Ott', year: 2024, points: 180 },
-        { month: 'Nov', year: 2024, points: 240 },
-        { month: 'Dic', year: 2024, points: 220 },
-        { month: 'Gen', year: 2025, points: 280 },
-        { month: 'Feb', year: 2025, points: 260 },
-        { month: 'Mar', year: 2025, points: 340 },
-    ];
+    useEffect(() => {
+        const userId = 'USER_ID_HERE'; // <-- sostituire o recuperare da sessione
+        fetch(`/api/statistics`)
+            .then((res) => res.json())
+            .then(r => setData(r))
+            .catch(reason => console.log(reason));
+    }, []);
+    console.log('---', data);
 
-    // Distribuzione distanze - PIE CHART
-/*    const distanceDistribution = [
-        { range: '0-3 km', count: 4, color: 'from-blue-500 to-blue-400' },
-        { range: '3-5 km', count: 12, color: 'from-green-500 to-green-400' },
-        { range: '5-7 km', count: 6, color: 'from-yellow-500 to-yellow-400' },
-        { range: '7+ km', count: 2, color: 'from-red-500 to-red-400' },
-    ];
+    if (!data) {
+        return (
+            <div className="min-h-screen">
+                <div className="container mx-auto px-4 py-8">
+                    <div className="flex items-center justify-center h-[60vh]">
+                        <div className="flex flex-col items-center gap-4">
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                            <p className="text-muted-foreground">Caricamento statistiche...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>)
+    }
+    const {totalRuns, totalDistance, monthlyKm, monthlyPoints, currentStreak, longestStreak} = data;
 
-    const totalDistanceCount = distanceDistribution.reduce((sum, item) => sum + item.count, 0);
-*/
-    // Progress vs Goal - RADIAL PROGRESS
-    const monthlyGoal = 20; // km goal per mese
-    const currentMonthKm = monthlyKm[monthlyKm.length - 1].km;
+    const monthlyGoal = 20;
+    const currentMonthKm = monthlyKm.at(-1)?.km ?? 0;
     const goalProgress = Math.min((currentMonthKm / monthlyGoal) * 100, 100);
 
     const stats = [
         {
             icon: Activity,
             label: 'Corse Totali',
-            value: currentUser.totalRuns,
+            value: totalRuns,
             color: 'text-blue-500',
             bg: 'bg-blue-500/10',
         },
         {
             icon: TrendingUp,
             label: 'Distanza Totale',
-            value: `${currentUser.totalDistance}km`,
+            value: `${totalDistance.toFixed(1)} km`,
             color: 'text-green-500',
             bg: 'bg-green-500/10',
         },
-/*        {
-            icon: Zap,
-            label: 'Passo Medio',
-            value: `${currentUser.averagePace} min/km`,
-            color: 'text-yellow-500',
-            bg: 'bg-yellow-500/10',
-        },
-        {
-            icon: Target,
-            label: 'Miglior Passo',
-            value: `${currentUser.bestPace} min/km`,
-            color: 'text-purple-500',
-            bg: 'bg-purple-500/10',
-        },*/
         {
             icon: Flame,
             label: 'Serie Attuale',
-            value: `${currentUser.currentStreak} settimane`,
+            value: `${currentStreak} settimane`,
             color: 'text-orange-500',
             bg: 'bg-orange-500/10',
         },
-/*        {
-            icon: Clock,
-            label: 'Tempo Totale',
-            value: `${Math.floor(currentUser.totalTimeRunning / 60)}h ${currentUser.totalTimeRunning % 60}m`,
-            color: 'text-red-500',
-            bg: 'bg-red-500/10',
-        },*/
     ];
 
     return (
@@ -95,12 +66,12 @@ export default function StatisticsPage() {
                 {/* Header */}
                 <div className="mb-8">
                     <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        initial={{opacity: 0, y: -20}}
+                        animate={{opacity: 1, y: 0}}
                         className="text-center mb-6"
                     >
                         <h1 className="text-4xl font-bold mb-2 flex items-center justify-center gap-3">
-                            <Activity className="h-10 w-10 text-primary" />
+                            <Activity className="h-10 w-10 text-primary"/>
                             Statistiche
                         </h1>
                         <p className="text-muted-foreground">Le tue performance e progressi</p>
@@ -112,16 +83,16 @@ export default function StatisticsPage() {
                     {stats.map((stat, index) => (
                         <motion.div
                             key={stat.label}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            whileHover={{ scale: 1.03 }}
+                            initial={{opacity: 0, y: 20}}
+                            animate={{opacity: 1, y: 0}}
+                            transition={{delay: index * 0.1}}
+                            whileHover={{scale: 1.03}}
                         >
                             <Card>
                                 <CardContent className="p-6">
                                     <div className="flex items-center justify-between mb-4">
                                         <div className={`p-3 rounded-lg ${stat.bg}`}>
-                                            <stat.icon className={`h-6 w-6 ${stat.color}`} />
+                                            <stat.icon className={`h-6 w-6 ${stat.color}`}/>
                                         </div>
                                     </div>
                                     <div>
@@ -136,11 +107,10 @@ export default function StatisticsPage() {
 
                 {/* Charts Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                    {/* LINE CHART - Chilometri per Mese */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6 }}
+                        initial={{opacity: 0, y: 20}}
+                        animate={{opacity: 1, y: 0}}
+                        transition={{delay: 0.6}}
                     >
                         <Card>
                             <CardHeader>
@@ -180,9 +150,9 @@ export default function StatisticsPage() {
                                             strokeWidth="3"
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
-                                            initial={{ pathLength: 0 }}
-                                            animate={{ pathLength: 1 }}
-                                            transition={{ duration: 1.5, delay: 0.7 }}
+                                            initial={{pathLength: 0}}
+                                            animate={{pathLength: 1}}
+                                            transition={{duration: 1.5, delay: 0.7}}
                                             className="text-primary"
                                         />
 
@@ -193,26 +163,62 @@ export default function StatisticsPage() {
                                             const y = 180 - (data.km / maxKm) * 140;
 
                                             return (
-                                                <g key={i}>
+                                                <g key={i} className="group">
+                                                    {/* Invisible larger circle for better hover area */}
+                                                    <circle
+                                                        cx={x}
+                                                        cy={y}
+                                                        r="15"
+                                                        fill="transparent"
+                                                        className="cursor-pointer"
+                                                    />
+
                                                     <motion.circle
                                                         cx={x}
                                                         cy={y}
                                                         r="6"
                                                         fill="currentColor"
-                                                        className="text-primary"
-                                                        initial={{ scale: 0 }}
-                                                        animate={{ scale: 1 }}
-                                                        transition={{ delay: 0.7 + i * 0.1, type: 'spring' }}
+                                                        className="text-primary pointer-events-none"
+                                                        initial={{scale: 0}}
+                                                        animate={{scale: 1}}
+                                                        transition={{delay: 0.7 + i * 0.1, type: 'spring'}}
                                                     />
                                                     <motion.circle
                                                         cx={x}
                                                         cy={y}
                                                         r="3"
                                                         fill="white"
-                                                        initial={{ scale: 0 }}
-                                                        animate={{ scale: 1 }}
-                                                        transition={{ delay: 0.8 + i * 0.1 }}
+                                                        initial={{scale: 0}}
+                                                        animate={{scale: 1}}
+                                                        transition={{delay: 0.8 + i * 0.1}}
+                                                        className="pointer-events-none"
                                                     />
+
+                                                    {/* Tooltip */}
+                                                    <g className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none ">
+                                                        {/* Tooltip background */}
+                                                        <rect
+                                                            x={x - 30}
+                                                            y={y - 45}
+                                                            width="60"
+                                                            height="28"
+                                                            rx="6"
+                                                            fill="hsl(var(--popover))"
+                                                            stroke="hsl(var(--border))"
+                                                            strokeWidth="1"
+                                                            filter="drop-shadow(0 4px 6px rgba(0,0,0,0.1))"
+                                                        />
+                                                        {/* Tooltip text - km value */}
+                                                        <text
+                                                            x={x}
+                                                            y={y - 28}
+                                                            textAnchor="middle"
+                                                            className="text-xs font-bold fill-white "
+                                                        >
+                                                            {data.km} km
+                                                        </text>
+                                                    </g>
+
                                                     {/* Label */}
                                                     <text
                                                         x={x}
@@ -221,15 +227,6 @@ export default function StatisticsPage() {
                                                         className="text-xs fill-muted-foreground"
                                                     >
                                                         {data.month}
-                                                    </text>
-                                                    {/* Value on hover */}
-                                                    <text
-                                                        x={x}
-                                                        y={y - 12}
-                                                        textAnchor="middle"
-                                                        className="text-xs font-semibold fill-foreground opacity-0 hover:opacity-100"
-                                                    >
-                                                        {data.km}
                                                     </text>
                                                 </g>
                                             );
@@ -240,7 +237,9 @@ export default function StatisticsPage() {
                         </Card>
                     </motion.div>
 
+
                     {/* BAR CHART - Punti per Mese */}
+                    {/*
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -269,7 +268,7 @@ export default function StatisticsPage() {
                                                     style={{ height: '100%' }}
                                                 />
 
-                                                {/* Tooltip */}
+                                                 Tooltip
                                                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
                                                     <div className="bg-popover text-popover-foreground p-2 rounded-lg shadow-lg text-xs whitespace-nowrap border border-border">
                                                         <div className="font-semibold">{data.points} punti</div>
@@ -279,7 +278,7 @@ export default function StatisticsPage() {
                                                     </div>
                                                 </div>
 
-                                                {/* Month label */}
+                                                 Month label
                                                 <div className="text-xs text-muted-foreground text-center mt-2 font-medium">
                                                     {data.month}
                                                 </div>
@@ -290,9 +289,10 @@ export default function StatisticsPage() {
                             </CardContent>
                         </Card>
                     </motion.div>
+*/}
 
                     {/* PIE CHART - Distribuzione Distanze */}
-{/*                    <motion.div
+                    {/*                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.8 }}
@@ -386,9 +386,9 @@ export default function StatisticsPage() {
 
                     {/* RADIAL PROGRESS - Progress vs Goal */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.9 }}
+                        initial={{opacity: 0, y: 20}}
+                        animate={{opacity: 1, y: 0}}
+                        transition={{delay: 0.9}}
                     >
                         <Card>
                             <CardHeader>
@@ -418,24 +418,24 @@ export default function StatisticsPage() {
                                                 strokeWidth="8"
                                                 strokeLinecap="round"
                                                 strokeDasharray={`${2 * Math.PI * 40}`}
-                                                initial={{ strokeDashoffset: 2 * Math.PI * 40 }}
+                                                initial={{strokeDashoffset: 2 * Math.PI * 40}}
                                                 animate={{
                                                     strokeDashoffset: 2 * Math.PI * 40 * (1 - goalProgress / 100),
                                                 }}
-                                                transition={{ duration: 1.5, delay: 1 }}
+                                                transition={{duration: 1.5, delay: 1}}
                                             />
                                             <defs>
                                                 <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                                    <stop offset="0%" stopColor="#22c55e" />
-                                                    <stop offset="100%" stopColor="#10b981" />
+                                                    <stop offset="0%" stopColor="#22c55e"/>
+                                                    <stop offset="100%" stopColor="#10b981"/>
                                                 </linearGradient>
                                             </defs>
                                         </svg>
                                         <div className="absolute inset-0 flex flex-col items-center justify-center">
                                             <motion.div
-                                                initial={{ scale: 0 }}
-                                                animate={{ scale: 1 }}
-                                                transition={{ delay: 1.2, type: 'spring' }}
+                                                initial={{scale: 0}}
+                                                animate={{scale: 1}}
+                                                transition={{delay: 1.2, type: 'spring'}}
                                                 className="text-4xl font-bold text-green-500"
                                             >
                                                 {Math.round(goalProgress)}%
@@ -461,63 +461,116 @@ export default function StatisticsPage() {
 
                 {/* Progress Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Streak Card */}
+
+                    {/* SERIE CONSECUTIVA SETTIMANALE */}
                     <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.8 }}
+                        initial={{opacity: 0, x: -20}}
+                        animate={{opacity: 1, x: 0}}
+                        transition={{delay: 0.8}}
                     >
                         <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
-                                    <Flame className="h-5 w-5 text-orange-500" />
+                                    <Flame className="h-5 w-5 text-blues-500"/>
                                     Serie Consecutiva
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className="text-center py-6">
+                                    {/* Numero settimane consecutive */}
                                     <motion.div
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: 1 }}
-                                        transition={{ delay: 0.9, type: 'spring' }}
-                                        className="text-6xl font-bold text-orange-500 mb-2"
+                                        initial={{scale: 0}}
+                                        animate={{scale: 1}}
+                                        transition={{delay: 0.9, type: 'spring'}}
+                                        className="text-6xl font-bold text-blue-500 mb-2"
                                     >
-                                        {currentUser.currentStreak}
+                                        {data.currentStreak}
                                     </motion.div>
+
                                     <p className="text-muted-foreground mb-4">settimane consecutive</p>
+
+                                    {/* Cerchi settimanali */}
                                     <div className="flex items-center justify-center gap-2 flex-wrap">
-                                        {[...Array(getISOWeek(new Date()) + 2)].map((_, i) => (
+                                        {Array.from({length: data.streakWeeks.length}, (_, i) => (
                                             <motion.div
                                                 key={i}
-                                                initial={{ scale: 0 }}
-                                                animate={{ scale: 1 }}
-                                                transition={{ delay: 1 + i * 0.05 }}
+                                                initial={{scale: 0}}
+                                                animate={{scale: 1}}
+                                                transition={{delay: 1 + i * 0.02}}
                                                 className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                                                    i < currentUser.currentStreak
-                                                        ? 'bg-orange-500'
-                                                        : 'bg-muted'
+                                                    i < data.currentStreak ? 'bg-blue-500 ring-2 ring-blue-300' : 'bg-muted'
                                                 }`}
                                             >
-                                                {i < currentUser.currentStreak && (
-                                                    <Flame className="h-4 w-4 text-white" />
-                                                )}
+                                                {i < data.currentStreak && <Flame className="h-4 w-4 text-white"/>}
                                             </motion.div>
                                         ))}
                                     </div>
+
                                     <p className="text-sm text-muted-foreground mt-4">
-                                        Record: {currentUser.longestStreak} settimane
+                                        Record: {data.longestStreak} settimane
                                     </p>
                                 </div>
                             </CardContent>
                         </Card>
                     </motion.div>
 
+
+                    {/* STREAK CARD */}
+                    <motion.div
+                        initial={{opacity: 0, x: -20}}
+                        animate={{opacity: 1, x: 0}}
+                        transition={{delay: 0.8}}
+                    >
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Flame className="h-5 w-5 text-orange-500"/>
+                                    Partecipazioni settimanali
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-center py-6">
+                                    {/* Numero settimane in cui ha partecipato */}
+                                    <motion.div
+                                        initial={{scale: 0}}
+                                        animate={{scale: 1}}
+                                        transition={{delay: 0.9, type: 'spring'}}
+                                        className="text-6xl font-bold text-orange-500 mb-2"
+                                    >
+                                        {data.streakWeeks.filter((w) => w.active).length}
+                                    </motion.div>
+
+                                    <p className="text-muted-foreground mb-4">settimane con almeno un evento</p>
+
+                                    {/* Tutte le settimane dell’anno */}
+                                    <div className="flex items-center justify-center gap-2 flex-wrap">
+                                        {data.streakWeeks.map((week, i) => (
+                                            <motion.div
+                                                key={week.week}
+                                                initial={{scale: 0}}
+                                                animate={{scale: 1}}
+                                                transition={{delay: 0.6 + i * 0.01}}
+                                                className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                                                    week.active ? 'bg-orange-500 ring-2 ring-orange-300' : 'bg-muted'
+                                                }`}
+                                            >
+                                                {week.active && <Flame className="h-4 w-4 text-white"/>}
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+
+
                     {/* Achievements Progress */}
                     <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.8 }}
+                        initial={{opacity: 0, x: 20}}
+                        animate={{opacity: 1, x: 0}}
+                        transition={{delay: 0.8}}
                     >
+                        {/*
                         <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
@@ -565,6 +618,7 @@ export default function StatisticsPage() {
                                 </div>
                             </CardContent>
                         </Card>
+*/}
                     </motion.div>
                 </div>
             </div>
