@@ -49,8 +49,15 @@ export default function AchievementsPage() {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center h-screen text-muted-foreground">
-                Caricamento...
+            <div className="min-h-screen">
+                <div className="container mx-auto px-4 py-8">
+                    <div className="flex items-center justify-center h-[60vh]">
+                        <div className="flex flex-col items-center gap-4">
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                            <p className="text-muted-foreground">Caricamento badge...</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
