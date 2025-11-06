@@ -39,7 +39,6 @@ export default function AchievementsPage() {
                 achiev.json()
             ]);
 
-            console.log('data', data[0]);
             if (data) setAchievements(data[0] as UserBadges[]);
             setLoading(false);
         };
