@@ -41,10 +41,19 @@ export async function GET(
     }
 
     // Flatten events (assicurati che evt_data.datetime sia ISO)
-    const runs = registrations.map((r) => ({
+/*    const runs = registrations.map((r) => ({
         date: parseISO(r.evt_data.datetime),
         distance: r.evt_data.distance,
-    }));
+    }));*/
+
+    const runs = registrations.map((r) => {
+        const evt = r.evt_data as unknown as { distance: number; datetime: string };
+        return {
+            date: parseISO(evt.datetime),
+            distance: evt.distance,
+        };
+    });
+
 
     // Corse totali e distanza
     const totalRuns = runs.length;

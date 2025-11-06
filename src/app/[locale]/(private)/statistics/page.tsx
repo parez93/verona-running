@@ -4,18 +4,17 @@ import {useEffect, useState} from 'react';
 import {motion} from 'framer-motion';
 import {Activity, Flame, TrendingUp} from 'lucide-react';
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
+import {Stats} from "@/types/models/statistics";
 
 export default function StatisticsPage() {
-    const [data, setData] = useState<any>(null);
+    const [data, setData] = useState<Stats | null>(null);
 
     useEffect(() => {
-        const userId = 'USER_ID_HERE'; // <-- sostituire o recuperare da sessione
         fetch(`/api/statistics`)
             .then((res) => res.json())
             .then(r => setData(r))
             .catch(reason => console.log(reason));
     }, []);
-    console.log('---', data);
 
     if (!data) {
         return (
@@ -471,7 +470,7 @@ export default function StatisticsPage() {
                         <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
-                                    <Flame className="h-5 w-5 text-blues-500"/>
+                                    <Flame className="h-5 w-5 text-blue-500"/>
                                     Serie Consecutiva
                                 </CardTitle>
                             </CardHeader>
