@@ -8,7 +8,7 @@ import {
     ChartBar,
     ChevronDown,
     ChevronRight,
-    LayoutPanelLeft,
+    LayoutPanelLeft, Trophy,
     UsersIcon,
 } from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
@@ -87,6 +87,12 @@ export default function Sidebar({
             label: "Badge",
             icon: Award,
             href: ROUTES.badge(),
+        },
+        {
+            id: "leaderboard",
+            label: "Classifica",
+            icon: Trophy,
+            href: ROUTES.leaderboard(),
         },
         {
             id: "stats",
