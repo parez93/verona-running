@@ -1,7 +1,8 @@
 "use server";
 
 import {Event, EventInsert, EventUpdate} from "@/types/models/event";
-import {deleteEvent, eventList, makeEvent, updateEvent} from "@/app/api/eventApi";
+import {deleteEvent, eventList, eventListWithRegistrations, makeEvent, updateEvent} from "@/app/api/eventApi";
+import {deleteRegistration, deleteRegistrationById} from "@/app/api/registrationApi";
 
 
 export async function eventListAct(): Promise<Event[]> {
@@ -39,5 +40,22 @@ export async function deleteEventAct(input: number) {
         throw new Error(result.error)
     }
 
+    return result;
+}
+
+export async function eventListWithRegistrationsAct(): Promise<any[]> {
+    const result = await eventListWithRegistrations();
+    if ("error" in result) {
+        throw new Error(result.error)
+    }
+    return result;
+}
+
+// New: cancella una registrazione (admin)
+export async function deleteRegistrationByIdAct(input: number) {
+    const result = await deleteRegistrationById(input);
+    if ("error" in result) {
+        throw new Error(result.error)
+    }
     return result;
 }

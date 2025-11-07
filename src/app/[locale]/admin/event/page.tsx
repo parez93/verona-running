@@ -1,12 +1,13 @@
+// /app/[locale]/admin/event/page.tsx
 "use client"
 
 import {useEffect, useState} from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
+import {Badge} from "@/components/ui/badge"
+import {Input} from "@/components/ui/input"
+import {Button} from "@/components/ui/button"
+import {Label} from "@/components/ui/label"
+import {Textarea} from "@/components/ui/textarea"
 import {
     Dialog,
     DialogContent,
@@ -15,30 +16,47 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
-import { Search, Calendar, Edit, Trash2, Plus, MapPin, Clock } from "lucide-react"
-import { format } from "date-fns"
-import { it } from "date-fns/locale"
-import { toast } from "sonner"
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
+import {Calendar, Clock, Copy, Edit, MapPin, Plus, Search, Trash2} from "lucide-react"
+import {format} from "date-fns"
+import {it} from "date-fns/locale"
+import {toast} from "sonner"
 import {
     deleteEventAct,
-    eventListAct,
+    deleteRegistrationByIdAct,
+    eventListWithRegistrationsAct,
     makeEventAct,
     updateEventAct
 } from "@/app/[locale]/admin/event/actions";
-import {EventInsert, EventUpdate, Event} from "@/types/models/event";
+import {Event, EventInsert, EventUpdate} from "@/types/models/event";
 
 type DialogMode = "create" | "edit" | null
 
+// Types for registration with user (based on your DB types)
+type RegistrationWithUser = {
+    id: number
+    id_event: number
+    id_user: string
+    created_at: string
+    updated_at: string
+    psn_data?: {
+        id: string
+        name: string
+        surname: string
+        email: string
+        date_of_birth?: string | null
+        img_base64?: string | null
+        is_admin?: boolean
+    }
+}
+
+type EventWithRegs = Event & {
+    registrations?: RegistrationWithUser[]
+    registrations_count?: number
+}
+
 export default function AdminEventPage() {
-    const [events, setEvents] = useState<Event[]>([])
+    const [events, setEvents] = useState<EventWithRegs[]>([])
     const [searchQuery, setSearchQuery] = useState("")
     const [dialogMode, setDialogMode] = useState<DialogMode>(null)
     const [editingEvent, setEditingEvent] = useState<Event | null>(null)
@@ -53,12 +71,17 @@ export default function AdminEventPage() {
         distance: 0
     })
 
+    // Nuovo stato per modale iscritti
+    const [openRegsDialog, setOpenRegsDialog] = useState(false)
+    const [selectedEventForRegs, setSelectedEventForRegs] = useState<EventWithRegs | null>(null)
+    const [selectedEventRegistrations, setSelectedEventRegistrations] = useState<RegistrationWithUser[]>([])
 
-        useEffect(() => {
+    useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const data = await eventListAct()
-                //console.log(data)
+                // Carico tutto in una singola query (eventListWithRegistrationsAct)
+                const data = await eventListWithRegistrationsAct()
+                console.log("events with regs", data)
                 setEvents(data);
             } catch (err) {
                 console.error("Error fetching account", err);
@@ -79,7 +102,7 @@ export default function AdminEventPage() {
     const formatDate = (dateString: string) => {
         try {
             const date = new Date(dateString)
-            return format(date, "dd/MM/yyyy HH:mm", { locale: it })
+            return format(date, "dd/MM/yyyy HH:mm", {locale: it})
         } catch {
             return "N/A"
         }
@@ -129,8 +152,23 @@ export default function AdminEventPage() {
         })
     }
 
+    const handleCopyClick = (event: Event) => {
+        setDialogMode("create")
+        //setEditingEvent(event)
+        setEventForm({
+            title: event.title,
+            img: event.img,
+            datetime: formatDateTimeLocal(event.datetime),
+            info: event.info,
+            route_url: event.route_url,
+            location_url: event.location_url,
+            location_label: event.location_label,
+            distance: event.distance
+        })
+    }
+
     const handleSave = async () => {
-        console.log("handleSave")
+        console.log("handleSave", dialogMode)
         if (!eventForm.title.trim() || !eventForm.img.trim() || !eventForm.datetime || !eventForm.location_label.trim()) {
             toast.error("Compila tutti i campi obbligatori")
             return
@@ -191,7 +229,7 @@ export default function AdminEventPage() {
     const handleDeleteEvent = async (eventId: number, eventTitle: string) => {
         if (confirm(`Sei sicuro di voler eliminare l'evento "${eventTitle}"?`)) {
             const result = await deleteEventAct(eventId);
-            if(result.success) {
+            if (result.success) {
                 setEvents(events.filter(event => event.id !== eventId))
                 toast.success("Evento eliminato con successo")
             }
@@ -203,6 +241,54 @@ export default function AdminEventPage() {
         setEditingEvent(null)
     }
 
+    // --- Registrations modal handlers ---
+    const openRegistrationsForEvent = (event: EventWithRegs) => {
+        setSelectedEventForRegs(event)
+        setSelectedEventRegistrations(event.registrations ?? [])
+        setOpenRegsDialog(true)
+    }
+
+    const closeRegistrationsDialog = () => {
+        setOpenRegsDialog(false)
+        setSelectedEventForRegs(null)
+        setSelectedEventRegistrations([])
+    }
+
+    const handleDeleteRegistration = async (registrationId: number) => {
+        if (!selectedEventForRegs) return
+        if (!confirm("Sei sicuro di voler rimuovere questa iscrizione?")) return
+
+        try {
+            const res = await deleteRegistrationByIdAct(registrationId)
+            console.log('handleDeleteRegistration', res)
+            if (res.success) {
+                // aggiorno lo stato locale: rimuovo registrazione dalla lista e decremento count
+                const updatedRegs = selectedEventRegistrations.filter(r => r.id !== registrationId)
+                setSelectedEventRegistrations(updatedRegs)
+
+                // aggiorno anche la lista eventi principale
+                setEvents(prev => prev.map(ev => {
+                    if (ev.id === selectedEventForRegs.id) {
+                        const newRegs = (ev.registrations ?? []).filter((r: any) => r.id !== registrationId)
+                        return {
+                            ...ev,
+                            registrations: newRegs,
+                            registrations_count: newRegs.length
+                        }
+                    }
+                    return ev
+                }))
+
+                toast.success("Iscrizione rimossa")
+            } else {
+                toast.error("Errore nella rimozione")
+            }
+        } catch (err: any) {
+            console.error(err)
+            toast.error("Errore di rete")
+        }
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
             {/* Header */}
@@ -211,7 +297,7 @@ export default function AdminEventPage() {
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                                <Calendar className="h-5 w-5 text-primary" />
+                                <Calendar className="h-5 w-5 text-primary"/>
                             </div>
                             <div>
                                 <h1 className="text-2xl sm:text-3xl font-bold">Gestione Eventi</h1>
@@ -219,7 +305,7 @@ export default function AdminEventPage() {
                             </div>
                         </div>
                         <Button onClick={handleCreateClick} className="gap-2">
-                            <Plus className="h-4 w-4" />
+                            <Plus className="h-4 w-4"/>
                             <span className="hidden sm:inline">Nuovo Evento</span>
                         </Button>
                     </div>
@@ -233,7 +319,7 @@ export default function AdminEventPage() {
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Totale Eventi</CardTitle>
-                            <Calendar className="h-4 w-4 text-muted-foreground" />
+                            <Calendar className="h-4 w-4 text-muted-foreground"/>
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{events.length}</div>
@@ -244,7 +330,7 @@ export default function AdminEventPage() {
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Prossimi Eventi</CardTitle>
-                            <Clock className="h-4 w-4 text-muted-foreground" />
+                            <Clock className="h-4 w-4 text-muted-foreground"/>
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{upcomingEvents.length}</div>
@@ -255,7 +341,7 @@ export default function AdminEventPage() {
                     <Card className="sm:col-span-2 lg:col-span-1">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Risultati Ricerca</CardTitle>
-                            <Search className="h-4 w-4 text-muted-foreground" />
+                            <Search className="h-4 w-4 text-muted-foreground"/>
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{filteredEvents.length}</div>
@@ -268,7 +354,7 @@ export default function AdminEventPage() {
                 <Card className="mb-6">
                     <CardContent className="pt-6">
                         <div className="relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"/>
                             <Input
                                 type="text"
                                 placeholder="Cerca per titolo, luogo o descrizione..."
@@ -291,6 +377,7 @@ export default function AdminEventPage() {
                                         <TableHead>Titolo</TableHead>
                                         <TableHead>Data e Ora</TableHead>
                                         <TableHead>Luogo</TableHead>
+                                        <TableHead>Iscritti</TableHead>
                                         <TableHead>Stato</TableHead>
                                         <TableHead className="text-right">Azioni</TableHead>
                                     </TableRow>
@@ -298,7 +385,7 @@ export default function AdminEventPage() {
                                 <TableBody>
                                     {filteredEvents.length === 0 ? (
                                         <TableRow>
-                                            <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                                            <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                                                 Nessun evento trovato
                                             </TableCell>
                                         </TableRow>
@@ -318,13 +405,27 @@ export default function AdminEventPage() {
                                                 </TableCell>
                                                 <TableCell className="max-w-[200px] truncate">
                                                     <div className="flex items-center gap-1">
-                                                        <MapPin className="h-3 w-3 flex-shrink-0" />
+                                                        <MapPin className="h-3 w-3 flex-shrink-0"/>
                                                         <span>{event.location_label}</span>
                                                     </div>
                                                 </TableCell>
+
+                                                {/* Nuova colonna iscritti */}
+                                                <TableCell>
+                                                    <Badge variant="outline">
+                                                        <button
+                                                            className="text-sm font-medium"
+                                                            onClick={() => openRegistrationsForEvent(event)}
+                                                        >
+                                                            {event.registrations_count ?? (event.registrations ? event.registrations.length : 0)}
+                                                        </button>
+                                                    </Badge>
+                                                </TableCell>
+
                                                 <TableCell>
                                                     {isUpcoming(event.datetime) ? (
-                                                        <Badge className="bg-green-600 hover:bg-green-700">Futuro</Badge>
+                                                        <Badge
+                                                            className="bg-green-600 hover:bg-green-700">Futuro</Badge>
                                                     ) : (
                                                         <Badge variant="outline">Passato</Badge>
                                                     )}
@@ -334,9 +435,16 @@ export default function AdminEventPage() {
                                                         <Button
                                                             size="sm"
                                                             variant="ghost"
+                                                            onClick={() => handleCopyClick(event)}
+                                                        >
+                                                            <Copy className="h-4 w-4"/>
+                                                        </Button>
+                                                        <Button
+                                                            size="sm"
+                                                            variant="ghost"
                                                             onClick={() => handleEditClick(event)}
                                                         >
-                                                            <Edit className="h-4 w-4" />
+                                                            <Edit className="h-4 w-4"/>
                                                         </Button>
                                                         <Button
                                                             size="sm"
@@ -344,7 +452,7 @@ export default function AdminEventPage() {
                                                             className="text-destructive hover:text-destructive"
                                                             onClick={() => handleDeleteEvent(event.id, event.title)}
                                                         >
-                                                            <Trash2 className="h-4 w-4" />
+                                                            <Trash2 className="h-4 w-4"/>
                                                         </Button>
                                                     </div>
                                                 </TableCell>
@@ -385,12 +493,27 @@ export default function AdminEventPage() {
 
                                     <div className="space-y-2 mb-4">
                                         <div className="flex items-center gap-2 text-sm">
-                                            <Calendar className="h-4 w-4 text-muted-foreground" />
+                                            <Calendar className="h-4 w-4 text-muted-foreground"/>
                                             <span>{formatDate(event.datetime)}</span>
                                         </div>
                                         <div className="flex items-start gap-2 text-sm">
-                                            <MapPin className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+                                            <MapPin className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5"/>
                                             <span className="line-clamp-1">{event.location_label}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-2 mb-2 items-center">
+                                        <div>
+                                            <span className="text-sm font-medium">Iscritti: </span>
+
+                                            <Badge variant="outline">
+                                                <button
+                                                    className="text-sm font-medium"
+                                                    onClick={() => openRegistrationsForEvent(event)}
+                                                >
+                                                    {event.registrations_count ?? (event.registrations ? event.registrations.length : 0)}
+                                                </button>
+                                            </Badge>
                                         </div>
                                     </div>
 
@@ -399,9 +522,18 @@ export default function AdminEventPage() {
                                             size="sm"
                                             variant="outline"
                                             className="flex-1"
+                                            onClick={() => handleCopyClick(event)}
+                                        >
+                                            <Copy className="h-4 w-4 mr-2"/>
+                                            Copia
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            className="flex-1"
                                             onClick={() => handleEditClick(event)}
                                         >
-                                            <Edit className="h-4 w-4 mr-2" />
+                                            <Edit className="h-4 w-4 mr-2"/>
                                             Modifica
                                         </Button>
                                         <Button
@@ -410,7 +542,7 @@ export default function AdminEventPage() {
                                             className="flex-1 text-destructive hover:text-destructive"
                                             onClick={() => handleDeleteEvent(event.id, event.title)}
                                         >
-                                            <Trash2 className="h-4 w-4 mr-2" />
+                                            <Trash2 className="h-4 w-4 mr-2"/>
                                             Elimina
                                         </Button>
                                     </div>
@@ -440,7 +572,7 @@ export default function AdminEventPage() {
                             <Input
                                 id="title"
                                 value={eventForm.title}
-                                onChange={(e) => setEventForm({ ...eventForm, title: e.target.value })}
+                                onChange={(e) => setEventForm({...eventForm, title: e.target.value})}
                                 placeholder="Es: 5km Run"
                             />
                         </div>
@@ -450,7 +582,7 @@ export default function AdminEventPage() {
                             <Input
                                 id="img"
                                 value={eventForm.img}
-                                onChange={(e) => setEventForm({ ...eventForm, img: e.target.value })}
+                                onChange={(e) => setEventForm({...eventForm, img: e.target.value})}
                                 placeholder="https://..."
                             />
                         </div>
@@ -461,7 +593,7 @@ export default function AdminEventPage() {
                                 id="datetime"
                                 type="datetime-local"
                                 value={eventForm.datetime}
-                                onChange={(e) => setEventForm({ ...eventForm, datetime: e.target.value })}
+                                onChange={(e) => setEventForm({...eventForm, datetime: e.target.value})}
                             />
                         </div>
 
@@ -471,7 +603,7 @@ export default function AdminEventPage() {
                                 id="distance"
                                 type="number"
                                 value={eventForm.distance}
-                                onChange={(e) => setEventForm({ ...eventForm, distance: Number(e.target.value) })}
+                                onChange={(e) => setEventForm({...eventForm, distance: Number(e.target.value)})}
                             />
                         </div>
 
@@ -480,7 +612,7 @@ export default function AdminEventPage() {
                             <Input
                                 id="location_label"
                                 value={eventForm.location_label}
-                                onChange={(e) => setEventForm({ ...eventForm, location_label: e.target.value })}
+                                onChange={(e) => setEventForm({...eventForm, location_label: e.target.value})}
                                 placeholder="Es: Parco Santa Croce - Verona"
                             />
                         </div>
@@ -490,7 +622,7 @@ export default function AdminEventPage() {
                             <Input
                                 id="location_url"
                                 value={eventForm.location_url}
-                                onChange={(e) => setEventForm({ ...eventForm, location_url: e.target.value })}
+                                onChange={(e) => setEventForm({...eventForm, location_url: e.target.value})}
                                 placeholder="https://maps.app.goo.gl/..."
                             />
                         </div>
@@ -500,7 +632,7 @@ export default function AdminEventPage() {
                             <Input
                                 id="route_url"
                                 value={eventForm.route_url}
-                                onChange={(e) => setEventForm({ ...eventForm, route_url: e.target.value })}
+                                onChange={(e) => setEventForm({...eventForm, route_url: e.target.value})}
                                 placeholder="https://connect.garmin.com/..."
                             />
                         </div>
@@ -510,7 +642,7 @@ export default function AdminEventPage() {
                             <Textarea
                                 id="info"
                                 value={eventForm.info}
-                                onChange={(e) => setEventForm({ ...eventForm, info: e.target.value })}
+                                onChange={(e) => setEventForm({...eventForm, info: e.target.value})}
                                 placeholder="**VRunners:** Descrizione dell'evento..."
                                 rows={6}
                                 className="font-mono text-sm"
@@ -524,6 +656,82 @@ export default function AdminEventPage() {
                         <Button onClick={handleSave}>
                             {dialogMode === "create" ? "Crea Evento" : "Salva Modifiche"}
                         </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* Registrations Dialog */}
+            <Dialog open={openRegsDialog} onOpenChange={(open) => !open && closeRegistrationsDialog()}>
+                <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                        <DialogTitle>
+                            {selectedEventForRegs ? `Iscritti: ${selectedEventForRegs.title}` : "Iscritti"}
+                        </DialogTitle>
+                        <DialogDescription>
+                            Lista degli utenti iscritti.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="py-4">
+                        {selectedEventRegistrations.length === 0 ? (
+                            <div className="text-center py-8 text-muted-foreground">Nessuna iscrizione</div>
+                        ) : (
+                            <div className="space-y-3">
+                                {selectedEventRegistrations.map((reg) => (
+                                    <Card key={reg.id}>
+                                        <CardContent className="flex items-center justify-between gap-4">
+                                            <div className="flex items-center gap-4">
+                                                {reg.psn_data?.img_base64 ? (
+                                                    <img
+                                                        src={`data:image/png;base64,${reg.psn_data.img_base64}`}
+                                                        alt={`${reg.psn_data.name} ${reg.psn_data.surname}`}
+                                                        className="w-12 h-12 rounded-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <div
+                                                        className="w-12 h-12 rounded-full bg-muted-foreground/30 flex items-center justify-center">
+                                                        <span className="text-sm font-medium">
+                                                            {reg.psn_data ? reg.psn_data.name?.[0] ?? "?" : "?"}
+                                                        </span>
+                                                    </div>
+                                                )}
+
+                                                <div>
+                                                    <div className="font-medium">
+                                                        {reg.psn_data?.name} {reg.psn_data?.surname}
+                                                    </div>
+                                                    <div className="text-xs text-muted-foreground">
+                                                        {reg.psn_data?.email}
+                                                    </div>
+                                                    <div className="text-xs text-muted-foreground">
+                                                        ID: {reg.psn_data?.id}
+                                                    </div>
+                                                    {reg.created_at && (
+                                                        <div className="text-xs text-muted-foreground">
+                                                            Iscritto il: {formatDate(reg.created_at)}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center gap-2">
+                                                <Button
+                                                    size="sm"
+                                                    variant="destructive"
+                                                    onClick={() => handleDeleteRegistration(reg.id)}
+                                                >
+                                                    Rimuovi
+                                                </Button>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    <DialogFooter>
+                        <Button variant="outline" onClick={closeRegistrationsDialog}>Chiudi</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
