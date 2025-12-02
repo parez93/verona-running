@@ -10,11 +10,12 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
-import {Globe, LogOut, Menu, User} from "lucide-react";
+import {Badge, Bell, Globe, LogOut, Menu, User} from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
 import {ROUTES} from "@/lib/kRoutes";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import { useLocale } from "next-intl";
+import {useLocale} from "next-intl";
+import {NotificationPanel} from "@/components/notification/NotificationPanel";
 
 interface HeaderProps {
     title?: string,
@@ -151,15 +152,15 @@ export default function Header({
                                 size="sm"
                                 className="hidden sm:flex h-9 w-9 p-0 hover:bg-muted transition-colors duration-200"
                             >
-                                <Globe className="h-4 w-4 text-muted-foreground" />
+                                <Globe className="h-4 w-4 text-muted-foreground"/>
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-40">
                             <DropdownMenuLabel>Language</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
+                            <DropdownMenuSeparator/>
                             <DropdownMenuItem onClick={() => changeLanguage('it')}>🇮🇹 Italiano</DropdownMenuItem>
                             <DropdownMenuItem onClick={() => changeLanguage('en')}>🇺🇸 English</DropdownMenuItem>
-{/*                            <DropdownMenuItem>🇪🇸 Español</DropdownMenuItem>
+                            {/*                            <DropdownMenuItem>🇪🇸 Español</DropdownMenuItem>
                             <DropdownMenuItem>🇫🇷 Français</DropdownMenuItem>
                             <DropdownMenuItem>🇩🇪 Deutsch</DropdownMenuItem>*/}
                         </DropdownMenuContent>
@@ -180,42 +181,13 @@ export default function Header({
                         )}
                     </Button>*/}
 
-                    {/* Notifications */}
-                    {/*                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                className="relative h-9 w-9 p-0 hover:bg-muted transition-colors duration-200"
-                            >
-                                <Bell className="h-4 w-4 text-muted-foreground" />
-                                {notificationCount > 0 && (
-                                    <Badge
-                                        variant="destructive"
-                                        className="absolute -top-1 -right-1 h-4 w-4 md:h-5 md:w-5 rounded-full p-0 text-xs flex items-center justify-center"
-                                    >
-                                        {notificationCount > 9 ? '9+' : notificationCount}
-                                    </Badge>
-                                )}
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-72 md:w-80">
-                            <DropdownMenuLabel>Notifications</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="flex flex-col items-start p-3">
-                                <div className="font-medium">New message received</div>
-                                <div className="text-sm text-muted-foreground">2 minutes ago</div>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="flex flex-col items-start p-3">
-                                <div className="font-medium">Profile updated successfully</div>
-                                <div className="text-sm text-muted-foreground">1 hour ago</div>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="flex flex-col items-start p-3">
-                                <div className="font-medium">Security alert</div>
-                                <div className="text-sm text-muted-foreground">3 hours ago</div>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>*/}
+
+                    {/* Navigation Links + Notifications */}
+                    <div className="pe-3">
+                        <NotificationPanel/>
+                    </div>
+
+
 
                     {/* User Avatar Dropdown */}
                     <DropdownMenu>
