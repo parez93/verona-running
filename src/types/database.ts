@@ -93,6 +93,183 @@ export type Database = {
             referencedRelation: "psn_data"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "evt_registration_id_user_fkey"
+            columns: ["id_user"]
+            isOneToOne: false
+            referencedRelation: "vw_user_gamification"
+            referencedColumns: ["id_user"]
+          },
+        ]
+      }
+      gam_badge: {
+        Row: {
+          category: string
+          condition_sql: string
+          created_at: string | null
+          description: string | null
+          icon: string
+          id: number
+          name: string
+          points: number
+          tier: string | null
+        }
+        Insert: {
+          category: string
+          condition_sql: string
+          created_at?: string | null
+          description?: string | null
+          icon: string
+          id?: number
+          name: string
+          points?: number
+          tier?: string | null
+        }
+        Update: {
+          category?: string
+          condition_sql?: string
+          created_at?: string | null
+          description?: string | null
+          icon?: string
+          id?: number
+          name?: string
+          points?: number
+          tier?: string | null
+        }
+        Relationships: []
+      }
+      gam_user_badge: {
+        Row: {
+          id: number
+          id_badge: number | null
+          id_user: string | null
+          progress: number | null
+          unlocked: boolean | null
+          unlocked_at: string | null
+        }
+        Insert: {
+          id?: number
+          id_badge?: number | null
+          id_user?: string | null
+          progress?: number | null
+          unlocked?: boolean | null
+          unlocked_at?: string | null
+        }
+        Update: {
+          id?: number
+          id_badge?: number | null
+          id_user?: string | null
+          progress?: number | null
+          unlocked?: boolean | null
+          unlocked_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gam_user_badge_id_user_fkey"
+            columns: ["id_user"]
+            isOneToOne: false
+            referencedRelation: "psn_data"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gam_user_badge_id_user_fkey"
+            columns: ["id_user"]
+            isOneToOne: false
+            referencedRelation: "vw_user_gamification"
+            referencedColumns: ["id_user"]
+          },
+        ]
+      }
+      ntf_notification: {
+        Row: {
+          action_url: string | null
+          assign_to_all: boolean
+          created_at: string
+          icon: string | null
+          id: number
+          message: string
+          meta: Json | null
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          action_url?: string | null
+          assign_to_all?: boolean
+          created_at?: string
+          icon?: string | null
+          id?: number
+          message: string
+          meta?: Json | null
+          title: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          action_url?: string | null
+          assign_to_all?: boolean
+          created_at?: string
+          icon?: string | null
+          id?: number
+          message?: string
+          meta?: Json | null
+          title?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ntf_view: {
+        Row: {
+          id: number
+          is_read: boolean
+          ntf_id: number
+          psn_id: string
+          viewed_at: string
+        }
+        Insert: {
+          id?: number
+          is_read?: boolean
+          ntf_id: number
+          psn_id: string
+          viewed_at?: string
+        }
+        Update: {
+          id?: number
+          is_read?: boolean
+          ntf_id?: number
+          psn_id?: string
+          viewed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ntf_view_ntf_id_fkey"
+            columns: ["ntf_id"]
+            isOneToOne: false
+            referencedRelation: "ntf_notification"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ntf_view_ntf_id_fkey"
+            columns: ["ntf_id"]
+            isOneToOne: false
+            referencedRelation: "view_ntf_for_user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ntf_view_psn_id_fkey"
+            columns: ["psn_id"]
+            isOneToOne: false
+            referencedRelation: "psn_data"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ntf_view_psn_id_fkey"
+            columns: ["psn_id"]
+            isOneToOne: false
+            referencedRelation: "vw_user_gamification"
+            referencedColumns: ["id_user"]
+          },
         ]
       }
       psn_data: {
@@ -125,6 +302,71 @@ export type Database = {
           is_admin?: boolean
           name?: string
           surname?: string
+        }
+        Relationships: []
+      }
+      psn_ntf: {
+        Row: {
+          created_at: string
+          id: number
+          ntf_id: number
+          psn_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          ntf_id: number
+          psn_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          ntf_id?: number
+          psn_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "psn_ntf_ntf_id_fkey"
+            columns: ["ntf_id"]
+            isOneToOne: false
+            referencedRelation: "ntf_notification"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "psn_ntf_ntf_id_fkey"
+            columns: ["ntf_id"]
+            isOneToOne: false
+            referencedRelation: "view_ntf_for_user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "psn_ntf_psn_id_fkey"
+            columns: ["psn_id"]
+            isOneToOne: false
+            referencedRelation: "psn_data"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "psn_ntf_psn_id_fkey"
+            columns: ["psn_id"]
+            isOneToOne: false
+            referencedRelation: "vw_user_gamification"
+            referencedColumns: ["id_user"]
+          },
+        ]
+      }
+      psn_roles: {
+        Row: {
+          is_admin: boolean
+          user_id: string
+        }
+        Insert: {
+          is_admin?: boolean
+          user_id: string
+        }
+        Update: {
+          is_admin?: boolean
+          user_id?: string
         }
         Relationships: []
       }
@@ -166,10 +408,87 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      view_ntf_for_user: {
+        Row: {
+          action_url: string | null
+          assign_to_all: boolean | null
+          assigned_psn_id: string | null
+          created_at: string | null
+          icon: string | null
+          id: number | null
+          is_read: boolean | null
+          message: string | null
+          meta: Json | null
+          title: string | null
+          type: string | null
+          updated_at: string | null
+          viewed_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "psn_ntf_psn_id_fkey"
+            columns: ["assigned_psn_id"]
+            isOneToOne: false
+            referencedRelation: "psn_data"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "psn_ntf_psn_id_fkey"
+            columns: ["assigned_psn_id"]
+            isOneToOne: false
+            referencedRelation: "vw_user_gamification"
+            referencedColumns: ["id_user"]
+          },
+        ]
+      }
+      vw_user_badges: {
+        Row: {
+          description: string | null
+          icon: string | null
+          id: number | null
+          id_user: string | null
+          name: string | null
+          points: number | null
+          progress: number | null
+          tier: string | null
+          unlocked: boolean | null
+          unlocked_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gam_user_badge_id_user_fkey"
+            columns: ["id_user"]
+            isOneToOne: false
+            referencedRelation: "psn_data"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gam_user_badge_id_user_fkey"
+            columns: ["id_user"]
+            isOneToOne: false
+            referencedRelation: "vw_user_gamification"
+            referencedColumns: ["id_user"]
+          },
+        ]
+      }
+      vw_user_gamification: {
+        Row: {
+          id_user: string | null
+          img_base64: string | null
+          level: number | null
+          level_color: string | null
+          level_icon: string | null
+          name: string | null
+          surname: string | null
+          total_xp: number | null
+          unlocked_badges: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      update_user_badge: { Args: never; Returns: undefined }
+      update_user_badges: { Args: never; Returns: undefined }
     }
     Enums: {
       [_ in never]: never

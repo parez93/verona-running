@@ -1,36 +1,78 @@
 "use client"
 
-import { useState } from "react"
-import {Bell, X, Check, Badge} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { NotificationItem_tmp } from "./NotificationItem_tmp"
-import { mockNotifications, getUnreadCount, Notification } from "@/lib/mockNotifications"
-import { useRouter } from "next/navigation"
+import {useEffect, useState} from "react"
+import {Bell, Check, X} from "lucide-react"
+import {Button} from "@/components/ui/button"
+import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover"
+import {ScrollArea} from "@/components/ui/scroll-area"
+import {NotificationItem} from "./NotificationItem"
+import {useRouter} from "next/navigation"
 import {ROUTES} from "@/lib/kRoutes";
+import {Notification} from "@/types/models/notification";
+
 
 export function NotificationPanel() {
-    const [notifications, setNotifications] = useState<Notification[]>(mockNotifications)
+    /*
+        const [notifications, setNotifications] = useState<Notification[]>(mockNotifications)
+    */
     const [open, setOpen] = useState(false)
     const router = useRouter()
 
-    const unreadCount = getUnreadCount(notifications)
 
-    const handleMarkAsRead = (id: number) => {
-        setNotifications(prev =>
-            prev.map(n => n.id === id ? { ...n, read: true } : n)
-        )
+    const [notifications, setNotifications] = useState<Notification[]>([])
+    // --------------------------
+    // GET list
+    // --------------------------
+    const fetchNotifications = async () => {
+        try {
+            const res = await fetch(`/api/notifications`)
+            console.log(res)
+            const json = await res.json()
+            if (json?.data) {
+                setNotifications(json.data)
+            }
+            console.log(json.data)
+        } finally {
+        }
     }
 
-    const handleMarkAllAsRead = () => {
-        setNotifications(prev =>
-            prev.map(n => ({ ...n, read: true }))
-        )
+    useEffect(() => {
+        fetchNotifications()
+    }, [])
+
+
+    function getUnreadCount(notifications: Notification[]): number {
+        return notifications.filter(n => !n.isRead).length
+    }
+
+    const unreadCount = getUnreadCount(notifications)
+
+    const handleMarkAsRead = async (id: number) => {
+        try {
+            await fetch(`/api/notifications/${id}`, {
+                method: "PATCH",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({})
+            })
+
+            setNotifications(prev =>
+                prev.map(n => n.id === id ? {...n, isRead: true} : n)
+            )
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    const handleMarkAllAsRead = async () => {
+        try {
+            await fetch(`/api/notifications`, {method: "PATCH"})
+
+            setNotifications(prev =>
+                prev.map(n => ({...n, isRead: true}))
+            )
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     const handleClearAll = () => {
@@ -45,9 +87,10 @@ export function NotificationPanel() {
                     size="icon"
                     className="relative hover:bg-accent/50"
                 >
-                    <Bell className="h-5 w-5" />
+                    <Bell className="h-5 w-5"/>
                     {unreadCount > 0 && (
-                        <span className="absolute -top-1 -right-1 bg-[#e67e22] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                        <span
+                            className="absolute -top-1 -right-1 bg-[#e67e22] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
 
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
@@ -78,7 +121,7 @@ export function NotificationPanel() {
                                 onClick={handleMarkAllAsRead}
                                 className="text-xs"
                             >
-                                <Check className="h-4 w-4 mr-1" />
+                                <Check className="h-4 w-4 mr-1"/>
                                 Segna tutto letto
                             </Button>
                         )}
@@ -89,7 +132,7 @@ export function NotificationPanel() {
                                 onClick={handleClearAll}
                                 className="h-8 w-8"
                             >
-                                <X className="h-4 w-4" />
+                                <X className="h-4 w-4"/>
                             </Button>
                         )}
                     </div>
@@ -98,7 +141,7 @@ export function NotificationPanel() {
                 {/* Notifications List */}
                 {notifications.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-12 px-4">
-                        <Bell className="h-12 w-12 text-muted-foreground/50 mb-3" />
+                        <Bell className="h-12 w-12 text-muted-foreground/50 mb-3"/>
                         <p className="text-sm text-muted-foreground text-center">
                             Nessuna notifica al momento
                         </p>
@@ -107,7 +150,7 @@ export function NotificationPanel() {
                     <ScrollArea className="h-[400px]">
                         <div className="p-2 space-y-1">
                             {notifications.map((notification) => (
-                                <NotificationItem_tmp
+                                <NotificationItem
                                     key={notification.id}
                                     notification={notification}
                                     onMarkAsRead={handleMarkAsRead}

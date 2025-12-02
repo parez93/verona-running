@@ -61,7 +61,9 @@ interface Notification {
     actionUrl?: string | null
     assignedTo: "all" | string[] // "all" o array di user IDs
     assignedUsers?: User[] // populated from admin-list
-    viewedBy: { psn_id: string, is_read: boolean, viewed_at: string, psn_data?: User }[] // raw from backend
+    viewedBy: {
+        userId: string,
+        psn_id: string, is_read: boolean, viewed_at: string, psn_data?: User }[] // raw from backend
     // meta and other DB fields preserved
     [key: string]: any
 }
@@ -395,6 +397,7 @@ export default function AdminNotifichePage() {
                 viewedBy: (json?.viewedBy ?? []).map((v: any) => ({ userId: v.id ?? v.psn_id, viewedAt: v.viewedAt ?? v.viewed_at })) // normalize
             }
             setViewingNotification(mapped as Notification)
+            console.log('setViewingNotification', mapped)
         } catch (err: any) {
             console.error("handleViewClick", err)
             toast.error("Impossibile caricare i dettagli della notifica")
@@ -1329,10 +1332,10 @@ export default function AdminNotifichePage() {
                                 ) : (
                                     <div className="border rounded-lg divide-y">
                                         {viewingNotification.viewedBy.map((view) => {
-                                            const user = getUserById(view.psn_id)
+                                            const user = getUserById(view.userId)
                                             if (!user) return null
                                             return (
-                                                <div key={view.psn_id} className="p-3 flex items-center gap-3">
+                                                <div key={view.userId} className="p-3 flex items-center gap-3">
                                                     <Avatar className="h-10 w-10">
                                                         <AvatarImage src={user.img_base64} />
                                                         <AvatarFallback>
@@ -1361,7 +1364,7 @@ export default function AdminNotifichePage() {
                                     <Label>Utenti che non hanno ancora visualizzato ({users.length - viewingNotification.viewedBy.length})</Label>
                                     <div className="border rounded-lg divide-y max-h-[200px] overflow-y-auto">
                                         {users
-                                            .filter(user => !viewingNotification.viewedBy.some(v => v.psn_id === user.id))
+                                            .filter(user => !viewingNotification.viewedBy.some(v => v.userId === user.id))
                                             .map((user) => (
                                                 <div key={user.id} className="p-3 flex items-center gap-3">
                                                     <Avatar className="h-10 w-10">
@@ -1390,7 +1393,7 @@ export default function AdminNotifichePage() {
                                 <div className="space-y-2">
                                     <Label>Utenti assegnati non ancora visualizzato</Label>
                                     {viewingNotification.assignedTo.filter(userId =>
-                                        !viewingNotification.viewedBy.some(v => v.psn_id === userId)
+                                        !viewingNotification.viewedBy.some(v => v.userId === userId)
                                     ).length === 0 ? (
                                         <Card>
                                             <CardContent className="p-4 text-center text-sm text-muted-foreground">
@@ -1400,7 +1403,7 @@ export default function AdminNotifichePage() {
                                     ) : (
                                         <div className="border rounded-lg divide-y">
                                             {viewingNotification.assignedTo
-                                                .filter(userId => !viewingNotification.viewedBy.some(v => v.psn_id === userId))
+                                                .filter(userId => !viewingNotification.viewedBy.some(v => v.userId === userId))
                                                 .map((userId) => {
                                                     const user = getUserById(userId)
                                                     if (!user) return null
