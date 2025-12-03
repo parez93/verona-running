@@ -20,6 +20,42 @@ export async function GET(request: NextRequest) {
 
         const offset = (page - 1) * perPage;
 
+        // ---------------------------------------------------------
+        // 1️⃣ QUERY: totalCount (nessun filtro, nessuna paginazione)
+        // ---------------------------------------------------------
+        const { count: totalCount, error: totalErr } = await supabase
+            .from("ntf_notification")
+            .select("*", { count: "exact", head: true });
+
+        if (totalErr) throw totalErr;
+
+        // ---------------------------------------------------------
+        // 2️⃣ QUERY: filteredCount (con filtri, senza paginazione)
+        // ---------------------------------------------------------
+        let filteredBuilder = supabase
+            .from("ntf_notification")
+            .select("id", { count: "exact", head: true });
+
+        if (q) filteredBuilder = filteredBuilder.ilike("title", `%${q}%`);
+        if (type) filteredBuilder = filteredBuilder.eq("type", type);
+
+        if (assignedTo) {
+            filteredBuilder = filteredBuilder.contains("psn_ntf.psn_id", [assignedTo]);
+        }
+
+        if (readFilter === "read") {
+            filteredBuilder = filteredBuilder.filter("ntf_view.is_read", "eq", true);
+        }
+        if (readFilter === "unread") {
+            filteredBuilder = filteredBuilder.filter("ntf_view.is_read", "eq", false);
+        }
+
+        const { count: filteredCount, error: filteredErr } = await filteredBuilder;
+        if (filteredErr) throw filteredErr;
+
+        // ---------------------------------------------------------
+        // 3️⃣ QUERY: DATA PAGINATA (i tuoi dati attuali)
+        // ---------------------------------------------------------
         let builder = supabase
             .from("ntf_notification")
             .select(`
@@ -45,7 +81,7 @@ export async function GET(request: NextRequest) {
             builder = builder.filter("ntf_view.is_read", "eq", false);
         }
 
-        const { data, error, count } = await builder;
+        const { data, error } = await builder;
         if (error) throw error;
 
         const mapped = (data || []).map(n => {
@@ -68,15 +104,18 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json({
             data: mapped,
-            count,
             page,
             perPage,
+            filteredCount,
+            totalCount,
         });
+
     } catch (err: any) {
         console.error("GET /api/notifications/admin error", err);
         return NextResponse.json({ error: err?.message ?? "Internal error" }, { status: 500 });
     }
 }
+
 
 export async function POST(request: NextRequest) {
     try {

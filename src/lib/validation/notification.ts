@@ -2,7 +2,7 @@
 import { z } from "zod";
 
 export const NotificationCreateSchema = z.object({
-    type: z.enum(["badge", "event", "challenge", "leaderboard", "achievement"]),
+    type: z.enum(["badge", "event", "challenge", "leaderboard", "software", "achievement"]),
     title: z.string().min(1),
     message: z.string().min(1),
     icon: z.string().optional().nullable(),

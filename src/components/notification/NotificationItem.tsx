@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { Trophy, Calendar, Target, TrendingUp, Award } from "lucide-react"
+import {Trophy, Calendar, Target, TrendingUp, Award, ArrowUpCircle} from "lucide-react"
 
 interface NotificationItemProps {
     notification: any
@@ -34,6 +34,8 @@ export function NotificationItem({ notification, onMarkAsRead, onClose }: Notifi
                 return <Target className="h-5 w-5 text-[#e67e22]" />
             case "leaderboard":
                 return <TrendingUp className="h-5 w-5 text-[#1e3a5f]" />
+            case "software":
+                return <ArrowUpCircle className="h-5 w-5 text-red-600" />
             default:
                 return <Award className="h-5 w-5 text-[#e67e22]" />
         }
@@ -52,7 +54,7 @@ export function NotificationItem({ notification, onMarkAsRead, onClose }: Notifi
             <div className="flex-shrink-0 mt-1">
                 <div className={`
           p-2 rounded-full
-          ${notification.type === "badge" || notification.type === "achievement"
+          ${notification.type === "badge" || notification.type === "achievement" || notification.type === "software"
                     ? "bg-[#e67e22]/10"
                     : "bg-[#1e3a5f]/10"}
         `}>

@@ -52,7 +52,7 @@ interface NotificationView {
 
 interface Notification {
     id: number
-    type: "badge" | "event" | "challenge" | "leaderboard" | "achievement"
+    type: "badge" | "event" | "challenge" | "leaderboard" | "achievement" | "software"
     title: string
     message: string
     timestamp: string // ISO string
@@ -73,13 +73,14 @@ type DialogMode = "create" | "edit" | null
 type SortField = "date" | "title" | "type" | "views" | "status"
 type SortDirection = "asc" | "desc"
 
-const notificationTypes = ["badge", "event", "challenge", "leaderboard", "achievement"] as const
+const notificationTypes = ["badge", "event", "challenge", "leaderboard", "software", "achievement"] as const
 const typeLabels: Record<typeof notificationTypes[number], string> = {
     badge: "Badge",
     event: "Evento",
     challenge: "Sfida",
     leaderboard: "Classifica",
-    achievement: "Achievement"
+    achievement: "Achievement",
+    software: "Novità"
 }
 
 const typeColors: Record<typeof notificationTypes[number], string> = {
@@ -87,7 +88,8 @@ const typeColors: Record<typeof notificationTypes[number], string> = {
     event: "bg-blue-600",
     challenge: "bg-purple-600",
     leaderboard: "bg-green-600",
-    achievement: "bg-yellow-600"
+    achievement: "bg-yellow-600",
+    software: "bg-red-600"
 }
 
 // ------------------------------
@@ -117,6 +119,8 @@ export default function AdminNotifichePage() {
     // Paginazione
     const [currentPage, setCurrentPage] = useState(1)
     const [itemsPerPage, setItemsPerPage] = useState(10)
+
+    const [totalCount, setTotalCount] = useState(0)
 
     // Ordinamento
     const [sortField, setSortField] = useState<SortField>("date")
@@ -224,9 +228,11 @@ export default function AdminNotifichePage() {
                 meta: n.meta ?? {}
             })) as Notification[]
 
+            console.log(json)
             setNotifications(mapped)
-            // reset pagination to provided page
+            // reset pagination to provided pages
             setCurrentPage(json?.page ?? page)
+            setTotalCount(json.totalCount)
         } catch (err: any) {
             console.error("fetchNotifications", err)
             toast.error("Impossibile caricare le notifiche")
@@ -241,6 +247,10 @@ export default function AdminNotifichePage() {
         fetchNotifications({ page: 1, perPage: itemsPerPage })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useEffect(() => {
+        fetchNotifications({ page: currentPage, perPage: itemsPerPage })
+    }, [currentPage])
 
     // Ricarica quando cambiano filtri/pagina/perPage/search
     useEffect(() => {
@@ -302,10 +312,13 @@ export default function AdminNotifichePage() {
     })
 
     // Paginazione client (UI)
-    const totalPages = Math.ceil(sortedNotifications.length / itemsPerPage || 1)
+    const totalPages = Math.ceil(totalCount / itemsPerPage || 1)
     const startIndex = (currentPage - 1) * itemsPerPage
     const endIndex = startIndex + itemsPerPage
+/*
     const paginatedNotifications = sortedNotifications.slice(startIndex, endIndex)
+*/
+    const paginatedNotifications = sortedNotifications
 
     const unreadCount = notifications.filter(n => !(n.meta?.admin_read ?? (n.viewedBy && n.viewedBy.length > 0))).length
 
@@ -331,6 +344,7 @@ export default function AdminNotifichePage() {
     }
 
     const handlePageChange = (page: number) => {
+        console.log(page,totalPages)
         setCurrentPage(Math.max(1, Math.min(page, totalPages)))
     }
 
