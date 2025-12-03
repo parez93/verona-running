@@ -1,29 +1,15 @@
 // /app/api/notifications/admin/route.ts
-import { NextResponse } from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import { adminCreateNotification, adminListNotifications } from  "@/app/api/notificationApi";
 import { NotificationCreateSchema } from "@/lib/validation/notification";
 import {createSupabaseServerClient} from "@/lib/supabase/server";
 
-/*export async function GET(req: Request) {
-    try {
-        const url = new URL(req.url);
-        const page = parseInt(url.searchParams.get("page") || "1", 10);
-        const perPage = parseInt(url.searchParams.get("perPage") || "20", 10);
-        const q = url.searchParams.get("q") || undefined;
-        const type = url.searchParams.get("type") || undefined;
 
-        const result = await adminListNotifications({ page, perPage, q, type });
-        return NextResponse.json(result);
-    } catch (err: any) {
-        console.error("GET /api/notifications/admin error", err);
-        return NextResponse.json({ error: err?.message ?? "Internal error" }, { status: 500 });
-    }
-}*/
 
-export async function GET(req: Request) {
+export async function GET(request: NextRequest) {
     try {
         const supabase = await createSupabaseServerClient();
-        const url = new URL(req.url);
+        const url = new URL(request.url);
 
         const page = parseInt(url.searchParams.get("page") || "1", 10);
         const perPage = parseInt(url.searchParams.get("perPage") || "20", 10);
@@ -54,6 +40,7 @@ export async function GET(req: Request) {
         if (readFilter === "read") {
             builder = builder.filter("ntf_view.is_read", "eq", true);
         }
+
         if (readFilter === "unread") {
             builder = builder.filter("ntf_view.is_read", "eq", false);
         }
@@ -62,17 +49,20 @@ export async function GET(req: Request) {
         if (error) throw error;
 
         const mapped = (data || []).map(n => {
-            const assignedUsers = n.psn_ntf?.map((r: { psn_data: any; }) => r.psn_data) || [];
-            const viewedBy = n.ntf_view?.map((v: { psn_data: any; viewed_at: any; is_read: any; }) => ({
-                ...v.psn_data,
-                viewedAt: v.viewed_at,
-                isRead: v.is_read
-            })) || [];
+            const assignedUsers =
+                n.psn_ntf?.map((r: { psn_data: any }) => r.psn_data) || [];
+
+            const viewedBy =
+                n.ntf_view?.map((v: { psn_data: any; viewed_at: any; is_read: any }) => ({
+                    ...v.psn_data,
+                    viewedAt: v.viewed_at,
+                    isRead: v.is_read,
+                })) || [];
 
             return {
                 ...n,
                 assignedUsers,
-                viewedBy
+                viewedBy,
             };
         });
 
@@ -80,23 +70,27 @@ export async function GET(req: Request) {
             data: mapped,
             count,
             page,
-            perPage
+            perPage,
         });
-
     } catch (err: any) {
         console.error("GET /api/notifications/admin error", err);
         return NextResponse.json({ error: err?.message ?? "Internal error" }, { status: 500 });
     }
 }
 
-export async function POST(req: Request) {
+export async function POST(request: NextRequest) {
     try {
-        const body = await req.json();
+        const body = await request.json();
         const parsed = NotificationCreateSchema.parse(body);
+
         const data = await adminCreateNotification(parsed);
+
         return NextResponse.json({ data });
     } catch (err: any) {
         console.error("POST /api/notifications/admin error", err);
-        return NextResponse.json({ error: err?.message ?? err?.toString() ?? "Bad Request" }, { status: 400 });
+        return NextResponse.json(
+            { error: err?.message ?? err?.toString() ?? "Bad Request" },
+            { status: 400 }
+        );
     }
 }

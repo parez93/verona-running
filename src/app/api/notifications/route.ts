@@ -3,12 +3,12 @@ import { NextResponse } from "next/server";
 import { getNotificationsForUser } from "@/app/api/notificationApi";
 import {createSupabaseServerClient} from "@/lib/supabase/server";
 
-export async function GET(req: Request) {
+export async function GET(request: NextRequest) {
     try {
-        const url = new URL(req.url);
+        const url = new URL(request.url);
 
-        const supabase = await createSupabaseServerClient()
-        const { data: { user } } = await supabase.auth.getUser()
+        const supabase = await createSupabaseServerClient();
+        const { data: { user } } = await supabase.auth.getUser();
 
         const psnId = user?.id;
         const limit = parseInt(url.searchParams.get("limit") || "100", 10);
@@ -18,10 +18,14 @@ export async function GET(req: Request) {
         }
 
         const notifications = await getNotificationsForUser(psnId, limit);
+
         return NextResponse.json({ data: notifications });
     } catch (err: any) {
         console.error("GET /api/notifications error", err);
-        return NextResponse.json({ error: err?.message ?? "Internal error" }, { status: 500 });
+        return NextResponse.json(
+            { error: err?.message ?? "Internal error" },
+            { status: 500 }
+        );
     }
 }
 

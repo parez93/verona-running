@@ -61,12 +61,23 @@ export async function GET(
 }
 
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(
+    request: NextRequest,
+    context: { params: Promise<{ id: string }> }
+) {
     try {
-        const id = parseInt(params.id, 10);
-        const body = await req.json();
-        const parsed = NotificationUpdateSchema.parse(body);
-        const data = await adminUpdateNotification(id, parsed);
+        const { id } = await context.params;
+
+        const parsedId = Number(id);
+        if (Number.isNaN(parsedId)) {
+            return NextResponse.json({ error: "Invalid id" }, { status: 400 });
+        }
+
+        const body = await request.json();
+        const parsedBody = NotificationUpdateSchema.parse(body);
+
+        const data = await adminUpdateNotification(parsedId, parsedBody);
+
         return NextResponse.json({ data });
     } catch (err: any) {
         console.error("PUT /api/admin/notifications/[id] error", err);
@@ -74,10 +85,20 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     }
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(
+    request: NextRequest,
+    context: { params: Promise<{ id: string }> }
+) {
     try {
-        const id = parseInt(params.id, 10);
-        await adminDeleteNotification(id);
+        const { id } = await context.params;
+
+        const parsedId = Number(id);
+        if (Number.isNaN(parsedId)) {
+            return NextResponse.json({ error: "Invalid id" }, { status: 400 });
+        }
+
+        await adminDeleteNotification(parsedId);
+
         return NextResponse.json({ ok: true });
     } catch (err: any) {
         console.error("DELETE /api/admin/notifications/[id] error", err);
