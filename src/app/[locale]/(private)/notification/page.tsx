@@ -110,7 +110,7 @@ export default function NotificationPage() {
                                     <span className="hidden sm:inline">Segna tutto letto</span>
                                 </Button>
                             )}
-                            {notifications.length > 0 && (
+{/*                            {notifications.length > 0 && (
                                 <Button
                                     variant="outline"
                                     onClick={handleClearAll}
@@ -119,7 +119,7 @@ export default function NotificationPage() {
                                     <Trash2 className="h-4 w-4" />
                                     <span className="hidden sm:inline">Cancella tutto</span>
                                 </Button>
-                            )}
+                            )}*/}
                         </div>
                     </div>
                 </div>

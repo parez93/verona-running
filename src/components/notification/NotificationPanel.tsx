@@ -125,7 +125,7 @@ export function NotificationPanel() {
                                 Segna tutto letto
                             </Button>
                         )}
-                        {notifications.length > 0 && (
+{/*                        {notifications.length > 0 && (
                             <Button
                                 variant="ghost"
                                 size="icon"
@@ -134,7 +134,7 @@ export function NotificationPanel() {
                             >
                                 <X className="h-4 w-4"/>
                             </Button>
-                        )}
+                        )}*/}
                     </div>
                 </div>
 
