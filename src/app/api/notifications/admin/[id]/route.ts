@@ -1,16 +1,20 @@
 // /app/api/admin/notifications/[id]/route.ts
-import { NextResponse } from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import { adminUpdateNotification, adminDeleteNotification } from  "@/app/api/notificationApi";
 import { NotificationUpdateSchema } from "@/lib/validation/notification";
 import {createSupabaseServerClient} from "@/lib/supabase/server";
 
 export async function GET(
-    req: Request,
-    { params }: { params: { id: string } }
+    request: NextRequest,
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
+        // 🔥 De-struttura i params in modo compatibile
+        const { id } = await context.params;
+
         const supabase = await createSupabaseServerClient();
-        const ntfId = parseInt(params.id, 10);
+
+        const ntfId = Number(id);
         if (Number.isNaN(ntfId)) {
             return NextResponse.json({ error: "Invalid id" }, { status: 400 });
         }
@@ -51,7 +55,7 @@ export async function GET(
         });
 
     } catch (err: any) {
-        console.error("GET /api/admin/notifications/[id]/details error", err);
+        console.error("GET /api/notifications/admin/[id] error", err);
         return NextResponse.json({ error: err?.message ?? "Internal error" }, { status: 500 });
     }
 }
