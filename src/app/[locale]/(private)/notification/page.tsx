@@ -18,7 +18,7 @@ export default function NotificationPage() {
     const fetchNotifications = async () => {
         try {
             setLoading(true)
-            const res = await fetch(`/api/notifications`)
+            const res = await fetch(`/api/notifications?limit=20`)
             console.log(res)
             const json = await res.json()
             if (json?.data) {

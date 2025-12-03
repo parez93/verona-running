@@ -71,7 +71,7 @@ export function NotificationItem({ notification, onMarkAsRead, onClose }: Notifi
                     )}
                 </div>
 
-                <p className="text-xs text-muted-foreground line-clamp-2 mb-1">
+                <p className="text-xs text-muted-foreground line-clamp-14 mb-1">
                     {notification.message}
                 </p>
 
