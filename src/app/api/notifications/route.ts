@@ -1,5 +1,5 @@
 // /app/api/notifications/route.ts
-import { NextResponse } from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import { getNotificationsForUser } from "@/app/api/notificationApi";
 import {createSupabaseServerClient} from "@/lib/supabase/server";
 
