@@ -1,4 +1,4 @@
-// /app/[locale]/admin/event/page.tsx
+// /app/[locale]/admin/event/page_chatgpt.tsx
 "use client"
 
 import {useEffect, useState} from "react"
