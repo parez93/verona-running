@@ -1,7 +1,7 @@
 "use client";
 
 import {useEffect, useState} from "react";
-import {BugOffIcon, CalendarDays, ChevronDown, ChevronRight, LayoutPanelLeft, UsersIcon,} from "lucide-react";
+import {BellIcon, BugOffIcon, CalendarDays, ChevronDown, ChevronRight, LayoutPanelLeft, UsersIcon,} from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
 import Image from "next/image";
 import {ROUTES} from "@/lib/kRoutes";
@@ -47,6 +47,12 @@ const menuItems: MenuItem[] = [
         label: "Gestione utenti",
         icon: UsersIcon,
         href: ROUTES.adminUser(),
+    },
+    {
+        id: "adminNotification",
+        label: "Gestione Notifiche",
+        icon: BellIcon,
+        href: ROUTES.adminNotification(),
     },
 ];
 
@@ -102,6 +108,12 @@ export default function Sidebar({
                 label: "Gestione utenti",
                 icon: UsersIcon,
                 href: ROUTES.adminUser(),
+            },
+            {
+                id: "adminNotification",
+                label: "Gestione notifiche",
+                icon: BellIcon,
+                href: ROUTES.adminNotification(),
             },
         ]
         : [];

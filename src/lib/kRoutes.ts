@@ -13,5 +13,6 @@ export const ROUTES = {
     notification: () => `/notification`,
     adminEvent: () => `/admin/event`,
     adminUser: () => `/admin/user`,
+    adminNotification: () => `/admin/notification`,
 
 };
