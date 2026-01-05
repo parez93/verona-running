@@ -88,12 +88,12 @@ export default function Sidebar({
             icon: Award,
             href: ROUTES.badge(),
         },
-        {
+/*        {
             id: "leaderboard",
             label: "Classifica",
             icon: Trophy,
             href: ROUTES.leaderboard(),
-        },
+        },*/
         {
             id: "stats",
             label: "Statistiche",
