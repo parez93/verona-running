@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import {NextRequest, NextResponse} from 'next/server';
 import {
     getISOWeek,
     getISOWeekYear,
@@ -8,8 +8,8 @@ import {
 import { createSupabaseServerClient, getSupabaseUser } from "@/lib/supabase/server";
 
 export async function GET(
-    req: Request,
-    { params }: { params: { userId: string } }
+    req: NextRequest,
+    { params }: { params: { userId: string } } // <-- non Promise
 ) {
     const supabase = await createSupabaseServerClient();
     const user = await getSupabaseUser();
