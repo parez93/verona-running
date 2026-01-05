@@ -31,9 +31,38 @@ export default function StatisticsPage() {
     }
     const {totalRuns, totalDistance, monthlyKm, monthlyPoints, currentStreak, longestStreak} = data;
 
+
+    const now = new Date();
+    const currentMonthIndex = now.getMonth();
+
+// Mappa per convertire i nomi dei mesi in numero
+    const monthMap: Record<string, number> = {
+        "gen": 0,
+        "feb": 1,
+        "mar": 2,
+        "apr": 3,
+        "mag": 4,
+        "giu": 5,
+        "lug": 6,
+        "ago": 7,
+        "set": 8,
+        "ott": 9,
+        "nov": 10,
+        "dic": 11
+    };
+
+// Trova l’oggetto corrente
+    const currentMonthObj : number = monthlyKm.find(
+        obj => obj.year === now.getFullYear() && monthMap[obj.month] === currentMonthIndex
+    )?.km ?? 0;
+
+    console.log(currentMonthObj);
+
+
     const monthlyGoal = 20;
     const currentMonthKm = monthlyKm.at(-1)?.km ?? 0;
-    const goalProgress = Math.min((currentMonthKm / monthlyGoal) * 100, 100);
+    console.log(currentMonthKm, monthlyKm.at(-1), currentMonthObj)
+    const goalProgress = Math.min((currentMonthObj / monthlyGoal) * 100, 100);
 
     const stats = [
         {
@@ -440,7 +469,7 @@ export default function StatisticsPage() {
                                                 {Math.round(goalProgress)}%
                                             </motion.div>
                                             <div className="text-sm text-muted-foreground mt-1">
-                                                {currentMonthKm} / {monthlyGoal} km
+                                                {currentMonthObj} / {monthlyGoal} km
                                             </div>
                                             <div className="text-xs text-muted-foreground mt-1">
                                                 {goalProgress >= 100 ? '🎉 Obiettivo raggiunto!' : 'questo mese'}
@@ -450,7 +479,7 @@ export default function StatisticsPage() {
                                 </div>
                                 {goalProgress < 100 && (
                                     <div className="text-center text-sm text-muted-foreground">
-                                        Ti mancano {monthlyGoal - currentMonthKm} km per raggiungere l'obiettivo
+                                        Ti mancano {monthlyGoal - currentMonthObj} km per raggiungere l'obiettivo
                                     </div>
                                 )}
                             </CardContent>
