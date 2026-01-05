@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from "react";
 import {
+    BellIcon,
     Award,
     BugOffIcon,
     CalendarDays,
@@ -57,6 +58,12 @@ const menuItems: MenuItem[] = [
         icon: UsersIcon,
         href: ROUTES.adminUser(),
     },
+    {
+        id: "adminNotification",
+        label: "Gestione Notifiche",
+        icon: BellIcon,
+        href: ROUTES.adminNotification(),
+    },
 ];
 
 export default function Sidebar({
@@ -68,6 +75,19 @@ export default function Sidebar({
     const [activeItem, setActiveItem] = useState<string | null>(null);
     const router = useRouter();
     const pathname = usePathname();
+    const [version, setVersion] = useState("")
+
+    useEffect(() => {
+        const fetchVersion = async () => {
+
+            const res = await fetch("/api/version");
+            const {version} = await res.json();
+            setVersion(version);
+        }
+        fetchVersion();
+    }, [version]);
+
+
 
     const baseMenuItems: MenuItem[] = [
         {
@@ -116,6 +136,12 @@ export default function Sidebar({
                 label: "Gestione utenti",
                 icon: UsersIcon,
                 href: ROUTES.adminUser(),
+            },
+            {
+                id: "adminNotification",
+                label: "Gestione notifiche",
+                icon: BellIcon,
+                href: ROUTES.adminNotification(),
             },
         ]
         : [];
@@ -318,7 +344,7 @@ export default function Sidebar({
                 {/* Footer */}
                 <footer className="p-4 border-t border-[var(--color-sidebar-border)]">
                     <div className="text-xs text-[var(--color-text-light)]">
-                        Version 0.1.0
+                        Version {version}
                     </div>
                 </footer>
             </aside>

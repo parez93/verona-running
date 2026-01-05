@@ -12,7 +12,9 @@ export const ROUTES = {
     stats: () => `/statistics`,
     leaderboard: () => `/leaderboard`,
     badge: () => `/badge`,
+    notification: () => `/notification`,
     adminEvent: () => `/admin/event`,
     adminUser: () => `/admin/user`,
+    adminNotification: () => `/admin/notification`,
 
 };
