@@ -178,7 +178,7 @@ export default function AdminEventPage() {
             const newEvent: EventInsert = {
                 title: eventForm.title.trim(),
                 img: eventForm.img.trim(),
-                datetime: new Date(eventForm.datetime).toISOString().replace('T', ' ').slice(0, -5),
+                datetime: eventForm.datetime?.replace('T', ' '),
                 info: eventForm.info.trim(),
                 route_url: eventForm.route_url.trim(),
                 location_url: eventForm.location_url.trim(),
@@ -200,7 +200,7 @@ export default function AdminEventPage() {
             const updatedEvent: EventUpdate = {
                 title: eventForm.title.trim(),
                 img: eventForm.img.trim(),
-                datetime: new Date(eventForm.datetime).toISOString().replace('T', ' ').slice(0, -5),
+                datetime: eventForm.datetime.replace('T', ' '),
                 info: eventForm.info.trim(),
                 route_url: eventForm.route_url.trim(),
                 location_url: eventForm.location_url.trim(),
