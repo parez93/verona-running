@@ -1,7 +1,6 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Achievement } from './gamification-data';
 import { X } from 'lucide-react';
 import { Button } from '../ui/button';
 import {UserBadges} from "@/types/models/badge";
