@@ -9,7 +9,7 @@ import { createSupabaseServerClient, getSupabaseUser } from "@/lib/supabase/serv
 
 export async function GET(
     req: NextRequest,
-    { params }: { params: { userId: string } } // <-- non Promise
+    { params }: { params: {} }
 ) {
     const supabase = await createSupabaseServerClient();
     const user = await getSupabaseUser();
